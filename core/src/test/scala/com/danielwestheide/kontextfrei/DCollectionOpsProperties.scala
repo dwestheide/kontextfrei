@@ -1,10 +1,12 @@
 package com.danielwestheide.kontextfrei
 
+import org.scalacheck.Gen
 import org.scalatest.Inspectors
 
 trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
 
   import DCollectionOps.Imports._
+  import org.scalatest.OptionValues._
 
   property("cartesian returns a DCollection with N * M elements") {
     forAll { (xs: List[String], ys: List[Int]) =>
@@ -95,7 +97,8 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
   property("groupBy groups all values a with the same result f(a) together") {
     forAll { (xs: List[String], f: String => Int) =>
       val groupedXs = unit(xs).groupBy(f).collect()
-      Inspectors.forAll(groupedXs) { case (k, v) =>
+      Inspectors.forAll(groupedXs) {
+        case (k, v) =>
           Inspectors.forAll(xs.filter(x => f(x) === k)) { x =>
             assert(v.toSet(x))
           }
@@ -107,6 +110,116 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     forAll { (xs: List[String], f: String => Int) =>
       val groupedXs = unit(xs).groupBy(f).collect()
       groupedXs.flatMap(_._2).size mustEqual xs.size
+    }
+  }
+
+  property("sortBy returns a DCollection sorted by the given function, ascending") {
+    forAll { (xs: List[String], f: String => Int) =>
+      val result = unit(xs).sortBy(f, ascending = true).collect()
+      result.sortBy(f) mustEqual result
+    }
+  }
+
+  property("sortBy returns a DCollection sorted by the given function, descending") {
+    forAll { (xs: List[String], f: String => Int) =>
+      val result = unit(xs).sortBy(f, ascending = false).collect()
+      result.sortBy(f)(Ordering[Int].reverse) mustEqual result
+    }
+  }
+
+  property("mapValues adheres to the first functor law") {
+    forAll { xs: List[(String, Int)] =>
+      unit(xs).mapValues(identity).collect() mustEqual unit(xs).collect()
+    }
+  }
+
+  property("leftOuterJoining with only common, unique keys means no joined element is None") {
+    forAll { (xs: List[String], f: String => Int) =>
+      val left = unit(xs.distinct).map(x => x -> f(x))
+      val right = unit(xs.distinct).map(x => x -> f(x))
+      val result = left.leftOuterJoin(right).collect()
+      Inspectors.forAll(result) {
+        case (k, (l, r)) => l mustEqual r.value
+      }
+    }
+  }
+
+  property("leftOuterJoining means joined elements have the same key") {
+    forAll { (xs: List[String], f: String => Int) =>
+      val left = unit(xs).map(x => f(x) -> x)
+      val right = unit(xs).map(x => f(x) -> x)
+      val result = left.leftOuterJoin(right).collect()
+      Inspectors.forAll(result) {
+        case (k, (l, r)) => f(l) mustEqual f(r.value)
+      }
+    }
+  }
+
+  property("leftOuterJoining with only missing elements means every left element as a None right element") {
+    forAll { (xs: List[String], f: String => Int) =>
+      val left = unit(xs).map(x => f(x) -> x)
+      val right = unit(List.empty[String]).map(x => f(x) -> x)
+      val result = left.leftOuterJoin(right).collect()
+      result.length mustEqual xs.size
+      Inspectors.forAll(result) {
+        case (k, (l, r)) => assert(r.isEmpty)
+      }
+    }
+  }
+
+  property("mapValues adheres to the second functor law") {
+    forAll { (xs: List[(String, String)], f: String => Int, g: Int => Int) =>
+      unit(xs).mapValues(f).mapValues(g).collect() mustEqual unit(xs).mapValues(f andThen g).collect()
+    }
+  }
+
+  property("mapValues doesn't have any effect on the keys") {
+    forAll { (xs: List[(String, String)], f: String => Int) =>
+      unit(xs).mapValues(f).collect().map(_._1) mustEqual unit(xs).collect().map(_._1)
+    }
+  }
+
+  property("reduceByKey applies associative function to all elements with the same key") {
+    forAll { (xs: List[String], f: String => Int) =>
+      val result = unit(xs).map(x => f(x) -> x).reduceByKey(_ + _).collect()
+      val xsByKey = xs.groupBy(f)
+      Inspectors.forAll(result) {
+        case (k, v) => v mustEqual xsByKey(k).reduce(_ + _)
+      }
+    }
+  }
+
+  property("aggregateByKey applies associative functions on all elements with the same key") {
+    forAll { (xs: List[(String, String)]) =>
+      val result = unit(xs).aggregateByKey(0)(_ + _.length)(_ + _).collect()
+      val xsByKey = xs.groupBy(_._1).mapValues(_.map(_._2))
+      Inspectors.forAll(result) {
+        case (k, v) => v mustEqual xsByKey(k).aggregate(0)(_ + _.length, _ + _)
+      }
+    }
+  }
+
+  property("count returns the number of elements in the DCollection") {
+    forAll { xs: List[String] =>
+      unit(xs).count() mustEqual xs.size
+    }
+  }
+
+  property("countByValue returns the number of occurrences of each element in the DCollection") {
+    forAll { xs: List[String] =>
+      val result = unit(xs).countByValue()
+      Inspectors.forAll(result) {
+        case (element, count) => count mustEqual xs.count(_ == element)
+      }
+    }
+  }
+
+  property("first returns the first element of the DCollection") {
+    forAll { xs: Set[String] =>
+      whenever(xs.nonEmpty) {
+        unit(xs.toList).sortBy(identity).first() mustEqual xs.toList.sorted.head
+        unit(xs.toList).first() mustEqual xs.head
+      }
     }
   }
 
