@@ -13,6 +13,7 @@ trait RDDCollectionOps {
     def unit[A : ClassTag](as: Seq[A]): RDD[A] = sparkContext.parallelize(as)
 
     def cartesian[A: ClassTag, B: ClassTag](as: RDD[A])(bs: RDD[B]): RDD[(A, B)] = as cartesian bs
+    def cogroup[A: ClassTag, B: ClassTag, C: ClassTag](x: RDD[(A, B)])(y: RDD[(A, C)]): RDD[(A, (Iterable[B], Iterable[C]))] = x.cogroup(y)
     def collect[A: ClassTag, B: ClassTag](as: RDD[A])(pf: PartialFunction[A, B]): RDD[B] = as collect pf
     def distinct[A : ClassTag](as: RDD[A]): RDD[A] = as.distinct()
     def map[A: ClassTag, B: ClassTag](as: RDD[A])(f: A => B): RDD[B] = as map f

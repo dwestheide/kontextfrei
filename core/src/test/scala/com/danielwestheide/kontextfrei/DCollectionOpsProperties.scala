@@ -1,6 +1,5 @@
 package com.danielwestheide.kontextfrei
 
-import org.scalacheck.Gen
 import org.scalatest.Inspectors
 
 trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
@@ -22,6 +21,19 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
         Inspectors.forAll(ys) { y =>
           assert(result.contains(x -> y))
         }
+      }
+    }
+  }
+
+  property("cogroup groups all values from A and B that have the same key") {
+    forAll { (xs: List[(String, Int)], ys: List[(String, Int)]) =>
+      val result = unit(xs).cogroup(unit(ys)).collect()
+      result.map(_._1).toSet mustEqual (xs.map(_._1) ::: ys.map(_._1)).toSet
+      Inspectors.forAll(xs) { case (k, v) =>
+        result.find(_._1 == k).exists(_._2._1.exists(_ == v))
+      }
+      Inspectors.forAll(ys) { case (k, v) =>
+        result.find(_._1 == k).exists(_._2._2.exists(_ == v))
       }
     }
   }

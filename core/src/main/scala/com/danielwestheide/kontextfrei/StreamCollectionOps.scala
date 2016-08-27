@@ -1,6 +1,6 @@
 package com.danielwestheide.kontextfrei
 
-import scala.collection.immutable.{Iterable, Seq}
+import scala.collection.immutable.Seq
 import scala.reflect.ClassTag
 
 trait StreamCollectionOps {
