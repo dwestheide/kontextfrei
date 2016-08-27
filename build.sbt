@@ -2,7 +2,8 @@ name := "kontextfrei"
 
 val common = Seq(
   organization := "com.danielwestheide",
-  version := "0.1.0-SNAPSHOT",
+  version := "0.1.0",
+  licenses += ("Apache-2.0", url("https://opensource.org/licenses/Apache-2.0")),
   scalacOptions ++= Seq("-feature", "-language:higherKinds", "-language:implicitConversions")
 )
 
@@ -23,7 +24,5 @@ lazy val root = Project(id = "kontextfrei", base = file("."))
     .aggregate(core)
 
 publishArtifact in root := false
-
-licenses += ("Apache License 2.0", url("https://opensource.org/licenses/Apache-2.0"))
 
 bintrayPackageLabels := Seq("scala", "spark", "testing")
