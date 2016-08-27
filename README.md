@@ -1,5 +1,7 @@
 # kontextfrei
 
+![build status](https://travis-ci.org/dwestheide/kontextfrei.svg?branch=master)
+
 ## What is this?
 
 This library enables you to write the business logic of your Spark application without depending on
