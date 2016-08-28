@@ -7,7 +7,7 @@ val common = Seq(
   scalacOptions ++= Seq("-feature", "-language:higherKinds", "-language:implicitConversions")
 )
 
-val spark = "org.apache.spark" %% "spark-core" % "1.4.1"
+val spark = "org.apache.spark" %% "spark-core" % "1.4.1" % "provided"
 val scalatest = "org.scalatest" %% "scalatest" % "2.2.6" % "test"
 val scalacheck = "org.scalacheck" %% "scalacheck" % "1.12.5" % "test"
 
