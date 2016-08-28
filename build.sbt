@@ -2,7 +2,7 @@ name := "kontextfrei"
 
 val common = Seq(
   organization := "com.danielwestheide",
-  version := "0.1.1-SNAPSHOT",
+  version := "0.1.1",
   licenses += ("Apache-2.0", url("https://opensource.org/licenses/Apache-2.0")),
   scalacOptions ++= Seq("-feature", "-language:higherKinds", "-language:implicitConversions")
 )
