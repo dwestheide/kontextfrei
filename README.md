@@ -1,6 +1,6 @@
 # kontextfrei
-
-![build status](https://travis-ci.org/dwestheide/kontextfrei.svg?branch=master)
+[![Build Status](https://travis-ci.org/dwestheide/kontextfrei.svg?branch=master)](https://travis-ci.org/dwestheide/kontextfrei)
+[![codecov](https://codecov.io/gh/dwestheide/kontextfrei/branch/master/graph/badge.svg)](https://codecov.io/gh/dwestheide/kontextfrei)
 
 ## What is this?
 
@@ -25,7 +25,30 @@ instance and the `RDD` instance of the `DCollectionOps` typeclass for unit and i
 respectively. The actual test code can be shared between the different tests, as it is independent
 of a specific instance of `DCollectionOps`.
 
+## Usage
+
+Add a dependency on the the current version of `kontextfrei-core` to your `build.sbt`:
+
+```scala
+resolvers += "restful-scala" at "https://dl.bintray.com/dwestheide/maven"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core" % "0.1.1"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.1"
+```
+
+_kontextfrei_ assumes that the Spark dependency is provided by your application, so have to explicitly add a dependency to Spark.
+
+## Example
+
+For an example that showcases how the library can be used, please have a look at [kontextfrei-example](https://github.com/dwestheide/kontextfrei-example).
+
 ## Status
 
-This library is unreleased, a work in progress and must be considered experimental. Feel free to try
-it out, any feedback is definitely welcome, but please don't use this for any serious projects yet.
+This library is in an early stage, and comes with the following limitations:
+
+* only compiled and tested against Spark 1.4.1, newer versions may not work yet
+* not feature-complete: only a subset of the operations available on `RDD`s is supported so far
+* not used in production yet - while there is extensive test coverage, nothing can be said yet about the feasibility of using this library in production
+
+## Contributions welcome
+
+I would be happy about feedback from people who tried this library out, and especially about any contributions to get over the current limitations described above.
