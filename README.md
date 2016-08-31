@@ -30,7 +30,7 @@ of a specific instance of `DCollectionOps`.
 Add a dependency on the the current version of `kontextfrei-core` to your `build.sbt`:
 
 ```scala
-resolvers += "restful-scala" at "https://dl.bintray.com/dwestheide/maven"
+resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
 libraryDependencies += "com.danielwestheide" %% "kontextfrei-core" % "0.1.1"
 libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.1"
 ```
