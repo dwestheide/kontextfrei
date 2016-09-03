@@ -24,6 +24,9 @@ trait RDDCollectionOps {
     def sortBy[A: ClassTag, B: ClassTag : Ordering](as: RDD[A])(f: (A) => B)(ascending: Boolean): RDD[A] =
       as.sortBy(f, ascending)
 
+
+    def values[A : ClassTag, B : ClassTag](x: RDD[(A, B)]): RDD[B] = x.values
+    def keys[A : ClassTag, B : ClassTag](x: RDD[(A, B)]): RDD[A] = x.keys
     def leftOuterJoin[A : ClassTag, B : ClassTag, C : ClassTag](x: RDD[(A, B)])(y: RDD[(A, C)]): RDD[(A, (B, Option[C]))] = x leftOuterJoin y
     def mapValues[A: ClassTag, B: ClassTag, C: ClassTag]
     (x: RDD[(A, B)])(f: B => C): RDD[(A, C)] = x mapValues f

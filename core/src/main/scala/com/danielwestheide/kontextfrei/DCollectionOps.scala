@@ -22,6 +22,8 @@ trait DCollectionOps[DCollection[_]] {
   def sortBy[A : ClassTag, B : ClassTag : Ordering](as: DCollection[A])(f: A => B)(ascending: Boolean): DCollection[A]
 
   // pair transformations:
+  def values[A : ClassTag, B : ClassTag](x: DCollection[(A, B)]): DCollection[B]
+  def keys[A : ClassTag, B : ClassTag](x: DCollection[(A, B)]): DCollection[A]
   def cogroup[A : ClassTag, B : ClassTag, C : ClassTag]
   (x: DCollection[(A, B)])
   (y: DCollection[(A, C)]): DCollection[(A, (Iterable[B], Iterable[C]))]
@@ -71,6 +73,8 @@ object DCollectionOps {
   }
 
   class PairSyntax[DCollection[_], A : ClassTag, B : ClassTag](val self: DCollectionOps[DCollection], val coll: DCollection[(A, B)]) {
+    def keys: DCollection[A] = self.keys(coll)
+    def values: DCollection[B] = self.values(coll)
     def cogroup[C : ClassTag](other: DCollection[(A, C)]): DCollection[(A, (Iterable[B], Iterable[C]))] =
       self.cogroup(coll)(other)
     def leftOuterJoin[C : ClassTag](other: DCollection[(A, C)]): DCollection[(A, (B, Option[C]))] =

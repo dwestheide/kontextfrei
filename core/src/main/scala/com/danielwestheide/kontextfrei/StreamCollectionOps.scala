@@ -34,6 +34,9 @@ trait StreamCollectionOps {
       }
     }
 
+    def values[A : ClassTag, B : ClassTag](x: Stream[(A, B)]): Stream[B] = x.map(_._2)
+    def keys[A : ClassTag, B : ClassTag](x: Stream[(A, B)]): Stream[A] = x.map(_._1)
+
     def leftOuterJoin[A: ClassTag, B: ClassTag, C: ClassTag](x: Stream[(A, B)])(y: Stream[(A, C)]): Stream[(A, (B, Option[C]))] = {
       val xs = x.groupBy(_._1).mapValues(_.map(_._2))
       val ys = y.groupBy(_._1).mapValues(_.map(_._2))

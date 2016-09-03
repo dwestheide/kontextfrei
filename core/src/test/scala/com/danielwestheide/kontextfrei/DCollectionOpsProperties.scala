@@ -191,6 +191,18 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
+  property("keys == map(_._1") {
+    forAll{ (xs: List[(Int, String)]) =>
+      unit(xs).keys.collect() mustEqual unit(xs.map(_._1)).collect()
+    }
+  }
+
+  property("values == map(_._2") {
+    forAll{ (xs: List[(Int, String)]) =>
+      unit(xs).values.collect() mustEqual unit(xs.map(_._2)).collect()
+    }
+  }
+
   property("reduceByKey applies associative function to all elements with the same key") {
     forAll { (xs: List[String], f: String => Int) =>
       val result = unit(xs).map(x => f(x) -> x).reduceByKey(_ + _).collect()
