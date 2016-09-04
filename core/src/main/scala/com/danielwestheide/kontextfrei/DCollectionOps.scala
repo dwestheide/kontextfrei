@@ -47,6 +47,9 @@ trait DCollectionOps[DCollection[_]] {
   def countByValue[A : ClassTag](as: DCollection[A])(implicit ord: Ordering[A]): Map[A, Long]
   def first[A : ClassTag](as: DCollection[A]): A
 
+  // pair actions:
+  def countByKey[A: ClassTag, B: ClassTag](xs: DCollection[(A, B)]): Map[A, Long]
+
 }
 
 object DCollectionOps {
@@ -87,6 +90,7 @@ object DCollectionOps {
     def foldByKey(zeroValue: B)(f: (B, B) => B): DCollection[(A, B)] = self.foldByKey(coll)(zeroValue)(f)
     def aggregateByKey[C: ClassTag](zeroValue: C)(seqOp: (C, B) => C)(combOp: (C, C) => C): DCollection[(A, C)] =
       self.aggregateByKey(coll)(zeroValue)(seqOp)(combOp)
+    def countByKey(): Map[A, Long] = self.countByKey(coll)
   }
 
   trait ToSyntax {

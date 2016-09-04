@@ -248,6 +248,15 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
+  property("countByKey returns the number of occurrences of each key in the DCollection") {
+    forAll { xs: List[(Int, String)] =>
+      val result = unit(xs).countByKey()
+      Inspectors.forAll(result) {
+        case (key, count) => count mustEqual xs.count(_._1 == key)
+      }
+    }
+  }
+
   property("first returns the first element of the DCollection") {
     forAll { xs: Set[String] =>
       whenever(xs.nonEmpty) {

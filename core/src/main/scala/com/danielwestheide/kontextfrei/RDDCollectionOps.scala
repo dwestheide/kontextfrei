@@ -42,6 +42,8 @@ trait RDDCollectionOps {
     def count[A](as: RDD[A]): Long = as.count()
     def countByValue[A: ClassTag](as: RDD[A])(implicit ord: Ordering[A]): Map[A, Long] = as.countByValue()
     def first[A : ClassTag](as: RDD[A]): A = as.first()
+
+    def countByKey[A: ClassTag, B: ClassTag](xs: RDD[(A, B)]): Map[A, Long] = xs.countByKey()
   }
 
 }

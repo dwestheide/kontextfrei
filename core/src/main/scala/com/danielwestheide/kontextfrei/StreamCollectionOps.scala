@@ -1,5 +1,6 @@
 package com.danielwestheide.kontextfrei
 
+import scala.collection.Map
 import scala.collection.immutable.Seq
 import scala.reflect.ClassTag
 
@@ -77,6 +78,12 @@ trait StreamCollectionOps {
       as.groupBy(identity) map { case (k, v) => (k, v.size.toLong) }
     def first[A : ClassTag](as: Stream[A]): A = as.headOption getOrElse {
       throw new UnsupportedOperationException("empty collection")
+    }
+
+    def countByKey[A: ClassTag, B: ClassTag](xs: Stream[(A, B)]): Map[A, Long] = {
+      val keyed = mapValues(xs)(_ => 1L)
+      val counts = reduceByKey(keyed)(_ + _)
+      counts.toMap
     }
   }
 }
