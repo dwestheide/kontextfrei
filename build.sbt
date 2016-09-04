@@ -3,6 +3,7 @@ name := "kontextfrei"
 val common = Seq(
   organization := "com.danielwestheide",
   version := "0.1.2-SNAPSHOT",
+  scalaVersion := "2.10.6",
   licenses += ("Apache-2.0", url("https://opensource.org/licenses/Apache-2.0")),
   scalacOptions ++= Seq("-feature", "-language:higherKinds", "-language:implicitConversions")
 )
@@ -10,8 +11,6 @@ val common = Seq(
 val spark = "org.apache.spark" %% "spark-core" % "1.4.1" % "provided"
 val scalatest = "org.scalatest" %% "scalatest" % "2.2.6" % "test"
 val scalacheck = "org.scalacheck" %% "scalacheck" % "1.12.5" % "test"
-
-scalaVersion := "2.10.6"
 
 lazy val core = Project(id = "kontextfrei-core", base = file("core"))
   .settings(common)
