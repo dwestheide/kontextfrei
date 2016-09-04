@@ -39,17 +39,21 @@ trait StreamCollectionOps {
     def keys[A : ClassTag, B : ClassTag](x: Stream[(A, B)]): Stream[A] = x.map(_._1)
 
     def leftOuterJoin[A: ClassTag, B: ClassTag, C: ClassTag](x: Stream[(A, B)])(y: Stream[(A, C)]): Stream[(A, (B, Option[C]))] = {
-      val xs = x.groupBy(_._1).mapValues(_.map(_._2))
-      val ys = y.groupBy(_._1).mapValues(_.map(_._2))
-      val allKeys = (xs.keys ++ ys.keys).toStream
-      allKeys.flatMap { key =>
-        val xsWithKey: Stream[B] = xs.getOrElse(key, Stream.empty)
-        val ysWithKey: Stream[C] = ys.getOrElse(key, Stream.empty)
-        if (ysWithKey.isEmpty) xsWithKey.map(x => key -> (x -> None))
+      flatMapValues(cogroup(x)(y)) { case (bs, cs) =>
+        if (cs.isEmpty) bs.iterator.map(b => (b, None))
         else for {
-          x <- xsWithKey
-          y <- ysWithKey
-        } yield key -> (x -> Some(y))
+          b <- bs.iterator
+          c <- cs.iterator
+        } yield (b, Some(c))
+      }
+    }
+    def rightOuterJoin[A: ClassTag, B: ClassTag, C: ClassTag](x: Stream[(A, B)])(y: Stream[(A, C)]): Stream[(A, (Option[B], C))] = {
+      flatMapValues(cogroup(x)(y)) { case (bs, cs) =>
+        if (bs.isEmpty) cs.iterator.map(c => (None, c))
+        else for {
+          b <- bs.iterator
+          c <- cs.iterator
+        } yield (Some(b), c)
       }
     }
     def mapValues[A: ClassTag, B: ClassTag, C: ClassTag](x: Stream[(A, B)])(f: B => C): Stream[(A, C)] =

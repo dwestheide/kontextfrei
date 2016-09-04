@@ -199,6 +199,40 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
+  property("rightOuterJoining with only common, unique keys means no joined element is None") {
+    forAll { (xs: List[String], f: String => Int) =>
+      val left = unit(xs.distinct).map(x => x -> f(x))
+      val right = unit(xs.distinct).map(x => x -> f(x))
+      val result = left.rightOuterJoin(right).collect()
+      Inspectors.forAll(result) {
+        case (k, (l, r)) => l.value mustEqual r
+      }
+    }
+  }
+
+  property("rightOuterJoining means joined elements have the same key") {
+    forAll { (xs: List[String], f: String => Int) =>
+      val left = unit(xs).map(x => f(x) -> x)
+      val right = unit(xs).map(x => f(x) -> x)
+      val result = left.rightOuterJoin(right).collect()
+      Inspectors.forAll(result) {
+        case (k, (l, r)) => f(l.value) mustEqual f(r)
+      }
+    }
+  }
+
+  property("rightOuterJoining with only missing elements means every left element as a None right element") {
+    forAll { (xs: List[String], f: String => Int) =>
+      val left = unit(List.empty[String]).map(x => f(x) -> x)
+      val right = unit(xs).map(x => f(x) -> x)
+      val result = left.rightOuterJoin(right).collect()
+      result.length mustEqual xs.size
+      Inspectors.forAll(result) {
+        case (k, (l, r)) => assert(l.isEmpty)
+      }
+    }
+  }
+
   property("mapValues adheres to the second functor law") {
     forAll { (xs: List[(String, String)], f: String => Int, g: Int => Int) =>
       unit(xs).mapValues(f).mapValues(g).collect() mustEqual unit(xs).mapValues(f andThen g).collect()
