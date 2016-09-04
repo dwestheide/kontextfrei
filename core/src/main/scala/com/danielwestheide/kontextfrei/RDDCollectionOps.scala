@@ -31,6 +31,7 @@ trait RDDCollectionOps {
     def mapValues[A: ClassTag, B: ClassTag, C: ClassTag]
     (x: RDD[(A, B)])(f: B => C): RDD[(A, C)] = x mapValues f
     def reduceByKey[A: ClassTag, B: ClassTag](xs: RDD[(A, B)])(f: (B, B) => B): RDD[(A, B)] = xs reduceByKey f
+    def foldByKey[A: ClassTag, B: ClassTag](xs: RDD[(A, B)])(zeroValue: B)(f: (B, B) => B): RDD[(A, B)] = xs.foldByKey(zeroValue)(f)
     def aggregateByKey[A: ClassTag, B: ClassTag, C: ClassTag]
     (xs: RDD[(A, B)])
     (zeroValue: C)

@@ -213,6 +213,16 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
+  property("foldByKey applies associative function to all elements with the same key") {
+    forAll { (xs: List[String], f: String => Int) =>
+      val result = unit(xs).map(x => f(x) -> x).foldByKey("")(_ + _).collect()
+      val xsByKey = xs.groupBy(f)
+      Inspectors.forAll(result) {
+        case (k, v) => v mustEqual xsByKey(k).reduce(_ + _)
+      }
+    }
+  }
+
   property("aggregateByKey applies associative functions on all elements with the same key") {
     forAll { (xs: List[(String, String)]) =>
       val result = unit(xs).aggregateByKey(0)(_ + _.length)(_ + _).collect()

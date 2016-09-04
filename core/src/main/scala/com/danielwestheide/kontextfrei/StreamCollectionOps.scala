@@ -57,6 +57,11 @@ trait StreamCollectionOps {
       val grouped = xs.groupBy(_._1) map { case (a, ys) => a -> ys.map(x => x._2) }
       grouped.toStream map { case (a, bs) => (a, bs reduce f) }
     }
+    def foldByKey[A: ClassTag, B: ClassTag](xs: Stream[(A, B)])(zeroValue: B)(f: (B, B) => B): Stream[(A, B)] = {
+      val grouped = xs.groupBy(_._1) map { case (a, ys) => a -> ys.map(x => x._2) }
+      grouped.toStream map { case (a, bs) => (a, bs.foldLeft(zeroValue)(f)) }
+    }
+
     def aggregateByKey[A: ClassTag, B: ClassTag, C: ClassTag]
     (xs: Stream[(A, B)])
     (zeroValue: C)
