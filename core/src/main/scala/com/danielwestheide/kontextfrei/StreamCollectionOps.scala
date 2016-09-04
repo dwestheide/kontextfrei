@@ -56,6 +56,19 @@ trait StreamCollectionOps {
         } yield (Some(b), c)
       }
     }
+    def fullOuterJoin[A: ClassTag, B: ClassTag, C: ClassTag](x: Stream[(A, B)])(y: Stream[(A, C)]): Stream[(A, (Option[B], Option[C]))] = {
+      flatMapValues(cogroup(x)(y)) {
+        case (bs, Seq()) =>
+          bs.iterator.map(v => (Some(v), None))
+        case (Seq(), cs) =>
+          cs.iterator.map(w => (None, Some(w)))
+        case (bs, cs) =>
+          for {
+            b <- bs.iterator
+            c <- cs.iterator
+          } yield (Some(b), Some(c))
+      }
+    }
     def mapValues[A: ClassTag, B: ClassTag, C: ClassTag](x: Stream[(A, B)])(f: B => C): Stream[(A, C)] =
       x map { case (k, v) => (k, f(v)) }
     def flatMapValues[A: ClassTag, B: ClassTag, C: ClassTag](x: Stream[(A, B)])(f: B => TraversableOnce[C]): Stream[(A, C)] =

@@ -33,6 +33,8 @@ trait DCollectionOps[DCollection[_]] {
   (x: DCollection[(A, B)])(y: DCollection[(A, C)]): DCollection[(A, (B, Option[C]))]
   def rightOuterJoin[A : ClassTag, B : ClassTag, C : ClassTag]
   (x: DCollection[(A, B)])(y: DCollection[(A, C)]): DCollection[(A, (Option[B], C))]
+  def fullOuterJoin[A : ClassTag, B : ClassTag, C : ClassTag]
+  (x: DCollection[(A, B)])(y: DCollection[(A, C)]): DCollection[(A, (Option[B], Option[C]))]
   def mapValues[A : ClassTag, B : ClassTag, C : ClassTag]
   (x: DCollection[(A, B)])(f: B => C): DCollection[(A, C)]
   def flatMapValues[A: ClassTag, B: ClassTag, C: ClassTag](xs: DCollection[(A, B)])(f: B => TraversableOnce[C]): DCollection[(A, C)]
@@ -90,6 +92,8 @@ object DCollectionOps {
       self.leftOuterJoin(coll)(other)
     def rightOuterJoin[C: ClassTag](other: DCollection[(A, C)]): DCollection[(A, (Option[B], C))] =
       self.rightOuterJoin(coll)(other)
+    def fullOuterJoin[C: ClassTag](other: DCollection[(A, C)]): DCollection[(A, (Option[B], Option[C]))] =
+      self.fullOuterJoin(coll)(other)
     def mapValues[C : ClassTag](f: B => C): DCollection[(A, C)] = self.mapValues(coll)(f)
     def flatMapValues[C: ClassTag](f: B => TraversableOnce[C]): DCollection[(A, C)]  = self.flatMapValues(coll)(f)
     def reduceByKey(f: (B, B) => B): DCollection[(A, B)] = self.reduceByKey(coll)(f)

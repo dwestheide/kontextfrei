@@ -29,6 +29,7 @@ trait RDDCollectionOps {
     def keys[A : ClassTag, B : ClassTag](x: RDD[(A, B)]): RDD[A] = x.keys
     def leftOuterJoin[A : ClassTag, B : ClassTag, C : ClassTag](x: RDD[(A, B)])(y: RDD[(A, C)]): RDD[(A, (B, Option[C]))] = x leftOuterJoin y
     def rightOuterJoin[A: ClassTag, B: ClassTag, C: ClassTag](x: RDD[(A, B)])(y: RDD[(A, C)]): RDD[(A, (Option[B], C))] = x rightOuterJoin y
+    def fullOuterJoin[A: ClassTag, B: ClassTag, C: ClassTag](x: RDD[(A, B)])(y: RDD[(A, C)]): RDD[(A, (Option[B], Option[C]))] = x fullOuterJoin y
     def mapValues[A: ClassTag, B: ClassTag, C: ClassTag]
     (x: RDD[(A, B)])(f: B => C): RDD[(A, C)] = x mapValues f
     def flatMapValues[A: ClassTag, B: ClassTag, C: ClassTag]
