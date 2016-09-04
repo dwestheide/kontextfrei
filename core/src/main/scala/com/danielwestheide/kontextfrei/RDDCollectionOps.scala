@@ -30,6 +30,8 @@ trait RDDCollectionOps {
     def leftOuterJoin[A : ClassTag, B : ClassTag, C : ClassTag](x: RDD[(A, B)])(y: RDD[(A, C)]): RDD[(A, (B, Option[C]))] = x leftOuterJoin y
     def mapValues[A: ClassTag, B: ClassTag, C: ClassTag]
     (x: RDD[(A, B)])(f: B => C): RDD[(A, C)] = x mapValues f
+    def flatMapValues[A: ClassTag, B: ClassTag, C: ClassTag]
+    (x: RDD[(A, B)])(f: B => TraversableOnce[C]): RDD[(A, C)] = x flatMapValues f
     def reduceByKey[A: ClassTag, B: ClassTag](xs: RDD[(A, B)])(f: (B, B) => B): RDD[(A, B)] = xs reduceByKey f
     def foldByKey[A: ClassTag, B: ClassTag](xs: RDD[(A, B)])(zeroValue: B)(f: (B, B) => B): RDD[(A, B)] = xs.foldByKey(zeroValue)(f)
     def aggregateByKey[A: ClassTag, B: ClassTag, C: ClassTag]

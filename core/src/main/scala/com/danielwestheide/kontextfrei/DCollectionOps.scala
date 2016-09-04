@@ -33,6 +33,7 @@ trait DCollectionOps[DCollection[_]] {
   (x: DCollection[(A, B)])(y: DCollection[(A, C)]): DCollection[(A, (B, Option[C]))]
   def mapValues[A : ClassTag, B : ClassTag, C : ClassTag]
   (x: DCollection[(A, B)])(f: B => C): DCollection[(A, C)]
+  def flatMapValues[A: ClassTag, B: ClassTag, C: ClassTag](xs: DCollection[(A, B)])(f: B => TraversableOnce[C]): DCollection[(A, C)]
   def foldByKey[A: ClassTag, B: ClassTag](xs: DCollection[(A, B)])(zeroValue: B)(func: (B, B) => B): DCollection[(A, B)]
   def reduceByKey[A : ClassTag, B : ClassTag](xs: DCollection[(A, B)])(f: (B, B) => B): DCollection[(A, B)]
   def aggregateByKey[A : ClassTag, B : ClassTag, C: ClassTag]
@@ -86,6 +87,7 @@ object DCollectionOps {
     def leftOuterJoin[C : ClassTag](other: DCollection[(A, C)]): DCollection[(A, (B, Option[C]))] =
       self.leftOuterJoin(coll)(other)
     def mapValues[C : ClassTag](f: B => C): DCollection[(A, C)] = self.mapValues(coll)(f)
+    def flatMapValues[C: ClassTag](f: B => TraversableOnce[C]): DCollection[(A, C)]  = self.flatMapValues(coll)(f)
     def reduceByKey(f: (B, B) => B): DCollection[(A, B)] = self.reduceByKey(coll)(f)
     def foldByKey(zeroValue: B)(f: (B, B) => B): DCollection[(A, B)] = self.foldByKey(coll)(zeroValue)(f)
     def aggregateByKey[C: ClassTag](zeroValue: C)(seqOp: (C, B) => C)(combOp: (C, C) => C): DCollection[(A, C)] =

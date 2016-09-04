@@ -54,6 +54,11 @@ trait StreamCollectionOps {
     }
     def mapValues[A: ClassTag, B: ClassTag, C: ClassTag](x: Stream[(A, B)])(f: B => C): Stream[(A, C)] =
       x map { case (k, v) => (k, f(v)) }
+    def flatMapValues[A: ClassTag, B: ClassTag, C: ClassTag](x: Stream[(A, B)])(f: B => TraversableOnce[C]): Stream[(A, C)] =
+      x flatMap { case (k, v) =>
+        val values = f(v)
+        values.map(k -> _)
+      }
     def reduceByKey[A: ClassTag, B: ClassTag](xs: Stream[(A, B)])(f: (B, B) => B): Stream[(A, B)] = {
       val grouped = xs.groupBy(_._1) map { case (a, ys) => a -> ys.map(x => x._2) }
       grouped.toStream map { case (a, bs) => (a, bs reduce f) }

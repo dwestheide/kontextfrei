@@ -99,6 +99,26 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
+  property("flatMapValues adheres to left identity law") {
+    forAll { (x: (Int, String), f: String => Iterable[String]) =>
+      unit(List(x)).flatMapValues(f).values.collect() mustEqual f(x._2).toArray
+    }
+  }
+
+  property("flatMapValues adheres to right identity law") {
+    forAll { x: (Int, String) =>
+      unit(List(x)).flatMapValues(s => List(s)).collect() mustEqual Array(x)
+    }
+  }
+
+  property("flatMapValues adheres to associativity law") {
+    forAll { (xs: List[(Int, String)], f: String => Iterable[String], g: String => Iterable[String]) =>
+      val result1 = unit(xs).flatMapValues(f).flatMapValues(g).collect()
+      val result2 = unit(xs).flatMapValues(x => f(x).flatMap(y => g(y))).collect()
+      result1 mustEqual result2
+    }
+  }
+
   property("groupBy returns DCollection with distinct keys") {
     forAll { (xs: List[String], f: String => Int) =>
       val groupedXs = unit(xs).groupBy(f).collect()
