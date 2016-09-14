@@ -27,15 +27,27 @@ of a specific instance of `DCollectionOps`.
 
 ## Usage
 
-Add a dependency on the the current version of `kontextfrei-core` to your `build.sbt`:
+Add a dependency on the the current version of `kontextfrei-core` to your `build.sbt`.
+
+_kontextfrei_ assumes that the Spark dependency is provided by your application, so have to explicitly add a dependency to Spark.
+
+Currently, _kontextfrei_ binary releases are only built against Spark 2.0.0 with Scala 2.11 and Spark 1.4.1 with Scala 2.10.
+
+### Scala 2.10 / Spark 1.4.1
 
 ```scala
 resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-core" % "0.1.1"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core" % "0.2.0"
 libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.1"
 ```
 
-_kontextfrei_ assumes that the Spark dependency is provided by your application, so have to explicitly add a dependency to Spark.
+### Scala 2.11 / Spark 2.0
+
+```scala
+resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core" % "0.2.0"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.1"
+```
 
 ## Example
 
@@ -45,7 +57,7 @@ For an example that showcases how the library can be used, please have a look at
 
 This library is in an early stage, and comes with the following limitations:
 
-* only compiled and tested against Spark 1.4.1, newer versions may not work yet
+* only compiled and tested against Spark 1.4.1 and 2.0.0, other versions may not work
 * not feature-complete: only a subset of the operations available on `RDD`s is supported so far
 * not used in production yet - while there is extensive test coverage, nothing can be said yet about the feasibility of using this library in production
 
