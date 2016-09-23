@@ -1,7 +1,5 @@
 package com.danielwestheide.kontextfrei
 
-import org.apache.spark.rdd.RDD
-
 import scala.collection.Map
 import scala.collection.immutable.Seq
 import scala.reflect.ClassTag
@@ -98,7 +96,7 @@ object DCollectionOps {
     def flatMapValues[C: ClassTag](f: B => TraversableOnce[C]): DCollection[(A, C)]  = self.flatMapValues(coll)(f)
     def reduceByKey(f: (B, B) => B): DCollection[(A, B)] = self.reduceByKey(coll)(f)
     def foldByKey(zeroValue: B)(f: (B, B) => B): DCollection[(A, B)] = self.foldByKey(coll)(zeroValue)(f)
-    def aggregateByKey[C: ClassTag](zeroValue: C)(seqOp: (C, B) => C)(combOp: (C, C) => C): DCollection[(A, C)] =
+    def aggregateByKey[C: ClassTag](zeroValue: C)(seqOp: (C, B) => C, combOp: (C, C) => C): DCollection[(A, C)] =
       self.aggregateByKey(coll)(zeroValue)(seqOp)(combOp)
     def countByKey(): Map[A, Long] = self.countByKey(coll)
   }
