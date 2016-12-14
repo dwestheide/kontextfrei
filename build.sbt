@@ -19,12 +19,13 @@ def spark(scalaVersion: String) = {
   }
   "org.apache.spark" %% "spark-core" % sparkVersion % "provided"
 }
-val scalatest = "org.scalatest" %% "scalatest" % "2.2.6" % "test"
-val scalacheck = "org.scalacheck" %% "scalacheck" % "1.12.5" % "test"
+val scalatest = "org.scalatest" %% "scalatest" % "2.2.6"
+val scalacheck = "org.scalacheck" %% "scalacheck" % "1.12.5"
 
 lazy val core = Project(id = "kontextfrei-core", base = file("core"))
   .settings(common)
-  .settings(libraryDependencies ++= Seq(spark(scalaBinaryVersion.value), scalatest, scalacheck))
+  .settings(libraryDependencies ++= Seq(
+    spark(scalaBinaryVersion.value), scalatest % Test, scalacheck % Test))
 
 lazy val root = Project(id = "kontextfrei", base = file("."))
     .settings(common)
