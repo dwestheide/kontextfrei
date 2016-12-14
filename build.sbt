@@ -10,7 +10,6 @@ val common = Seq(
   scalacOptions ++= Seq("-feature", "-language:higherKinds", "-language:implicitConversions")
 )
 
-
 def spark(scalaVersion: String) = {
   val sparkVersion = scalaVersion match {
     case "2.10" => "1.4.1"
@@ -27,9 +26,14 @@ lazy val core = Project(id = "kontextfrei-core", base = file("core"))
   .settings(libraryDependencies ++= Seq(
     spark(scalaBinaryVersion.value), scalatest % Test, scalacheck % Test))
 
+lazy val scalaTest = Project(id = "kontextfrei-scalatest", base = file("scalatest"))
+  .settings(common)
+  .settings(libraryDependencies ++= Seq(spark(scalaBinaryVersion.value), scalatest))
+  .dependsOn(core)
+
 lazy val root = Project(id = "kontextfrei", base = file("."))
     .settings(common)
-    .aggregate(core)
+    .aggregate(core, scalaTest)
 
 publishArtifact in root := false
 
