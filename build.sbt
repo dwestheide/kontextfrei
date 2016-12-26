@@ -1,3 +1,5 @@
+import com.lightbend.paradox.sbt.ParadoxPlugin.autoImport.paradoxTheme
+
 name := "kontextfrei"
 
 val common = Seq(
@@ -33,7 +35,12 @@ lazy val scalaTest = Project(id = "kontextfrei-scalatest", base = file("scalates
 
 lazy val root = Project(id = "kontextfrei", base = file("."))
     .settings(common)
+    .settings(
+      sourceDirectory in Paradox := sourceDirectory.value / "main" / "paradox",
+      paradoxTheme := Some(builtinParadoxTheme("generic"))
+    )
     .aggregate(core, scalaTest)
+    .enablePlugins(ParadoxSitePlugin)
 
 publishArtifact in root := false
 
