@@ -37,7 +37,11 @@ lazy val root = Project(id = "kontextfrei", base = file("."))
     .settings(common)
     .settings(
       sourceDirectory in Paradox := sourceDirectory.value / "main" / "paradox",
-      paradoxTheme := Some(builtinParadoxTheme("generic"))
+      paradoxTheme := Some(builtinParadoxTheme("generic")),
+    )
+    .settings(ghpages.settings)
+    .settings(
+      git.remoteRepo := "git@github.com:dwestheide/kontextfrei.git"
     )
     .aggregate(core, scalaTest)
     .enablePlugins(ParadoxSitePlugin)
