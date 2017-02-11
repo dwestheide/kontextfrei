@@ -20,8 +20,8 @@ def spark(scalaVersion: String) = {
   }
   "org.apache.spark" %% "spark-core" % sparkVersion % "provided"
 }
-val scalatest = "org.scalatest" %% "scalatest" % "2.2.6"
-val scalacheck = "org.scalacheck" %% "scalacheck" % "1.12.5"
+val scalatest = "org.scalatest" %% "scalatest" % "3.0.1"
+val scalacheck = "org.scalacheck" %% "scalacheck" % "1.13.4"
 
 lazy val core = Project(id = "kontextfrei-core", base = file("core"))
   .settings(common)

@@ -1,6 +1,10 @@
 package com.danielwestheide.kontextfrei
 
+import java.io.{ByteArrayOutputStream, ObjectOutputStream}
+
 import org.scalatest.Inspectors
+
+import scala.util.control.NonFatal
 
 trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
 
@@ -80,8 +84,10 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
   }
 
   property("flatMap adheres to left identity law") {
-    forAll { (x: String, f: String => Iterable[String]) =>
-      unit(List(x)).flatMap(f).collect() mustEqual f(x).toArray
+    forAll { (x: String, f: String => String) =>
+      // generated functions returning a sequence are not serializable
+      val g: String => Iterable[String] = s => Seq(f(s), f(s))
+      unit(List(x)).flatMap(g).collect() mustEqual g(x).toArray
     }
   }
 
@@ -92,16 +98,21 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
   }
 
   property("flatMap adheres to associativity law") {
-    forAll { (xs: List[String], f: String => Iterable[String], g: String => Iterable[String]) =>
-      val result1 = unit(xs).flatMap(f).flatMap(g).collect()
-      val result2 = unit(xs).flatMap(x => f(x).flatMap(y => g(y))).collect()
+    forAll { (xs: List[String], f: String => String, g: String => String) =>
+      // generated functions returning a sequence are not serializable
+      val f1: String => Iterable[String] = s => Seq(f(s), f(s))
+      val g1: String => Iterable[String] = s => Seq(g(s), f(s))
+      val result1 = unit(xs).flatMap(f1).flatMap(g1).collect()
+      val result2 = unit(xs).flatMap(x => f1(x).flatMap(y => g1(y))).collect()
       result1 mustEqual result2
     }
   }
 
   property("flatMapValues adheres to left identity law") {
-    forAll { (x: (Int, String), f: String => Iterable[String]) =>
-      unit(List(x)).flatMapValues(f).values.collect() mustEqual f(x._2).toArray
+    forAll { (x: (Int, String), f: String => String) =>
+      // generated functions returning a sequence are not serializable
+      val f1: String => Iterable[String] = s => Seq(f(s), f(s))
+      unit(List(x)).flatMapValues(f1).values.collect() mustEqual f1(x._2).toArray
     }
   }
 
@@ -112,9 +123,12 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
   }
 
   property("flatMapValues adheres to associativity law") {
-    forAll { (xs: List[(Int, String)], f: String => Iterable[String], g: String => Iterable[String]) =>
-      val result1 = unit(xs).flatMapValues(f).flatMapValues(g).collect()
-      val result2 = unit(xs).flatMapValues(x => f(x).flatMap(y => g(y))).collect()
+    forAll { (xs: List[(Int, String)], f: String => String, g: String => String) =>
+      // generated functions returning a sequence are not serializable
+      val f1: String => Iterable[String] = s => Seq(f(s), f(s))
+      val g1: String => Iterable[String] = s => Seq(g(s), f(s))
+      val result1 = unit(xs).flatMapValues(f1).flatMapValues(g1).collect()
+      val result2 = unit(xs).flatMapValues(x => f1(x).flatMap(y => g1(y))).collect()
       result1 mustEqual result2
     }
   }
