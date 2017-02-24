@@ -4,7 +4,7 @@ name := "kontextfrei"
 
 val common = Seq(
   organization := "com.danielwestheide",
-  version := "0.4.0",
+  version := "0.4.1-SNAPSHOT",
   scalaVersion := "2.10.6",
   crossScalaVersions := Seq("2.10.6", "2.11.8"),
   licenses += ("Apache-2.0", url("https://opensource.org/licenses/Apache-2.0")),
