@@ -9,7 +9,7 @@ _kontextfrei_ is currently divided into two separate modules:
 
 @@@ note
 
-If you decide to use `kontextfrei-scalatest`, this will come with a transitive dependency on the ScalaTest library. This dependency is on ScalaTest version `2.2.6` -- at the moment, ScalaTest `3.0` is not supported yet.
+If you decide to use `kontextfrei-scalatest`, this will come with a transitive dependency on the ScalaTest library. This dependency is compiled against ScalaTest 3.0.1.
 
 @@@
 
@@ -21,8 +21,8 @@ Here is what you need to add to your `build.sbt` file in order to use `kontextfr
 
 ```scala
 resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-core" % "0.2.0"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest" % "0.2.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core" % "0.4.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest" % "0.4.0"
 libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.1" % "provided"
 ```
 
@@ -30,7 +30,7 @@ libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.1" % "provided"
 
 ```scala
 resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-core" % "0.2.0"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest" % "0.2.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core" % "0.4.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest" % "0.4.0"
 libraryDependencies += "org.apache.spark" %% "spark-core" % "2.0.0" % "provided"
 ```

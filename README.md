@@ -37,8 +37,8 @@ Currently, _kontextfrei_ binary releases are only built against Spark 2.0.0 with
 
 ```scala
 resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-core" % "0.3.0"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest" % "0.3.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core" % "0.4.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest" % "0.4.0"
 libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.1" % "provided"
 ```
 
@@ -46,8 +46,8 @@ libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.1" % "provided"
 
 ```scala
 resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-core" % "0.3.0"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest" % "0.3.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core" % "0.4.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest" % "0.4.0"
 libraryDependencies += "org.apache.spark" %% "spark-core" % "2.0.0" % "provided"
 ```
 
