@@ -33,6 +33,8 @@ trait StreamCollectionOps {
           preservesPartitioning: Boolean = false): Stream[B] = {
         f(as.toIterator).toStream
       }
+      def keyBy[A: ClassTag, B](as: Stream[A])(f: A => B): Stream[(B, A)] =
+        as.map(a => f(a) -> a)
 
       def sortBy[A: ClassTag, B: ClassTag: Ordering](as: Stream[A])(
           f: (A) => B)(ascending: Boolean): Stream[A] = {

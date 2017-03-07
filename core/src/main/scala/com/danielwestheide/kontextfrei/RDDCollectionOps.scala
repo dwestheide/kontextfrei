@@ -36,6 +36,7 @@ trait RDDCollectionOps {
           f: Iterator[A] => Iterator[B],
           preservesPartitioning: Boolean = false): RDD[B] =
         as.mapPartitions(f, preservesPartitioning)
+      def keyBy[A: ClassTag, B](as: RDD[A])(f: A => B): RDD[(B, A)] = as.keyBy(f)
 
       def sortBy[A: ClassTag, B: ClassTag: Ordering](as: RDD[A])(f: (A) => B)(
           ascending: Boolean): RDD[A] =
