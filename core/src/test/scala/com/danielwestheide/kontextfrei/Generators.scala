@@ -6,10 +6,11 @@ trait Generators {
 
   import org.scalactic.TypeCheckedTripleEquals._
 
-  def listWithDuplicates[A: Arbitrary]: Gen[List[A]] = for {
-    xs <- Gen.nonEmptyListOf(Arbitrary.arbitrary[A])
-    ys <- Gen.listOfN(xs.size * 2, Gen.oneOf(xs))
-  } yield ys
+  def listWithDuplicates[A: Arbitrary]: Gen[List[A]] =
+    for {
+      xs <- Gen.nonEmptyListOf(Arbitrary.arbitrary[A])
+      ys <- Gen.listOfN(xs.size * 2, Gen.oneOf(xs))
+    } yield ys
 
   val intPredicate1: Gen[Int => Boolean] = for {
     i <- Arbitrary.arbitrary[Int]
@@ -31,8 +32,12 @@ trait Generators {
     i <- Arbitrary.arbitrary[Int]
   } yield (x: Int) => x >= i
 
-  val intPredicate: Gen[Int => Boolean] = Gen.oneOf(
-    intPredicate1, intPredicate2, intPredicate3, intPredicate4, intPredicate5)
+  val intPredicate: Gen[Int => Boolean] =
+    Gen.oneOf(intPredicate1,
+              intPredicate2,
+              intPredicate3,
+              intPredicate4,
+              intPredicate5)
 
   val stringPredicate1: Gen[String => Boolean] = for {
     p <- intPredicate
@@ -50,8 +55,11 @@ trait Generators {
     s <- Arbitrary.arbitrary[String]
   } yield (x: String) => x.contains(s)
 
-  def stringPredicate: Gen[String => Boolean] = Gen.oneOf(
-    stringPredicate1, stringPredicate2, stringPredicate3, stringPredicate4)
+  def stringPredicate: Gen[String => Boolean] =
+    Gen.oneOf(stringPredicate1,
+              stringPredicate2,
+              stringPredicate3,
+              stringPredicate4)
 
   val stringToInt1: Gen[String => Int] = for {
     s <- Arbitrary.arbitrary[String]
@@ -65,8 +73,8 @@ trait Generators {
     c <- Arbitrary.arbitrary[Char]
   } yield (x: String) => x.indexOf(c)
 
-  def stringToInt: Gen[String => Int] = Gen.oneOf(
-    stringToInt1, stringToInt2, stringToInt3, stringToInt4)
+  def stringToInt: Gen[String => Int] =
+    Gen.oneOf(stringToInt1, stringToInt2, stringToInt3, stringToInt4)
 
   val intToInt1: Gen[Int => Int] = for {
     y <- Arbitrary.arbitrary[Int]
@@ -93,7 +101,12 @@ trait Generators {
   } yield (x: Int) => x min y
 
   val intToInt: Gen[Int => Int] = Gen.oneOf(
-    intToInt1, intToInt2, intToInt3, intToInt4, intToInt5, intToInt6
+    intToInt1,
+    intToInt2,
+    intToInt3,
+    intToInt4,
+    intToInt5,
+    intToInt6
   )
 
   val stringToStrings1: Gen[String => Iterable[String]] = for {
@@ -102,22 +115,25 @@ trait Generators {
 
   val stringToStrings2: Gen[String => Iterable[String]] = for {
     i <- Arbitrary.arbitrary[Int]
-  } yield (x: String) => {
-    val (a, b) = x.splitAt(i)
-    List(a, b)
-  }
+  } yield
+    (x: String) => {
+      val (a, b) = x.splitAt(i)
+      List(a, b)
+    }
 
   val stringToStrings3: Gen[String => Iterable[String]] = for {
     c <- Arbitrary.arbitrary[Char]
   } yield (x: String) => x.toCharArray.map(_.toString)
 
   val stringToString: Gen[String => Iterable[String]] = Gen.oneOf(
-    stringToStrings1, stringToStrings2, stringToStrings3
+    stringToStrings1,
+    stringToStrings2,
+    stringToStrings3
   )
 
   val stringToIntPF: Gen[PartialFunction[String, Int]] = for {
     pred <- stringPredicate
-    f <- stringToInt
+    f    <- stringToInt
   } yield {
     val pf: PartialFunction[String, Int] = {
       case s if pred(s) => f(s)

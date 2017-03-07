@@ -18,7 +18,8 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
-  property("cartesian returns a DCollection where each A is paired with each B") {
+  property(
+    "cartesian returns a DCollection where each A is paired with each B") {
     forAll { (xs: List[String], ys: List[Int]) =>
       val result = unit(xs).cartesian(unit(ys)).collect()
       Inspectors.forAll(xs) { x =>
@@ -33,25 +34,32 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     forAll { (xs: List[(String, Int)], ys: List[(String, Int)]) =>
       val result = unit(xs).cogroup(unit(ys)).collect()
       result.map(_._1).toSet mustEqual (xs.map(_._1) ::: ys.map(_._1)).toSet
-      Inspectors.forAll(xs) { case (k, v) =>
-        result.find(_._1 == k).exists(_._2._1.exists(_ == v))
+      Inspectors.forAll(xs) {
+        case (k, v) =>
+          result.find(_._1 == k).exists(_._2._1.exists(_ == v))
       }
-      Inspectors.forAll(ys) { case (k, v) =>
-        result.find(_._1 == k).exists(_._2._2.exists(_ == v))
+      Inspectors.forAll(ys) {
+        case (k, v) =>
+          result.find(_._1 == k).exists(_._2._2.exists(_ == v))
       }
     }
   }
 
   property("xs.collect(pf) == xs.filter(pf.isDefinedAt).map(pf)") {
     forAll { (xs: List[String], pf: PartialFunction[String, Int]) =>
-      unit(xs).collect(pf).collect() mustEqual unit(xs).filter(pf.isDefinedAt).map(pf).collect()
+      unit(xs)
+        .collect(pf)
+        .collect() mustEqual unit(xs).filter(pf.isDefinedAt).map(pf).collect()
     }
   }
 
   property("distinct returns a DCollection of distinct elements") {
     forAll(listWithDuplicates[String]) { xs =>
       whenever(xs.distinct !== xs) {
-        unit(xs).distinct().collect().sorted mustEqual unit(xs).collect().distinct.sorted
+        unit(xs).distinct().collect().sorted mustEqual unit(xs)
+          .collect()
+          .distinct
+          .sorted
       }
     }
   }
@@ -64,21 +72,25 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
 
   property("Map adheres to the second functor law") {
     forAll { (xs: List[String], f: String => Int, g: Int => Int) =>
-      unit(xs).map(f).map(g).collect() mustEqual unit(xs).map(f andThen g).collect()
+      unit(xs).map(f).map(g).collect() mustEqual unit(xs)
+        .map(f andThen g)
+        .collect()
     }
   }
 
-  property("filter returns a DCollection with only elements matching the predicate") {
+  property(
+    "filter returns a DCollection with only elements matching the predicate") {
     forAll { (xs: List[String], pred: String => Boolean) =>
       val filteredXs = unit(xs).filter(pred).collect()
       Inspectors.forAll(filteredXs)(pred(_) mustBe true)
     }
   }
 
-  property("filter returns a DCollection with all elements matching the predicate") {
+  property(
+    "filter returns a DCollection with all elements matching the predicate") {
     forAll { (xs: List[String], pred: String => Boolean) =>
       val allMatchingXs = xs.filter(pred)
-      val filteredXs = unit(xs).filter(pred).collect()
+      val filteredXs    = unit(xs).filter(pred).collect()
       Inspectors.forAll(allMatchingXs)(filteredXs.contains(_))
     }
   }
@@ -102,8 +114,8 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
       // generated functions returning a sequence are not serializable
       val f1: String => Iterable[String] = s => Seq(f(s), f(s))
       val g1: String => Iterable[String] = s => Seq(g(s), f(s))
-      val result1 = unit(xs).flatMap(f1).flatMap(g1).collect()
-      val result2 = unit(xs).flatMap(x => f1(x).flatMap(y => g1(y))).collect()
+      val result1                        = unit(xs).flatMap(f1).flatMap(g1).collect()
+      val result2                        = unit(xs).flatMap(x => f1(x).flatMap(y => g1(y))).collect()
       result1 mustEqual result2
     }
   }
@@ -112,7 +124,10 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     forAll { (x: (Int, String), f: String => String) =>
       // generated functions returning a sequence are not serializable
       val f1: String => Iterable[String] = s => Seq(f(s), f(s))
-      unit(List(x)).flatMapValues(f1).values.collect() mustEqual f1(x._2).toArray
+      unit(List(x))
+        .flatMapValues(f1)
+        .values
+        .collect() mustEqual f1(x._2).toArray
     }
   }
 
@@ -127,8 +142,9 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
       // generated functions returning a sequence are not serializable
       val f1: String => Iterable[String] = s => Seq(f(s), f(s))
       val g1: String => Iterable[String] = s => Seq(g(s), f(s))
-      val result1 = unit(xs).flatMapValues(f1).flatMapValues(g1).collect()
-      val result2 = unit(xs).flatMapValues(x => f1(x).flatMap(y => g1(y))).collect()
+      val result1                        = unit(xs).flatMapValues(f1).flatMapValues(g1).collect()
+      val result2 =
+        unit(xs).flatMapValues(x => f1(x).flatMap(y => g1(y))).collect()
       result1 mustEqual result2
     }
   }
@@ -159,14 +175,16 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
-  property("mapPartitions with identity function returns unchanged DCollection") {
+  property(
+    "mapPartitions with identity function returns unchanged DCollection") {
     forAll { (xs: List[String]) =>
       val result = unit(xs).mapPartitions(identity).collect()
       assert(result.toList === xs)
     }
   }
 
-  property("mapPartitions removes elements according to the passed in function") {
+  property(
+    "mapPartitions removes elements according to the passed in function") {
     forAll { (xs: List[Int]) =>
       val result = unit(xs).mapPartitions { it =>
         it.collect {
@@ -177,14 +195,16 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
-  property("sortBy returns a DCollection sorted by the given function, ascending") {
+  property(
+    "sortBy returns a DCollection sorted by the given function, ascending") {
     forAll { (xs: List[String], f: String => Int) =>
       val result = unit(xs).sortBy(f, ascending = true).collect()
       result.sortBy(f) mustEqual result
     }
   }
 
-  property("sortBy returns a DCollection sorted by the given function, descending") {
+  property(
+    "sortBy returns a DCollection sorted by the given function, descending") {
     forAll { (xs: List[String], f: String => Int) =>
       val result = unit(xs).sortBy(f, ascending = false).collect()
       result.sortBy(f)(Ordering[Int].reverse) mustEqual result
@@ -197,10 +217,11 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
-  property("leftOuterJoining with only common, unique keys means no joined element is None") {
+  property(
+    "leftOuterJoining with only common, unique keys means no joined element is None") {
     forAll { (xs: List[String], f: String => Int) =>
-      val left = unit(xs.distinct).map(x => x -> f(x))
-      val right = unit(xs.distinct).map(x => x -> f(x))
+      val left   = unit(xs.distinct).map(x => x -> f(x))
+      val right  = unit(xs.distinct).map(x => x -> f(x))
       val result = left.leftOuterJoin(right).collect()
       Inspectors.forAll(result) {
         case (k, (l, r)) => l mustEqual r.value
@@ -210,8 +231,8 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
 
   property("leftOuterJoining means joined elements have the same key") {
     forAll { (xs: List[String], f: String => Int) =>
-      val left = unit(xs).map(x => f(x) -> x)
-      val right = unit(xs).map(x => f(x) -> x)
+      val left   = unit(xs).map(x => f(x) -> x)
+      val right  = unit(xs).map(x => f(x) -> x)
       val result = left.leftOuterJoin(right).collect()
       Inspectors.forAll(result) {
         case (k, (l, r)) => f(l) mustEqual f(r.value)
@@ -219,10 +240,11 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
-  property("leftOuterJoining with only missing elements means every left element has a None right element") {
+  property(
+    "leftOuterJoining with only missing elements means every left element has a None right element") {
     forAll { (xs: List[String], f: String => Int) =>
-      val left = unit(xs).map(x => f(x) -> x)
-      val right = unit(List.empty[String]).map(x => f(x) -> x)
+      val left   = unit(xs).map(x => f(x) -> x)
+      val right  = unit(List.empty[String]).map(x => f(x) -> x)
       val result = left.leftOuterJoin(right).collect()
       result.length mustEqual xs.size
       Inspectors.forAll(result) {
@@ -231,10 +253,11 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
-  property("rightOuterJoining with only common, unique keys means no joined element is None") {
+  property(
+    "rightOuterJoining with only common, unique keys means no joined element is None") {
     forAll { (xs: List[String], f: String => Int) =>
-      val left = unit(xs.distinct).map(x => x -> f(x))
-      val right = unit(xs.distinct).map(x => x -> f(x))
+      val left   = unit(xs.distinct).map(x => x -> f(x))
+      val right  = unit(xs.distinct).map(x => x -> f(x))
       val result = left.rightOuterJoin(right).collect()
       Inspectors.forAll(result) {
         case (k, (l, r)) => l.value mustEqual r
@@ -244,8 +267,8 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
 
   property("rightOuterJoining means joined elements have the same key") {
     forAll { (xs: List[String], f: String => Int) =>
-      val left = unit(xs).map(x => f(x) -> x)
-      val right = unit(xs).map(x => f(x) -> x)
+      val left   = unit(xs).map(x => f(x) -> x)
+      val right  = unit(xs).map(x => f(x) -> x)
       val result = left.rightOuterJoin(right).collect()
       Inspectors.forAll(result) {
         case (k, (l, r)) => f(l.value) mustEqual f(r)
@@ -253,10 +276,11 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
-  property("rightOuterJoining with only missing elements means every right element has a None left element") {
+  property(
+    "rightOuterJoining with only missing elements means every right element has a None left element") {
     forAll { (xs: List[String], f: String => Int) =>
-      val left = unit(List.empty[String]).map(x => f(x) -> x)
-      val right = unit(xs).map(x => f(x) -> x)
+      val left   = unit(List.empty[String]).map(x => f(x) -> x)
+      val right  = unit(xs).map(x => f(x) -> x)
       val result = left.rightOuterJoin(right).collect()
       result.length mustEqual xs.size
       Inspectors.forAll(result) {
@@ -265,10 +289,11 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
-  property("fullOuterJoining with only common, unique keys means no joined element is None") {
+  property(
+    "fullOuterJoining with only common, unique keys means no joined element is None") {
     forAll { (xs: List[String], f: String => Int) =>
-      val left = unit(xs.distinct).map(x => x -> f(x))
-      val right = unit(xs.distinct).map(x => x -> f(x))
+      val left   = unit(xs.distinct).map(x => x -> f(x))
+      val right  = unit(xs.distinct).map(x => x -> f(x))
       val result = left.fullOuterJoin(right).collect()
       Inspectors.forAll(result) {
         case (k, (l, r)) => l.value mustEqual r.value
@@ -278,8 +303,8 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
 
   property("fullOuterJoining means joined elements have the same key") {
     forAll { (xs: List[String], f: String => Int) =>
-      val left = unit(xs).map(x => f(x) -> x)
-      val right = unit(xs).map(x => f(x) -> x)
+      val left   = unit(xs).map(x => f(x) -> x)
+      val right  = unit(xs).map(x => f(x) -> x)
       val result = left.fullOuterJoin(right).collect()
       Inspectors.forAll(result) {
         case (k, (l, r)) => f(l.value) mustEqual f(r.value)
@@ -287,10 +312,11 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
-  property("fullOuterJoin with only missing left elements means every right element has a None right element") {
+  property(
+    "fullOuterJoin with only missing left elements means every right element has a None right element") {
     forAll { (xs: List[String], f: String => Int) =>
-      val left = unit(List.empty[String]).map(x => f(x) -> x)
-      val right = unit(xs).map(x => f(x) -> x)
+      val left   = unit(List.empty[String]).map(x => f(x) -> x)
+      val right  = unit(xs).map(x => f(x) -> x)
       val result = left.fullOuterJoin(right).collect()
       result.length mustEqual xs.size
       Inspectors.forAll(result) {
@@ -301,10 +327,11 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
-  property("fullOuterJoining with only missing right elements means every left element has a None right element") {
+  property(
+    "fullOuterJoining with only missing right elements means every left element has a None right element") {
     forAll { (xs: List[String], f: String => Int) =>
-      val left = unit(xs).map(x => f(x) -> x)
-      val right = unit(List.empty[String]).map(x => f(x) -> x)
+      val left   = unit(xs).map(x => f(x) -> x)
+      val right  = unit(List.empty[String]).map(x => f(x) -> x)
       val result = left.fullOuterJoin(right).collect()
       result.length mustEqual xs.size
       Inspectors.forAll(result) {
@@ -315,34 +342,38 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
-
   property("mapValues adheres to the second functor law") {
     forAll { (xs: List[(String, String)], f: String => Int, g: Int => Int) =>
-      unit(xs).mapValues(f).mapValues(g).collect() mustEqual unit(xs).mapValues(f andThen g).collect()
+      unit(xs).mapValues(f).mapValues(g).collect() mustEqual unit(xs)
+        .mapValues(f andThen g)
+        .collect()
     }
   }
 
   property("mapValues doesn't have any effect on the keys") {
     forAll { (xs: List[(String, String)], f: String => Int) =>
-      unit(xs).mapValues(f).collect().map(_._1) mustEqual unit(xs).collect().map(_._1)
+      unit(xs).mapValues(f).collect().map(_._1) mustEqual unit(xs)
+        .collect()
+        .map(_._1)
     }
   }
 
   property("keys == map(_._1") {
-    forAll{ (xs: List[(Int, String)]) =>
+    forAll { (xs: List[(Int, String)]) =>
       unit(xs).keys.collect() mustEqual unit(xs.map(_._1)).collect()
     }
   }
 
   property("values == map(_._2") {
-    forAll{ (xs: List[(Int, String)]) =>
+    forAll { (xs: List[(Int, String)]) =>
       unit(xs).values.collect() mustEqual unit(xs.map(_._2)).collect()
     }
   }
 
-  property("reduceByKey applies associative function to all elements with the same key") {
+  property(
+    "reduceByKey applies associative function to all elements with the same key") {
     forAll { (xs: List[String], f: String => Int) =>
-      val result = unit(xs).map(x => f(x) -> x).reduceByKey(_ + _).collect()
+      val result  = unit(xs).map(x => f(x) -> x).reduceByKey(_ + _).collect()
       val xsByKey = xs.groupBy(f)
       Inspectors.forAll(result) {
         case (k, v) => v mustEqual xsByKey(k).reduce(_ + _)
@@ -350,9 +381,10 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
-  property("foldByKey applies associative function to all elements with the same key") {
+  property(
+    "foldByKey applies associative function to all elements with the same key") {
     forAll { (xs: List[String], f: String => Int) =>
-      val result = unit(xs).map(x => f(x) -> x).foldByKey("")(_ + _).collect()
+      val result  = unit(xs).map(x => f(x) -> x).foldByKey("")(_ + _).collect()
       val xsByKey = xs.groupBy(f)
       Inspectors.forAll(result) {
         case (k, v) => v mustEqual xsByKey(k).reduce(_ + _)
@@ -360,9 +392,10 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
-  property("aggregateByKey applies associative functions on all elements with the same key") {
+  property(
+    "aggregateByKey applies associative functions on all elements with the same key") {
     forAll { (xs: List[(String, String)]) =>
-      val result = unit(xs).aggregateByKey(0)(_ + _.length, _ + _).collect()
+      val result  = unit(xs).aggregateByKey(0)(_ + _.length, _ + _).collect()
       val xsByKey = xs.groupBy(_._1).mapValues(_.map(_._2))
       Inspectors.forAll(result) {
         case (k, v) => v mustEqual xsByKey(k).aggregate(0)(_ + _.length, _ + _)
@@ -376,7 +409,8 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
-  property("countByValue returns the number of occurrences of each element in the DCollection") {
+  property(
+    "countByValue returns the number of occurrences of each element in the DCollection") {
     forAll { xs: List[String] =>
       val result = unit(xs).countByValue()
       Inspectors.forAll(result) {
@@ -385,7 +419,8 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
-  property("countByKey returns the number of occurrences of each key in the DCollection") {
+  property(
+    "countByKey returns the number of occurrences of each key in the DCollection") {
     forAll { xs: List[(Int, String)] =>
       val result = unit(xs).countByKey()
       Inspectors.forAll(result) {
@@ -397,11 +432,12 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
   property("first returns the first element of the DCollection") {
     forAll { xs: Set[String] =>
       whenever(xs.nonEmpty) {
-        unit(xs.toList).sortBy(identity).first() mustEqual xs.toList.sorted.head
+        unit(xs.toList)
+          .sortBy(identity)
+          .first() mustEqual xs.toList.sorted.head
         unit(xs.toList).first() mustEqual xs.head
       }
     }
   }
-
 
 }
