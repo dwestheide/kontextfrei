@@ -159,6 +159,24 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
+  property("mapPartitions with identity function returns unchanged DCollection") {
+    forAll { (xs: List[String]) =>
+      val result = unit(xs).mapPartitions(identity).collect()
+      assert(result.toList === xs)
+    }
+  }
+
+  property("mapPartitions removes elements according to the passed in function") {
+    forAll { (xs: List[Int]) =>
+      val result = unit(xs).mapPartitions { it =>
+        it.collect {
+          case x if x % 2 == 0 => x
+        }
+      }
+      assert(result.collect().toList === xs.filter(_ % 2 == 0))
+    }
+  }
+
   property("sortBy returns a DCollection sorted by the given function, ascending") {
     forAll { (xs: List[String], f: String => Int) =>
       val result = unit(xs).sortBy(f, ascending = true).collect()
