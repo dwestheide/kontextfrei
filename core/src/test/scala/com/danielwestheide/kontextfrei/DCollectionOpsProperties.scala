@@ -195,6 +195,17 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
+  property("keyBy keys every x by f(x) and keeps values stable") {
+    forAll { (xs: List[String], f: String => Int) =>
+      val result = unit(xs).keyBy(f).collect()
+      Inspectors.forAll(result) {
+        case (k, x) =>
+          assert(k === f(x))
+      }
+      assert(xs === result.toList.map(_._2))
+    }
+  }
+
   property(
     "sortBy returns a DCollection sorted by the given function, ascending") {
     forAll { (xs: List[String], f: String => Int) =>

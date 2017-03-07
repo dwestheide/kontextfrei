@@ -25,6 +25,7 @@ trait DCollectionOps[DCollection[_]] {
   def mapPartitions[A: ClassTag, B: ClassTag](as: DCollection[A])(
       f: Iterator[A] => Iterator[B],
       preservesPartitioning: Boolean = false): DCollection[B]
+  def keyBy[A: ClassTag, B](as: DCollection[A])(f: A => B): DCollection[(B, A)]
 
   // sorting:
   def sortBy[A: ClassTag, B: ClassTag: Ordering](as: DCollection[A])(
@@ -94,6 +95,7 @@ object DCollectionOps {
         f: Iterator[A] => Iterator[B],
         preservesPartitioning: Boolean = false): DCollection[B] =
       self.mapPartitions(coll)(f, preservesPartitioning)
+    def keyBy[B](f: A => B): DCollection[(B, A)] = self.keyBy(coll)(f)
 
     def sortBy[B: ClassTag: Ordering](
         f: A => B,
