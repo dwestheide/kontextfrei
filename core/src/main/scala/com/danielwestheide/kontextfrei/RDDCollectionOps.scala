@@ -20,6 +20,7 @@ trait RDDCollectionOps {
     def flatMap[A: ClassTag, B: ClassTag](as: RDD[A])(f: A => TraversableOnce[B]): RDD[B] = as flatMap f
     def filter[A: ClassTag](as: RDD[A])(f: A => Boolean): RDD[A] = as filter f
     def groupBy[A, B : ClassTag](as: RDD[A])(f: A => B): RDD[(B, Iterable[A])] = as groupBy f
+    def mapPartitions[A: ClassTag, B: ClassTag](as: RDD[A])(f: Iterator[A] => Iterator[B], preservesPartitioning: Boolean = false): RDD[B] = as.mapPartitions(f, preservesPartitioning)
 
     def sortBy[A: ClassTag, B: ClassTag : Ordering](as: RDD[A])(f: (A) => B)(ascending: Boolean): RDD[A] =
       as.sortBy(f, ascending)

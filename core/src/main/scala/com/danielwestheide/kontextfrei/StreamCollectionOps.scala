@@ -17,6 +17,9 @@ trait StreamCollectionOps {
     def flatMap[A: ClassTag, B: ClassTag](as: Stream[A])(f: (A) => TraversableOnce[B]): Stream[B] = as flatMap f
     def filter[A: ClassTag](as: Stream[A])(f: A => Boolean): Stream[A] = as filter f
     def groupBy[A, B: ClassTag](as: Stream[A])(f: (A) => B): Stream[(B, Iterable[A])] = (as groupBy f).toStream
+    def mapPartitions[A: ClassTag, B: ClassTag](as: Stream[A])(f: Iterator[A] => Iterator[B], preservesPartitioning: Boolean = false): Stream[B] = {
+      f(as.toIterator).toStream
+    }
 
     def sortBy[A: ClassTag, B: ClassTag : Ordering](as: Stream[A])(f: (A) => B)(ascending: Boolean): Stream[A] = {
       val ordering = implicitly[Ordering[B]]

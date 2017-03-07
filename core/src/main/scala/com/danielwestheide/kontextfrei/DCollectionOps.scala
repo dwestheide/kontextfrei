@@ -17,6 +17,7 @@ trait DCollectionOps[DCollection[_]] {
   def flatMap[A : ClassTag, B : ClassTag](as: DCollection[A])(f: A => TraversableOnce[B]): DCollection[B]
   def filter[A : ClassTag](as: DCollection[A])(f: A => Boolean): DCollection[A]
   def groupBy[A, B : ClassTag](as: DCollection[A])(f: A => B): DCollection[(B, Iterable[A])]
+  def mapPartitions[A: ClassTag, B: ClassTag](as: DCollection[A])(f: Iterator[A] => Iterator[B], preservesPartitioning: Boolean = false): DCollection[B]
 
   // sorting:
   def sortBy[A : ClassTag, B : ClassTag : Ordering](as: DCollection[A])(f: A => B)(ascending: Boolean): DCollection[A]
@@ -71,6 +72,7 @@ object DCollectionOps {
     def flatMap[B : ClassTag](f: A => TraversableOnce[B]): DCollection[B] = self.flatMap(coll)(f)
     def filter(f: A => Boolean): DCollection[A] = self.filter(coll)(f)
     def groupBy[B : ClassTag](f: A => B): DCollection[(B, Iterable[A])] = self.groupBy(coll)(f)
+    def mapPartitions[B: ClassTag](f: Iterator[A] => Iterator[B], preservesPartitioning: Boolean = false): DCollection[B] = self.mapPartitions(coll)(f, preservesPartitioning)
 
     def sortBy[B : ClassTag : Ordering](f: A => B, ascending: Boolean = true): DCollection[A] =
       self.sortBy(coll)(f)(ascending)
