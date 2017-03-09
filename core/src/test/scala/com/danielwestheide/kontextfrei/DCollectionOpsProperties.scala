@@ -1,10 +1,7 @@
 package com.danielwestheide.kontextfrei
 
-import java.io.{ByteArrayOutputStream, ObjectOutputStream}
-
+import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.Inspectors
-
-import scala.util.control.NonFatal
 
 trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
 
@@ -171,6 +168,36 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
   property("groupBy does not change number of total values") {
     forAll { (xs: List[String], f: String => Int) =>
       val groupedXs = unit(xs).groupBy(f).collect()
+      groupedXs.flatMap(_._2).size mustEqual xs.size
+    }
+  }
+
+  property("groupBy with numPartitions returns DCollection with distinct keys") {
+    import SmallNumbers._
+    forAll { (xs: List[String], f: String => Int, numPartitions: Int) =>
+      val groupedXs = unit(xs).groupBy(f, numPartitions).collect()
+      groupedXs.map(_._1) mustEqual groupedXs.map(_._1).distinct
+    }
+  }
+
+  property(
+    "groupBy with numPartitions groups all values a with the same result f(a) together") {
+    import SmallNumbers._
+    forAll { (xs: List[String], f: String => Int, numPartitions: Int) =>
+      val groupedXs = unit(xs).groupBy(f, numPartitions).collect()
+      Inspectors.forAll(groupedXs) {
+        case (k, v) =>
+          Inspectors.forAll(xs.filter(x => f(x) === k)) { x =>
+            assert(v.toSet(x))
+          }
+      }
+    }
+  }
+
+  property("groupBy with numPartitions does not change number of total values") {
+    import SmallNumbers._
+    forAll { (xs: List[String], f: String => Int, numPartitions: Int) =>
+      val groupedXs = unit(xs).groupBy(f, numPartitions).collect()
       groupedXs.flatMap(_._2).size mustEqual xs.size
     }
   }
