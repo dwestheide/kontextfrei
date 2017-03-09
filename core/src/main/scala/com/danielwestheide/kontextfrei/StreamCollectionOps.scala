@@ -25,9 +25,14 @@ trait StreamCollectionOps {
         as flatMap f
       def filter[A: ClassTag](as: Stream[A])(f: A => Boolean): Stream[A] =
         as filter f
-      def groupBy[A, B: ClassTag](as: Stream[A])(
-          f: (A) => B): Stream[(B, Iterable[A])] =
+      def groupBy[A, B: ClassTag](as: Stream[A],
+                                  f: (A) => B): Stream[(B, Iterable[A])] =
         (as groupBy f).toStream
+      def groupBy[A, B: ClassTag](
+          as: Stream[A],
+          f: (A) => B,
+          numPartitions: Int): Stream[(B, Iterable[A])] =
+        groupBy(as, f)
       def mapPartitions[A: ClassTag, B: ClassTag](as: Stream[A])(
           f: Iterator[A] => Iterator[B],
           preservesPartitioning: Boolean = false): Stream[B] = {

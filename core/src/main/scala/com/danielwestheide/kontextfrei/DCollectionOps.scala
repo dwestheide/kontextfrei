@@ -20,8 +20,12 @@ trait DCollectionOps[DCollection[_]] {
   def flatMap[A: ClassTag, B: ClassTag](as: DCollection[A])(
       f: A => TraversableOnce[B]): DCollection[B]
   def filter[A: ClassTag](as: DCollection[A])(f: A => Boolean): DCollection[A]
-  def groupBy[A, B: ClassTag](as: DCollection[A])(
-      f: A => B): DCollection[(B, Iterable[A])]
+  def groupBy[A, B: ClassTag](as: DCollection[A],
+                              f: A => B): DCollection[(B, Iterable[A])]
+  def groupBy[A, B: ClassTag](
+      as: DCollection[A],
+      f: A => B,
+      numPartitions: Int): DCollection[(B, Iterable[A])]
   def mapPartitions[A: ClassTag, B: ClassTag](as: DCollection[A])(
       f: Iterator[A] => Iterator[B],
       preservesPartitioning: Boolean = false): DCollection[B]
@@ -90,7 +94,11 @@ object DCollectionOps {
       self.flatMap(coll)(f)
     def filter(f: A => Boolean): DCollection[A] = self.filter(coll)(f)
     def groupBy[B: ClassTag](f: A => B): DCollection[(B, Iterable[A])] =
-      self.groupBy(coll)(f)
+      self.groupBy(coll, f)
+    def groupBy[B: ClassTag](
+        f: A => B,
+        numPartitions: Int): DCollection[(B, Iterable[A])] =
+      self.groupBy(coll, f, numPartitions)
     def mapPartitions[B: ClassTag](
         f: Iterator[A] => Iterator[B],
         preservesPartitioning: Boolean = false): DCollection[B] =
