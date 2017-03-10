@@ -1,4 +1,4 @@
-# Contributing to kontextfrei
+# Contributing
 
 Hey there, thanks a lot for considering to contribute to this project. Any kind of contribution is welcome, from reporting bugs or requesting features to improving the documentation, answering questions, or writing code. Here is a short guide how to do all of these things.
 
