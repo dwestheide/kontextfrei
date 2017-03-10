@@ -80,6 +80,8 @@ trait RDDCollectionOps {
 
       def countByKey[A: ClassTag, B: ClassTag](xs: RDD[(A, B)]): Map[A, Long] =
         xs.countByKey()
+      def collectAsMap[A: ClassTag, B: ClassTag](xs: RDD[(A, B)]): Map[A, B] =
+        xs.collectAsMap()
     }
 
 }

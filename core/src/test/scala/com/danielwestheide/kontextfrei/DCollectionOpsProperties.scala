@@ -496,6 +496,16 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
+  property("collectAsMap() returns one element for each key") {
+    forAll { xs: List[(Int, String)] =>
+      val result = unit(xs ++ xs).collectAsMap()
+      Inspectors.forAll(xs) {
+        case (key, _) =>
+          result.contains(key)
+      }
+    }
+  }
+
   property("first returns the first element of the DCollection") {
     forAll { xs: Set[String] =>
       whenever(xs.nonEmpty) {

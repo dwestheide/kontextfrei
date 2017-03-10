@@ -156,6 +156,9 @@ trait StreamCollectionOps {
         val counts = reduceByKey(keyed)(_ + _)
         counts.toMap
       }
+      def collectAsMap[A: ClassTag, B: ClassTag](
+          xs: Stream[(A, B)]): Map[A, B] =
+        xs.toMap
     }
 }
 object StreamCollectionOps extends StreamCollectionOps
