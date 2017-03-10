@@ -66,4 +66,4 @@ This library is in an early stage, and comes with the following limitations:
 
 ## Contributions welcome
 
-Any kind of contribution is welcome. Please see the [Contributions Guidelines](https://github.com/dwestheide/kontextfrei/blob/master/CONTRIBUTING.md).
+Any kind of contribution is welcome. Please see the [Contribution Guidelines](https://github.com/dwestheide/kontextfrei/blob/master/CONTRIBUTING.md).
