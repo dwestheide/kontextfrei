@@ -261,8 +261,23 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
       val left   = unit(xs.distinct).map(x => x -> f(x))
       val right  = unit(xs.distinct).map(x => x -> f(x))
       val result = left.leftOuterJoin(right).collect()
+      result.length mustEqual left.count()
       Inspectors.forAll(result) {
         case (k, (l, r)) => l mustEqual r.value
+      }
+    }
+  }
+
+  property(
+    "leftOuterJoining leads to one element for each right key that has a matching left key") {
+    import SmallNumbers._
+    forAll { (k: String, n: Int) =>
+      val left   = unit(List(k -> k))
+      val right  = unit((1 to n).map(k -> _))
+      val result = left.leftOuterJoin(right).collect()
+      result.length mustEqual n
+      Inspectors.forAll(1 to n) { x =>
+        result.contains((k, (k, Some(x))))
       }
     }
   }
@@ -299,6 +314,20 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
       val result = left.rightOuterJoin(right).collect()
       Inspectors.forAll(result) {
         case (k, (l, r)) => l.value mustEqual r
+      }
+    }
+  }
+
+  property(
+    "rightOuterJoining leads to one element for each left key that has a matching right key") {
+    import SmallNumbers._
+    forAll { (k: String, n: Int) =>
+      val right  = unit(List(k -> k))
+      val left   = unit((1 to n).map(k -> _))
+      val result = left.rightOuterJoin(right).collect()
+      result.length mustEqual n
+      Inspectors.forAll(1 to n) { x =>
+        result.contains((k, (Some(x), k)))
       }
     }
   }
