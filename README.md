@@ -1,6 +1,7 @@
 # kontextfrei
 [![Build Status](https://travis-ci.org/dwestheide/kontextfrei.svg?branch=master)](https://travis-ci.org/dwestheide/kontextfrei)
 [![codecov](https://codecov.io/gh/dwestheide/kontextfrei/branch/master/graph/badge.svg)](https://codecov.io/gh/dwestheide/kontextfrei)
+[![Gitter chat](https://badges.gitter.im/kontextfrei/gitter.png)](https://gitter.im/kontextfrei/Lobby)
 
 ## What is this?
 
@@ -65,4 +66,4 @@ This library is in an early stage, and comes with the following limitations:
 
 ## Contributions welcome
 
-I would be happy about feedback from people who tried this library out, and especially about any contributions to get over the current limitations described above.
+Any kind of contribution is welcome. Please see the [Contributions Guidelines](https://github.com/dwestheide/kontextfrei/blob/master/CONTRIBUTING.md).
