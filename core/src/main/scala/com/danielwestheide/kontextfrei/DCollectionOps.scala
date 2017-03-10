@@ -71,6 +71,8 @@ trait DCollectionOps[DCollection[_]] {
   // pair actions:
   def countByKey[A: ClassTag, B: ClassTag](
       xs: DCollection[(A, B)]): Map[A, Long]
+  def collectAsMap[A: ClassTag, B: ClassTag](
+      xs: DCollection[(A, B)]): Map[A, B]
 
 }
 
@@ -148,6 +150,7 @@ object DCollectionOps {
         combOp: (C, C) => C): DCollection[(A, C)] =
       self.aggregateByKey(coll)(zeroValue)(seqOp)(combOp)
     def countByKey(): Map[A, Long] = self.countByKey(coll)
+    def collectAsMap(): Map[A, B]  = self.collectAsMap(coll)
   }
 
   trait ToSyntax {
