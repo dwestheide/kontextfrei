@@ -1,5 +1,7 @@
 package com.danielwestheide.kontextfrei
 
+import org.apache.spark.rdd.RDD
+
 import scala.collection.Map
 import scala.collection.immutable.Seq
 import scala.reflect.ClassTag
@@ -40,6 +42,9 @@ trait StreamCollectionOps {
       }
       def keyBy[A: ClassTag, B](as: Stream[A])(f: A => B): Stream[(B, A)] =
         as.map(a => f(a) -> a)
+
+      def union[A: ClassTag](xs: Stream[A], ys: Stream[A]): Stream[A] =
+        xs.union(ys)
 
       def sortBy[A: ClassTag, B: ClassTag: Ordering](as: Stream[A])(
           f: (A) => B)(ascending: Boolean): Stream[A] = {

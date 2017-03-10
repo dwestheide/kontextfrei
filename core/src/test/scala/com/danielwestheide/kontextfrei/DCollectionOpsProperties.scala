@@ -234,6 +234,18 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
   }
 
   property(
+    "The union of xs and ys contains all elements from xs and all from ys") {
+    forAll { (xs: List[String], ys: List[String]) =>
+      val result  = (unit(xs) ++ unit(ys)).collect()
+      val result2 = unit(xs).union(unit(ys)).collect()
+      assert(result.length === xs.size + ys.size)
+      Inspectors.forAll(xs)(result.contains)
+      Inspectors.forAll(ys)(result.contains)
+      assert(result.toSeq === result2.toSeq)
+    }
+  }
+
+  property(
     "sortBy returns a DCollection sorted by the given function, ascending") {
     forAll { (xs: List[String], f: String => Int) =>
       val result = unit(xs).sortBy(f, ascending = true).collect()

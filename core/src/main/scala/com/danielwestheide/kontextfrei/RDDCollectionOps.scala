@@ -42,6 +42,7 @@ trait RDDCollectionOps {
         as.mapPartitions(f, preservesPartitioning)
       def keyBy[A: ClassTag, B](as: RDD[A])(f: A => B): RDD[(B, A)] =
         as.keyBy(f)
+      def union[A: ClassTag](xs: RDD[A], ys: RDD[A]): RDD[A] = xs.union(ys)
 
       def sortBy[A: ClassTag, B: ClassTag: Ordering](as: RDD[A])(f: (A) => B)(
           ascending: Boolean): RDD[A] =
