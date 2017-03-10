@@ -16,23 +16,23 @@ trait StreamCollectionOps {
         } yield (a, b)
       def collect[A: ClassTag, B: ClassTag](as: Stream[A])(
           pf: PartialFunction[A, B]): Stream[B] =
-        as collect pf
-      def distinct[A: ClassTag](as: Stream[A]): Stream[A] = as.distinct
+        as.collect(pf)
+      def distinct[A: ClassTag](as: Stream[A]): Stream[A] =
+        as.distinct
       def map[A: ClassTag, B: ClassTag](as: Stream[A])(f: A => B): Stream[B] =
-        as map f
+        as.map(f)
       def flatMap[A: ClassTag, B: ClassTag](as: Stream[A])(
           f: (A) => TraversableOnce[B]): Stream[B] =
-        as flatMap f
+        as.flatMap(f)
       def filter[A: ClassTag](as: Stream[A])(f: A => Boolean): Stream[A] =
-        as filter f
-      def groupBy[A, B: ClassTag](as: Stream[A],
-                                  f: (A) => B): Stream[(B, Iterable[A])] =
-        (as groupBy f).toStream
-      def groupBy[A, B: ClassTag](
-          as: Stream[A],
+        as.filter(f)
+      def groupBy[A, B: ClassTag](as: Stream[A])(
+          f: (A) => B): Stream[(B, Iterable[A])] =
+        as.groupBy(f).toStream
+      def groupByWithNumPartitions[A, B: ClassTag](as: Stream[A])(
           f: (A) => B,
           numPartitions: Int): Stream[(B, Iterable[A])] =
-        groupBy(as, f)
+        groupBy(as)(f)
       def mapPartitions[A: ClassTag, B: ClassTag](as: Stream[A])(
           f: Iterator[A] => Iterator[B],
           preservesPartitioning: Boolean = false): Stream[B] = {
@@ -107,10 +107,10 @@ trait StreamCollectionOps {
       }
       def mapValues[A: ClassTag, B: ClassTag, C: ClassTag](x: Stream[(A, B)])(
           f: B => C): Stream[(A, C)] =
-        x map { case (k, v) => (k, f(v)) }
+        x.map { case (k, v) => (k, f(v)) }
       def flatMapValues[A: ClassTag, B: ClassTag, C: ClassTag](
           x: Stream[(A, B)])(f: B => TraversableOnce[C]): Stream[(A, C)] =
-        x flatMap {
+        x.flatMap {
           case (k, v) =>
             val values = f(v)
             values.map(k -> _)
@@ -141,8 +141,8 @@ trait StreamCollectionOps {
         }
       }
 
-      def toArray[A: ClassTag](as: Stream[A]): Array[A] = as.toArray
-      def count[A](as: Stream[A]): Long                 = as.size
+      def collectAsArray[A: ClassTag](as: Stream[A]): Array[A] = as.toArray
+      def count[A](as: Stream[A]): Long                        = as.size
       def countByValue[A: ClassTag](as: Stream[A])(
           implicit ord: Ordering[A]): collection.Map[A, Long] =
         as.groupBy(identity) map { case (k, v) => (k, v.size.toLong) }

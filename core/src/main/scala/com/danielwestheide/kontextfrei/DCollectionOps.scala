@@ -20,10 +20,9 @@ trait DCollectionOps[DCollection[_]] {
   def flatMap[A: ClassTag, B: ClassTag](as: DCollection[A])(
       f: A => TraversableOnce[B]): DCollection[B]
   def filter[A: ClassTag](as: DCollection[A])(f: A => Boolean): DCollection[A]
-  def groupBy[A, B: ClassTag](as: DCollection[A],
-                              f: A => B): DCollection[(B, Iterable[A])]
-  def groupBy[A, B: ClassTag](
-      as: DCollection[A],
+  def groupBy[A, B: ClassTag](as: DCollection[A])(
+      f: A => B): DCollection[(B, Iterable[A])]
+  def groupByWithNumPartitions[A, B: ClassTag](as: DCollection[A])(
       f: A => B,
       numPartitions: Int): DCollection[(B, Iterable[A])]
   def mapPartitions[A: ClassTag, B: ClassTag](as: DCollection[A])(
@@ -62,7 +61,7 @@ trait DCollectionOps[DCollection[_]] {
       combOp: (C, C) => C): DCollection[(A, C)]
 
   // actions:
-  def toArray[A: ClassTag](as: DCollection[A]): Array[A]
+  def collectAsArray[A: ClassTag](as: DCollection[A]): Array[A]
   def count[A](as: DCollection[A]): Long
   def countByValue[A: ClassTag](as: DCollection[A])(
       implicit ord: Ordering[A]): Map[A, Long]
@@ -96,11 +95,11 @@ object DCollectionOps {
       self.flatMap(coll)(f)
     def filter(f: A => Boolean): DCollection[A] = self.filter(coll)(f)
     def groupBy[B: ClassTag](f: A => B): DCollection[(B, Iterable[A])] =
-      self.groupBy(coll, f)
+      self.groupBy(coll)(f)
     def groupBy[B: ClassTag](
         f: A => B,
         numPartitions: Int): DCollection[(B, Iterable[A])] =
-      self.groupBy(coll, f, numPartitions)
+      self.groupByWithNumPartitions(coll)(f, numPartitions)
     def mapPartitions[B: ClassTag](
         f: Iterator[A] => Iterator[B],
         preservesPartitioning: Boolean = false): DCollection[B] =
@@ -112,7 +111,7 @@ object DCollectionOps {
         ascending: Boolean = true): DCollection[A] =
       self.sortBy(coll)(f)(ascending)
 
-    def collect(): Array[A] = self.toArray(coll)
+    def collect(): Array[A] = self.collectAsArray(coll)
     def count(): Long       = self.count(coll)
     def countByValue()(implicit ord: Ordering[A]): Map[A, Long] =
       self.countByValue(coll)
