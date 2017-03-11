@@ -61,6 +61,11 @@ trait DCollectionOps[DCollection[_]] {
   def aggregateByKey[A: ClassTag, B: ClassTag, C: ClassTag](
       xs: DCollection[(A, B)])(zeroValue: C)(seqOp: (C, B) => C)(
       combOp: (C, C) => C): DCollection[(A, C)]
+  def combineByKey[A: ClassTag, B: ClassTag, C: ClassTag](
+      xs: DCollection[(A, B)])(
+      createCombiner: B => C,
+      mergeValue: (C, B) => C,
+      mergeCombiners: (C, C) => C): DCollection[(A, C)]
 
   // actions:
   def collectAsArray[A: ClassTag](as: DCollection[A]): Array[A]
@@ -152,6 +157,11 @@ object DCollectionOps {
         seqOp: (C, B) => C,
         combOp: (C, C) => C): DCollection[(A, C)] =
       self.aggregateByKey(coll)(zeroValue)(seqOp)(combOp)
+    def combineByKey[C: ClassTag](
+        createCombiner: B => C,
+        mergeValue: (C, B) => C,
+        mergeCombiners: (C, C) => C): DCollection[(A, C)] =
+      self.combineByKey(coll)(createCombiner, mergeValue, mergeCombiners)
     def countByKey(): Map[A, Long] = self.countByKey(coll)
     def collectAsMap(): Map[A, B]  = self.collectAsMap(coll)
   }

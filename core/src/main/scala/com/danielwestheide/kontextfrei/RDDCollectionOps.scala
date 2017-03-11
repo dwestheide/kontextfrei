@@ -71,6 +71,11 @@ trait RDDCollectionOps {
           xs: RDD[(A, B)])(zeroValue: C)(seqOp: (C, B) => C)(
           combOp: (C, C) => C): RDD[(A, C)] =
         xs.aggregateByKey(zeroValue)(seqOp, combOp)
+      def combineByKey[A: ClassTag, B: ClassTag, C: ClassTag](xs: RDD[(A, B)])(
+          createCombiner: B => C,
+          mergeValue: (C, B) => C,
+          mergeCombiners: (C, C) => C): RDD[(A, C)] =
+        xs.combineByKey(createCombiner, mergeValue, mergeCombiners)
 
       def collectAsArray[A: ClassTag](as: RDD[A]): Array[A] = as.collect()
       def count[A](as: RDD[A]): Long                        = as.count()
