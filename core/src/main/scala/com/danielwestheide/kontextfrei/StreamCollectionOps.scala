@@ -136,21 +136,7 @@ trait StreamCollectionOps {
       def aggregateByKey[A: ClassTag, B: ClassTag, C: ClassTag](
           xs: Stream[(A, B)])(zeroValue: C)(seqOp: (C, B) => C)(
           combOp: (C, C) => C): Stream[(A, C)] = {
-        val grouped = xs.groupBy(_._1) map {
-          case (a, ys) => a -> ys.map(x => x._2)
-        }
-        grouped.toStream.map {
-          case (a, bs) =>
-            val c = bs
-              .grouped(2)
-              .toStream
-              .par
-              .map { partition =>
-                partition.foldLeft(zeroValue)(seqOp)
-              }
-              .reduce(combOp)
-            (a, c)
-        }
+        combineByKey(xs)(b => seqOp(zeroValue, b), seqOp, combOp)
       }
 
       def combineByKey[A: ClassTag, B: ClassTag, C: ClassTag](

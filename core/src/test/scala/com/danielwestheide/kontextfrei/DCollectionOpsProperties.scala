@@ -443,7 +443,7 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
-  property("values == map(_._2") {
+  property("values == map(_._2)") {
     forAll { (xs: List[(Int, String)]) =>
       unit(xs).values.collect() mustEqual unit(xs.map(_._2)).collect()
     }
@@ -475,6 +475,18 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     "aggregateByKey applies associative functions on all elements with the same key") {
     forAll { (xs: List[(String, String)]) =>
       val result  = unit(xs).aggregateByKey(0)(_ + _.length, _ + _).collect()
+      val xsByKey = xs.groupBy(_._1).mapValues(_.map(_._2))
+      Inspectors.forAll(result) {
+        case (k, v) => v mustEqual xsByKey(k).aggregate(0)(_ + _.length, _ + _)
+      }
+    }
+  }
+
+  property(
+    "combineByKey applies associative functions on all elements with the same key") {
+    forAll { (xs: List[(String, String)]) =>
+      val result =
+        unit(xs).combineByKey[Int](_.length, _ + _.length, _ + _).collect()
       val xsByKey = xs.groupBy(_._1).mapValues(_.map(_._2))
       Inspectors.forAll(result) {
         case (k, v) => v mustEqual xsByKey(k).aggregate(0)(_ + _.length, _ + _)
