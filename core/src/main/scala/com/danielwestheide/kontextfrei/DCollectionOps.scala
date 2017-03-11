@@ -1,5 +1,7 @@
 package com.danielwestheide.kontextfrei
 
+import org.apache.spark.rdd.RDD
+
 import scala.collection.Map
 import scala.collection.immutable.Seq
 import scala.reflect.ClassTag
@@ -61,6 +63,11 @@ trait DCollectionOps[DCollection[_]] {
   def aggregateByKey[A: ClassTag, B: ClassTag, C: ClassTag](
       xs: DCollection[(A, B)])(zeroValue: C)(seqOp: (C, B) => C)(
       combOp: (C, C) => C): DCollection[(A, C)]
+  def combineByKey[A: ClassTag, B: ClassTag, C: ClassTag](
+      xs: DCollection[(A, B)])(
+      createCombiner: B => C,
+      mergeValue: (C, B) => C,
+      mergeCombiners: (C, C) => C): DCollection[(A, C)]
 
   // actions:
   def collectAsArray[A: ClassTag](as: DCollection[A]): Array[A]

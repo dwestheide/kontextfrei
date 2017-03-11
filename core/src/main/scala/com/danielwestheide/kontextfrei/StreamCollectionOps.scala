@@ -1,7 +1,5 @@
 package com.danielwestheide.kontextfrei
 
-import org.apache.spark.rdd.RDD
-
 import scala.collection.Map
 import scala.collection.immutable.Seq
 import scala.reflect.ClassTag
@@ -125,14 +123,14 @@ trait StreamCollectionOps {
         val grouped = xs.groupBy(_._1) map {
           case (a, ys) => a -> ys.map(x => x._2)
         }
-        grouped.toStream map { case (a, bs) => (a, bs reduce f) }
+        grouped.toStream.map { case (a, bs) => (a, bs reduce f) }
       }
       def foldByKey[A: ClassTag, B: ClassTag](xs: Stream[(A, B)])(
           zeroValue: B)(f: (B, B) => B): Stream[(A, B)] = {
         val grouped = xs.groupBy(_._1) map {
           case (a, ys) => a -> ys.map(x => x._2)
         }
-        grouped.toStream map { case (a, bs) => (a, bs.foldLeft(zeroValue)(f)) }
+        grouped.toStream.map { case (a, bs) => (a, bs.foldLeft(zeroValue)(f)) }
       }
 
       def aggregateByKey[A: ClassTag, B: ClassTag, C: ClassTag](
@@ -141,8 +139,39 @@ trait StreamCollectionOps {
         val grouped = xs.groupBy(_._1) map {
           case (a, ys) => a -> ys.map(x => x._2)
         }
-        grouped.toStream map {
-          case (a, bs) => (a, bs.aggregate(zeroValue)(seqOp, combOp))
+        grouped.toStream.map {
+          case (a, bs) =>
+            val c = bs
+              .grouped(2)
+              .toStream
+              .par
+              .map { partition =>
+                partition.foldLeft(zeroValue)(seqOp)
+              }
+              .reduce(combOp)
+            (a, c)
+        }
+      }
+
+      def combineByKey[A: ClassTag, B: ClassTag, C: ClassTag](
+          xs: Stream[(A, B)])(createCombiner: B => C,
+                              mergeValue: (C, B) => C,
+                              mergeCombiners: (C, C) => C): Stream[(A, C)] = {
+        val grouped = xs.groupBy(_._1) map {
+          case (a, ys) => a -> ys.map(x => x._2)
+        }
+        grouped.toStream.map {
+          case (a, bs) =>
+            val c = bs
+              .grouped(2)
+              .toStream
+              .par
+              .map {
+                case head #:: tail =>
+                  tail.foldLeft[C](createCombiner(head))(mergeValue)
+              }
+              .reduce(mergeCombiners)
+            (a, c)
         }
       }
 
