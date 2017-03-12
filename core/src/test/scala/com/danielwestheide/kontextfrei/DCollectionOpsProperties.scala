@@ -1,11 +1,10 @@
 package com.danielwestheide.kontextfrei
 
-import org.scalacheck.{Arbitrary, Gen}
 import org.scalatest.Inspectors
 
 trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
 
-  import DCollectionOps.Imports._
+  import syntax.Imports._
   import org.scalatest.OptionValues._
 
   property("cartesian returns a DCollection with N * M elements") {
