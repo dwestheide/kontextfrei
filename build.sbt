@@ -36,7 +36,9 @@ lazy val scalaTest =
   Project(id = "kontextfrei-scalatest", base = file("scalatest"))
     .settings(common)
     .settings(
-      libraryDependencies ++= Seq(spark(sparkVersion.value), scalatest))
+      libraryDependencies ++= Seq(spark(sparkVersion.value),
+                                  scalatest,
+                                  scalacheck % "test"))
     .dependsOn(core)
 
 lazy val root = Project(id = "kontextfrei", base = file("."))
