@@ -40,18 +40,18 @@ class PairSyntax[DCollection[_], A: ClassTag, B: ClassTag](
     self.reduceByKey(coll)(f)
 
   final def foldByKey(zeroValue: B)(f: (B, B) => B): DCollection[(A, B)] =
-    self.foldByKey(coll)(zeroValue)(f)
+    self.foldByKey(coll)(zeroValue, f)
 
   final def aggregateByKey[C: ClassTag](zeroValue: C)(
       seqOp: (C, B) => C,
       combOp: (C, C) => C): DCollection[(A, C)] =
-    self.aggregateByKey(coll)(zeroValue)(seqOp)(combOp)
+    self.aggregateByKey(coll)(zeroValue)(seqOp, combOp)
 
   final def combineByKey[C: ClassTag](
       createCombiner: B => C,
       mergeValue: (C, B) => C,
       mergeCombiners: (C, C) => C): DCollection[(A, C)] =
-    self.combineByKey(coll)(createCombiner, mergeValue, mergeCombiners)
+    self.combineByKey(coll)(createCombiner)(mergeValue, mergeCombiners)
 
   final def countByKey(): Map[A, Long] = self.countByKey(coll)
 

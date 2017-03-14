@@ -39,9 +39,9 @@ class BaseSyntax[DCollection[_], A: ClassTag](
   final def keyBy[B](f: A => B): DCollection[(B, A)] = self.keyBy(coll)(f)
 
   final def union(other: DCollection[A]): DCollection[A] =
-    self.union(coll, other)
+    self.union(coll)(other)
 
-  final def ++(other: DCollection[A]): DCollection[A] = self.union(coll, other)
+  final def ++(other: DCollection[A]): DCollection[A] = self.union(coll)(other)
 
   final def sortBy[B: ClassTag: Ordering](
       f: A => B,

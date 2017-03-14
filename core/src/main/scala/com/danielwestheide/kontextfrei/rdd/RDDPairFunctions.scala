@@ -42,18 +42,19 @@ private[kontextfrei] trait RDDPairFunctions
       f: (B, B) => B): RDD[(A, B)] =
     xs.reduceByKey(f)
 
-  override final def foldByKey[A: ClassTag, B: ClassTag](xs: RDD[(A, B)])(
-      zeroValue: B)(f: (B, B) => B): RDD[(A, B)] = xs.foldByKey(zeroValue)(f)
+  override final def foldByKey[A: ClassTag, B: ClassTag](
+      xs: RDD[(A, B)])(zeroValue: B, f: (B, B) => B): RDD[(A, B)] =
+    xs.foldByKey(zeroValue)(f)
 
   override final def aggregateByKey[A: ClassTag, B: ClassTag, C: ClassTag](
-      xs: RDD[(A, B)])(zeroValue: C)(seqOp: (C, B) => C)(
-      combOp: (C, C) => C): RDD[(A, C)] =
+      xs: RDD[(A, B)])(zeroValue: C)(seqOp: (C, B) => C,
+                                     combOp: (C, C) => C): RDD[(A, C)] =
     xs.aggregateByKey(zeroValue)(seqOp, combOp)
 
   override final def combineByKey[A: ClassTag, B: ClassTag, C: ClassTag](
-      xs: RDD[(A, B)])(createCombiner: B => C,
-                       mergeValue: (C, B) => C,
-                       mergeCombiners: (C, C) => C): RDD[(A, C)] =
+      xs: RDD[(A, B)])(createCombiner: B => C)(
+      mergeValue: (C, B) => C,
+      mergeCombiners: (C, C) => C): RDD[(A, C)] =
     xs.combineByKey(createCombiner, mergeValue, mergeCombiners)
 
   override final def countByKey[A: ClassTag, B: ClassTag](
