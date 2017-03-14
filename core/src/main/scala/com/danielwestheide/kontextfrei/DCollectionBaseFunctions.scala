@@ -34,8 +34,8 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
 
   def keyBy[A: ClassTag, B](as: DCollection[A])(f: A => B): DCollection[(B, A)]
 
-  def union[A: ClassTag](xs: DCollection[A],
-                         ys: DCollection[A]): DCollection[A]
+  def union[A: ClassTag](xs: DCollection[A])(
+      ys: DCollection[A]): DCollection[A]
 
   def sortBy[A: ClassTag, B: ClassTag: Ordering](as: DCollection[A])(
       f: A => B)(ascending: Boolean): DCollection[A]

@@ -436,7 +436,7 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
     }
   }
 
-  property("keys == map(_._1") {
+  property("keys == map(_._1)") {
     forAll { (xs: List[(Int, String)]) =>
       unit(xs).keys.collect() mustEqual unit(xs.map(_._1)).collect()
     }

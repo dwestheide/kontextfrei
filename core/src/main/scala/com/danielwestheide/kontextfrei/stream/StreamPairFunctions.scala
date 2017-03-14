@@ -88,8 +88,8 @@ private[kontextfrei] trait StreamPairFunctions
     grouped.toStream.map { case (a, bs) => (a, bs reduce f) }
   }
 
-  override final def foldByKey[A: ClassTag, B: ClassTag](xs: Stream[(A, B)])(
-      zeroValue: B)(f: (B, B) => B): Stream[(A, B)] = {
+  override final def foldByKey[A: ClassTag, B: ClassTag](
+      xs: Stream[(A, B)])(zeroValue: B, f: (B, B) => B): Stream[(A, B)] = {
     val grouped = xs.groupBy(_._1) map {
       case (a, ys) => a -> ys.map(x => x._2)
     }
@@ -97,15 +97,16 @@ private[kontextfrei] trait StreamPairFunctions
   }
 
   override final def aggregateByKey[A: ClassTag, B: ClassTag, C: ClassTag](
-      xs: Stream[(A, B)])(zeroValue: C)(seqOp: (C, B) => C)(
+      xs: Stream[(A, B)])(zeroValue: C)(
+      seqOp: (C, B) => C,
       combOp: (C, C) => C): Stream[(A, C)] = {
-    combineByKey(xs)(b => seqOp(zeroValue, b), seqOp, combOp)
+    combineByKey(xs)(b => seqOp(zeroValue, b))(seqOp, combOp)
   }
 
   override final def combineByKey[A: ClassTag, B: ClassTag, C: ClassTag](
-      xs: Stream[(A, B)])(createCombiner: B => C,
-                          mergeValue: (C, B) => C,
-                          mergeCombiners: (C, C) => C): Stream[(A, C)] = {
+      xs: Stream[(A, B)])(createCombiner: B => C)(
+      mergeValue: (C, B) => C,
+      mergeCombiners: (C, C) => C): Stream[(A, C)] = {
     val grouped = xs.groupBy(_._1) map {
       case (a, ys) => a -> ys.map(x => x._2)
     }

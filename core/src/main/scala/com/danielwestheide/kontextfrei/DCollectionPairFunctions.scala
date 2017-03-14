@@ -31,18 +31,19 @@ private[kontextfrei] trait DCollectionPairFunctions[DCollection[_]] {
       xs: DCollection[(A, B)])(f: B => TraversableOnce[C]): DCollection[(A, C)]
 
   def foldByKey[A: ClassTag, B: ClassTag](xs: DCollection[(A, B)])(
-      zeroValue: B)(func: (B, B) => B): DCollection[(A, B)]
+      zeroValue: B,
+      func: (B, B) => B): DCollection[(A, B)]
 
   def reduceByKey[A: ClassTag, B: ClassTag](xs: DCollection[(A, B)])(
       f: (B, B) => B): DCollection[(A, B)]
 
   def aggregateByKey[A: ClassTag, B: ClassTag, C: ClassTag](
-      xs: DCollection[(A, B)])(zeroValue: C)(seqOp: (C, B) => C)(
+      xs: DCollection[(A, B)])(zeroValue: C)(
+      seqOp: (C, B) => C,
       combOp: (C, C) => C): DCollection[(A, C)]
 
   def combineByKey[A: ClassTag, B: ClassTag, C: ClassTag](
-      xs: DCollection[(A, B)])(
-      createCombiner: B => C,
+      xs: DCollection[(A, B)])(createCombiner: B => C)(
       mergeValue: (C, B) => C,
       mergeCombiners: (C, C) => C): DCollection[(A, C)]
 

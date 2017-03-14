@@ -45,7 +45,7 @@ private[kontextfrei] trait RDDBaseFunctions
       f: A => B): RDD[(B, A)] =
     as.keyBy(f)
 
-  override final def union[A: ClassTag](xs: RDD[A], ys: RDD[A]): RDD[A] =
+  override final def union[A: ClassTag](xs: RDD[A])(ys: RDD[A]): RDD[A] =
     xs.union(ys)
 
   override final def sortBy[A: ClassTag, B: ClassTag: Ordering](as: RDD[A])(

@@ -52,8 +52,8 @@ private[kontextfrei] trait StreamBaseFunctions
       f: A => B): Stream[(B, A)] =
     as.map(a => f(a) -> a)
 
-  override final def union[A: ClassTag](xs: Stream[A],
-                                        ys: Stream[A]): Stream[A] =
+  override final def union[A: ClassTag](xs: Stream[A])(
+      ys: Stream[A]): Stream[A] =
     xs.union(ys)
 
   override final def sortBy[A: ClassTag, B: ClassTag: Ordering](as: Stream[A])(
