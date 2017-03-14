@@ -14,6 +14,7 @@ val common = Seq(
   licenses += ("Apache-2.0",
   url("https://opensource.org/licenses/Apache-2.0")),
   bintrayPackageLabels := Seq("scala", "spark", "testing"),
+  parallelExecution in Test := false,
   scalacOptions ++= Seq("-feature",
                         "-language:higherKinds",
                         "-language:implicitConversions")
@@ -38,7 +39,7 @@ lazy val scalaTest =
     .settings(
       libraryDependencies ++= Seq(spark(sparkVersion.value),
                                   scalatest,
-                                  scalacheck % "test"))
+                                  scalacheck))
     .dependsOn(core)
 
 lazy val root = Project(id = "kontextfrei", base = file("."))

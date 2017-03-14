@@ -2,11 +2,11 @@ package com.danielwestheide.kontextfrei.scalatest
 
 import org.apache.spark.rdd.RDD
 import org.scalatest.enablers.Collecting
-import org.scalatest.{Inspectors, PropSpec}
+import org.scalatest.{Inspectors, PropSpec, PropSpecLike}
 import org.scalatest.prop.GeneratorDrivenPropertyChecks
 
 trait CollectingInstancesProperties[DColl[_]]
-    extends PropSpec
+    extends PropSpecLike
     with GeneratorDrivenPropertyChecks
     with KontextfreiSpec[DColl]
     with CollectingInstances {
