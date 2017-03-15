@@ -29,7 +29,7 @@
 <span class="home-icon">⌂</span>kontextfrei
 </a>
 <div class="version-number">
-0.4.1*
+0.5.1*
 </div>
 </div>
 <div class="nav-toc">
@@ -69,7 +69,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <span class="home-icon">⌂</span>kontextfrei
 </a>
 <div class="version-number">
-0.4.1*
+0.5.1*
 </div>
 </div>
 <div class="nav-toc">
@@ -107,19 +107,25 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
   <li><code>kontextfrei-scalatest</code>: An optional artifact that provides some helpers for using <em>kontextfrei</em> with <a href="http://www.scalatest.org/">ScalaTest</a>.</li>
 </ul>
 <p><code>kontextfrei-core</code> assumes that the Spark dependency is provided by your application, so you have to explicitly add a dependency to Spark in your build definition. This is because you usually want to depend on Spark in <code>provided</code> scope anyway in your applications.</p>
-<p>Currently, <em>kontextfrei</em> binary releases are only built against Spark 2.0.0 with Scala 2.11 and Spark 1.4.1 with Scala 2.10.</p>
+<p>Currently, <em>kontextfrei</em> binary releases are built against Spark 1.4.1, 2.0.0 and 2.1.0, each of them both for Scala 2.11 and 2.10.</p>
 <p>Here is what you need to add to your <code>build.sbt</code> file in order to use <code>kontextfrei-core</code> and <code>kontextfrei-scalatest</code> in your SBT project:</p>
-<h2><a href="#scala-2-10-spark-1-4-1" name="scala-2-10-spark-1-4-1" class="anchor"><span class="anchor-link"></span></a>Scala 2.10 / Spark 1.4.1</h2>
+<h2><a href="#spark-1-4-1" name="spark-1-4-1" class="anchor"><span class="anchor-link"></span></a>Spark 1.4.1</h2>
 <pre class="prettyprint"><code class="language-scala">resolvers += &quot;dwestheide&quot; at &quot;https://dl.bintray.com/dwestheide/maven&quot;
-libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-core&quot; % &quot;0.4.0&quot;
-libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-scalatest&quot; % &quot;0.4.0&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-core-spark-1.4.1&quot; % &quot;0.5.0&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-scalatest-spark-1.4.1&quot; % &quot;0.5.0&quot;
 libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;1.4.1&quot; % &quot;provided&quot;
 </code></pre>
-<h2><a href="#scala-2-11-spark-2-0" name="scala-2-11-spark-2-0" class="anchor"><span class="anchor-link"></span></a>Scala 2.11 / Spark 2.0</h2>
+<h2><a href="#spark-2-0" name="spark-2-0" class="anchor"><span class="anchor-link"></span></a>Spark 2.0</h2>
 <pre class="prettyprint"><code class="language-scala">resolvers += &quot;dwestheide&quot; at &quot;https://dl.bintray.com/dwestheide/maven&quot;
-libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-core&quot; % &quot;0.4.0&quot;
-libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-scalatest&quot; % &quot;0.4.0&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-core-spark-2.0.0&quot; % &quot;0.5.0&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-scalatest-spark-2.0.0&quot; % &quot;0.5.0&quot;
 libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;2.0.0&quot; % &quot;provided&quot;
+</code></pre>
+<h2><a href="#spark-2-1-0" name="spark-2-1-0" class="anchor"><span class="anchor-link"></span></a>Spark 2.1.0</h2>
+<pre class="prettyprint"><code class="language-scala">resolvers += &quot;dwestheide&quot; at &quot;https://dl.bintray.com/dwestheide/maven&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-core-spark-2.1.0&quot; % &quot;0.5.0&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-scalatest-spark-2.1.0&quot; % &quot;0.5.0&quot;
+libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;2.1.0&quot; % &quot;provided&quot;
 </code></pre>
 <div class="nav-next">
 <p><strong>Next:</strong> <a href="status.html">Status</a></p>
@@ -133,8 +139,9 @@ libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % 
 <ul>
   <li><a href="setup.html#setup">Setup</a>
   <ul>
-    <li><a href="setup.html#scala-2-10-spark-1-4-1">Scala 2.10 / Spark 1.4.1</a></li>
-    <li><a href="setup.html#scala-2-11-spark-2-0">Scala 2.11 / Spark 2.0</a></li>
+    <li><a href="setup.html#spark-1-4-1">Spark 1.4.1</a></li>
+    <li><a href="setup.html#spark-2-0">Spark 2.0</a></li>
+    <li><a href="setup.html#spark-2-1-0">Spark 2.1.0</a></li>
   </ul></li>
 </ul>
 </div>
