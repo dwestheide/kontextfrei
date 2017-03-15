@@ -15,54 +15,57 @@ and running your unit tests in a local Spark cluster is really slow. _kontextfre
 this hard dependency on a `SparkContext`, ultimately leading to a much faster feedback cycle during
 development.
 
-## How does this work?
+## Documentation
 
-By using a typeclass, `DCollectionOps` and higher kinded types, we are able to provide an interface
-that looks like that of an `RDD`. There are two instances of this typeclass: one for `RDD`, another
-one for Scala's `Stream` from the standard library. The application logic is written against a
-generic type for which an instance of `DCollectionOps` is available. This allows you to plug this
-logic into Spark's `RDD` in your application bootstrapping code, and choose between the `Stream`
-instance and the `RDD` instance of the `DCollectionOps` typeclass for unit and integration tests,
-respectively. The actual test code can be shared between the different tests, as it is independent
-of a specific instance of `DCollectionOps`.
-
-## Usage
-
-Add a dependency on the the current version of `kontextfrei-core` to your `build.sbt`.
-
-_kontextfrei_ assumes that the Spark dependency is provided by your application, so have to explicitly add a dependency to Spark.
-
-Currently, _kontextfrei_ binary releases are only built against Spark 2.0.0 with Scala 2.11 and Spark 1.4.1 with Scala 2.10.
-
-### Scala 2.10 / Spark 1.4.1
-
-```scala
-resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-core" % "0.4.0"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest" % "0.4.0"
-libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.1" % "provided"
-```
-
-### Scala 2.11 / Spark 2.0
-
-```scala
-resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-core" % "0.4.0"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest" % "0.4.0"
-libraryDependencies += "org.apache.spark" %% "spark-core" % "2.0.0" % "provided"
-```
-
-## Example
+Please visit the [kontextfrei website](https://dwestheide.github.io/kontextfrei/index.html) to learn more about how to use this library.
 
 For an example that showcases how the library can be used, please have a look at [kontextfrei-example](https://github.com/dwestheide/kontextfrei-example).
 
+## Usage
+
+The library is split up into two modules:
+
+- `kontextfrei-core`: You definitely need this to use the library
+- `kontextfrei-scalatest`: Some optional goodies to make testing your application logic easier and remove some boilerplate; this comes with a transitive dependency on ScalaTest and ScalaCheck.
+
+_kontextfrei_ assumes that the Spark dependency is provided by your application, so have to explicitly add a dependency to Spark.
+
+Currently, _kontextfrei_ binary releases are built against Spark 1.4.1, Spark 2.0.0, and Spark 2.1.0 , each of them both for Scala 2.11 and Scala 2.10.
+
+Adding a dependency on the the current version of `kontextfrei-core` and `kontextfrei-scalatest` to your `build.sbt` looks like this:
+
+### Spark 1.4.1
+
+```scala
+resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-1.4.1" % "0.5.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-1.4.1" % "0.5.0"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.1" % "provided"
+```
+
+### Spark 2.0
+
+```scala
+resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-2.0.0" % "0.5.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.0.0" % "0.5.0"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "2.0.0" % "provided"
+```
+
+### Spark 2.1.0
+
+```scala
+resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-2.1.0" % "0.5.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.1.0" % "0.5.0"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "2.1.0" % "provided"
+```
+
+As you can see, you need the specify the Spark version against which the library is supposed to be built as part of the artifact name.
+
 ## Status
 
-This library is in an early stage, and comes with the following limitations:
-
-* only compiled and tested against Spark 1.4.1 and 2.0.0, other versions may not work
-* not feature-complete: only a subset of the operations available on `RDD`s is supported so far
-* not used in production yet - while there is extensive test coverage, nothing can be said yet about the feasibility of using this library in production
+This library is in an early stage and is not feature-complete: only a subset of the operations available on `RDD`s is supported so far
 
 ## Contributions welcome
 
