@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 
 <head>
-<title>kontextfrei</title>
+<title>Resources · kontextfrei</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content="kontextfrei"/>
@@ -25,7 +25,7 @@
 <div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
 <nav class="off-canvas-nav">
 <div class="nav-home">
-<a href="index.html" class="active">
+<a href="index.html" >
 <span class="home-icon">⌂</span>kontextfrei
 </a>
 <div class="version-number">
@@ -37,7 +37,7 @@
   <li><a href="setup.html">Setup</a></li>
   <li><a href="status.html">Status</a></li>
   <li><a href="example.html">Example application</a></li>
-  <li><a href="resources.html">Resources</a></li>
+  <li><a href="resources.html" class="active">Resources</a></li>
   <li><a href="contribute.html">Contributing</a></li>
 </ul>
 </div>
@@ -53,7 +53,7 @@
 H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
 C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
 </a>
-<div class="title"><a href="index.html" class="active">kontextfrei</a></div>
+<div class="title"><a href="index.html">kontextfrei</a></div>
 
 <!--
 <a href="https://www.example.com" class="logo show-for-medium">logo</a>
@@ -66,7 +66,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <div class="medium-3 large-2 show-for-medium column">
 <nav class="site-nav">
 <div class="nav-home">
-<a href="index.html" class="active">
+<a href="index.html" >
 <span class="home-icon">⌂</span>kontextfrei
 </a>
 <div class="version-number">
@@ -78,7 +78,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
   <li><a href="setup.html">Setup</a></li>
   <li><a href="status.html">Status</a></li>
   <li><a href="example.html">Example application</a></li>
-  <li><a href="resources.html">Resources</a></li>
+  <li><a href="resources.html" class="active">Resources</a></li>
   <li><a href="contribute.html">Contributing</a></li>
 </ul>
 </div>
@@ -91,21 +91,44 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 
 <div class="page-header row">
 <div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="index.html">kontextfrei</a></li>
+  <li>Resources</li>
+</ul>
+</div>
 </div>
 </div>
 
 <div class="page-content row">
 <div class="small-12 large-9 column" id="docs">
-<h1><a href="#kontextfrei" name="kontextfrei" class="anchor"><span class="anchor-link"></span></a>kontextfrei</h1>
-<p><em>kontextfrei</em> is a Scala library that aims to provide developers with a faster feedback loop when developing <a href="https://spark.apache.org/">Apache Spark</a> applications. To achieve that, it enables you to write the business logic of your Spark application, as well as your test code, against an abstraction over Spark&rsquo;s <code>RDD</code>.</p>
-<p>Firing up a <code>SparkContext</code> and running your unit tests in a local Spark cluster is really slow. <em>kontextfrei</em> frees you from this hard dependency on a <code>SparkContext</code>. By programming your business logic against an API that abstracts over Spark&rsquo;s <code>RDD</code>, you can execute your unit tests against Scala collections instead of <code>RDD</code>s, leading to a much faster feedback cycle during development.</p>
-<p>By providing an API that is virtually identical to Spark&rsquo;s <code>RDD</code> API, developers already familiar with Spark do not have to learn a new API to benefit from <em>kontextfrei</em>.</p>
-<p>This website serves as the hub for all things <em>kontextfrei</em> &ndash; how to use it, who is using it, and how to contribute to the development of this project.</p>
+<h1><a href="#resources" name="resources" class="anchor"><span class="anchor-link"></span></a>Resources</h1>
+<p>This page collects external resources that can help you learn more about <em>kontextfrei</em>.</p>
+<h2><a href="#conference-talks" name="conference-talks" class="anchor"><span class="anchor-link"></span></a>Conference talks</h2>
+<h3><a href="#kontextfrei-a-new-approach-to-testable-spark-applications-scalar-conf-warsaw-2017-april-08-2017" name="kontextfrei-a-new-approach-to-testable-spark-applications-scalar-conf-warsaw-2017-april-08-2017" class="anchor"><span class="anchor-link"></span></a>kontextfrei: A new approach to testable Spark applications, Scalar Conf Warsaw 2017, April 08, 2017</h3>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Z_Ab5Y90fuw" frameborder="0" allowfullscreen></iframe>
+<p>Slides are available on <a href="https://speakerdeck.com/dwestheide/kontextfrei-a-new-approach-to-testable-spark-applications">Speaker Deck</a></p>
+<h4><a href="#abstract" name="abstract" class="anchor"><span class="anchor-link"></span></a>Abstract</h4>
+<p>Apache Spark has become the de-facto standard for writing big data processing pipelines. While the business logic of Spark applications is often at least as complex as what we have been dealing with in a pre-big data world, enabling developers to write comprehensive, fast unit test suites has not been a priority in the design of Spark. The main problem is that you cannot test your code without at least running a local SparkContext. These tests are not really unit tests, and they are too slow for pursuing a test-driven development approach.</p>
+<p>In this talk, I will introduce thekontextfrei library, which aims to liberate you from the chains of the SparkContext. I will show how it helps restoring the fast feedback loop we are taking for granted. In addition, I will explain how kontextfrei is implemented and discuss some of the design decisions made and look at alternative approaches and current limitations.</p>
 <div class="nav-next">
-<p><strong>Next:</strong> <a href="setup.html">Setup</a></p>
+<p><strong>Next:</strong> <a href="contribute.html">Contributing</a></p>
 </div class="nav-next">
 </div>
 <div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="resources.html#resources">Resources</a>
+  <ul>
+    <li><a href="resources.html#conference-talks">Conference talks</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
 </div>
 </div>
 
