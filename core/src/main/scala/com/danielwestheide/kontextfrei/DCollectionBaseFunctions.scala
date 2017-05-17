@@ -52,4 +52,8 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
   def repartition[A: ClassTag](as: DCollection[A])(
       numPartitions: Int): DCollection[A]
 
+  def coalesce[A: ClassTag](as: DCollection[A])(
+      numPartitions: Int,
+      shuffle: Boolean = false): DCollection[A]
+
 }
