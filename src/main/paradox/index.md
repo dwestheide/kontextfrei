@@ -13,6 +13,7 @@ This website serves as the hub for all things _kontextfrei_ -- how to use it, wh
  - [setup](setup.md)
  - [status](status.md)
  - [example](example.md)
+ - [resources](resources.md)
  - [contribute](contribute.md)
 
 @@@
