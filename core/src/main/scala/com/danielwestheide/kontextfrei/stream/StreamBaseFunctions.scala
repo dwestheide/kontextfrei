@@ -78,4 +78,8 @@ private[kontextfrei] trait StreamBaseFunctions
   override def repartition[A: ClassTag](as: Stream[A])(
       numPartitions: Int): Stream[A] = as
 
+  override def coalesce[A: ClassTag](
+      as: Stream[A])(numPartitions: Int, shuffle: Boolean = false): Stream[A] =
+    as
+
 }

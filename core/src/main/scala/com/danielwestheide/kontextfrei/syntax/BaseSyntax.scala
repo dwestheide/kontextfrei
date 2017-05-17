@@ -60,4 +60,8 @@ class BaseSyntax[DCollection[_], A: ClassTag](
   final def repartition(numPartitions: Int): DCollection[A] =
     self.repartition(coll)(numPartitions)
 
+  final def coalesce(numPartitions: Int,
+                     shuffle: Boolean = false): DCollection[A] =
+    self.coalesce(coll)(numPartitions, shuffle)
+
 }

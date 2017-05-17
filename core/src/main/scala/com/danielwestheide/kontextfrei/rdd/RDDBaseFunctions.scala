@@ -66,4 +66,8 @@ private[kontextfrei] trait RDDBaseFunctions
   override def repartition[A: ClassTag](as: RDD[A])(
       numPartitions: Int): RDD[A] = as.repartition(numPartitions)
 
+  override def coalesce[A: ClassTag](as: RDD[A])(numPartitions: Int,
+                                                 shuffle: Boolean = false) =
+    as.coalesce(numPartitions, shuffle)
+
 }

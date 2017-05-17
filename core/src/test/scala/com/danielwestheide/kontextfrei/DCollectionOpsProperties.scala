@@ -550,4 +550,12 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
+  property("coalesce doesn't have any visible effect on a DCollection") {
+    forAll(Gen.listOfN(4, Gen.alphaStr)) { xs =>
+      val original = unit(xs).repartition(4)
+      val result   = original.coalesce(2).collect().toList
+      assert(result === original.collect().toList)
+    }
+  }
+
 }
