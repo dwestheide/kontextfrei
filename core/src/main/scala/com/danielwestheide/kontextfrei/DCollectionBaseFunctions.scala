@@ -49,4 +49,7 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
 
   def first[A: ClassTag](as: DCollection[A]): A
 
+  def repartition[A: ClassTag](as: DCollection[A])(
+      numPartitions: Int): DCollection[A]
+
 }

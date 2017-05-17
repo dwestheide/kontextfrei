@@ -1,8 +1,11 @@
 package com.danielwestheide.kontextfrei
 
-import org.scalatest.Inspectors
+import org.scalacheck.Gen
+import org.scalatest.{DiagrammedAssertions, Inspectors}
 
-trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
+trait DCollectionOpsProperties[DColl[_]]
+    extends BaseSpec[DColl]
+    with DiagrammedAssertions {
 
   import syntax.Imports._
   import org.scalatest.OptionValues._
@@ -537,6 +540,13 @@ trait DCollectionOpsProperties[DColl[_]] extends BaseSpec[DColl] {
           .first() mustEqual xs.toList.sorted.head
         unit(xs.toList).first() mustEqual xs.head
       }
+    }
+  }
+
+  property("repartition doesn't have any visible effect on a DCollection") {
+    forAll(Gen.listOfN(4, Gen.alphaStr)) { xs =>
+      val result = unit(xs).repartition(2).collect().toList
+      assert(result.sorted === xs.sorted)
     }
   }
 

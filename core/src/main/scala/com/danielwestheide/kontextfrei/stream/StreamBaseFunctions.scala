@@ -75,4 +75,7 @@ private[kontextfrei] trait StreamBaseFunctions
       throw new UnsupportedOperationException("empty collection")
     }
 
+  override def repartition[A: ClassTag](as: Stream[A])(
+      numPartitions: Int): Stream[A] = as
+
 }
