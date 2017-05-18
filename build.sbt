@@ -4,7 +4,7 @@ import KontextfreiKeys._
 name := "kontextfrei"
 
 sparkVersion in ThisBuild := sys.props.getOrElse("kontextfrei.spark.version",
-                                                 "2.1.0")
+                                                 "1.4.1")
 val common = Seq(
   organization := "com.danielwestheide",
   normalizedName := normalizedName.value + "-spark-" + sparkVersion.value,
