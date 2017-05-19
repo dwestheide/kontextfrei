@@ -537,8 +537,17 @@ trait DCollectionOpsProperties[DColl[_]]
       whenever(xs.nonEmpty) {
         unit(xs.toList)
           .sortBy(identity)
-          .first() mustEqual xs.toList.sorted.head
+          .first() mustEqual xs.toList.min
         unit(xs.toList).first() mustEqual xs.head
+      }
+    }
+  }
+
+  property("take returns the first N elements of the DCollection") {
+    forAll { (xs: Set[String], num: Int) =>
+      whenever(xs.nonEmpty && num > 0) {
+        unit(xs.toList).sortBy(identity).take(num) mustEqual xs.toList.sorted
+          .take(num)
       }
     }
   }

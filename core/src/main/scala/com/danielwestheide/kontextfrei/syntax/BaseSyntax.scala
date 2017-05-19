@@ -57,6 +57,8 @@ class BaseSyntax[DCollection[_], A: ClassTag](
 
   final def first(): A = self.first(coll)
 
+  final def take(num: Int): Array[A] = self.take(coll)(num)
+
   final def repartition(numPartitions: Int): DCollection[A] =
     self.repartition(coll)(numPartitions)
 

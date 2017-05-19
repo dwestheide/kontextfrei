@@ -63,6 +63,8 @@ private[kontextfrei] trait RDDBaseFunctions
 
   override final def first[A: ClassTag](as: RDD[A]): A = as.first()
 
+  override def take[A: ClassTag](as: RDD[A])(n: Int): Array[A] = as.take(n)
+
   override def repartition[A: ClassTag](as: RDD[A])(
       numPartitions: Int): RDD[A] = as.repartition(numPartitions)
 

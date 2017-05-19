@@ -49,6 +49,8 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
 
   def first[A: ClassTag](as: DCollection[A]): A
 
+  def take[A: ClassTag](as: DCollection[A])(n: Int): Array[A]
+
   def repartition[A: ClassTag](as: DCollection[A])(
       numPartitions: Int): DCollection[A]
 
