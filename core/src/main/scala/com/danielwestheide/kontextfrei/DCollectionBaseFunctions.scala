@@ -43,6 +43,10 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
   def sortBy[A: ClassTag, B: ClassTag: Ordering](as: DCollection[A])(
       f: A => B)(ascending: Boolean): DCollection[A]
 
+  def sortByWithNumPartitions[A: ClassTag, B: ClassTag: Ordering](
+      as: DCollection[A])(f: A => B)(ascending: Boolean)(
+      numPartitions: Int): DCollection[A]
+
   def collectAsArray[A: ClassTag](as: DCollection[A]): Array[A]
 
   def count[A](as: DCollection[A]): Long

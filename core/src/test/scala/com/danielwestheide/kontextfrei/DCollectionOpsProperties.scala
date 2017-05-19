@@ -276,6 +276,24 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
+  property(
+    "sortByWithNumPartitions returns a DCollection sorted by the given function, ascending") {
+    forAll { (xs: List[String], f: String => Int) =>
+      val result =
+        unit(xs).sortBy(f, ascending = true, numPartitions = 4).collect()
+      result.sortBy(f) mustEqual result
+    }
+  }
+
+  property(
+    "sortByWithNumPartitions returns a DCollection sorted by the given function, descending") {
+    forAll { (xs: List[String], f: String => Int) =>
+      val result =
+        unit(xs).sortBy(f, ascending = false, numPartitions = 4).collect()
+      result.sortBy(f)(Ordering[Int].reverse) mustEqual result
+    }
+  }
+
   property("mapValues adheres to the first functor law") {
     forAll { xs: List[(String, Int)] =>
       unit(xs).mapValues(identity).collect() mustEqual unit(xs).collect()

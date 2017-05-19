@@ -65,6 +65,14 @@ private[kontextfrei] trait StreamBaseFunctions
     as.sortBy(f)(if (ascending) ordering else ordering.reverse)
   }
 
+  override final def sortByWithNumPartitions[A: ClassTag,
+                                             B: ClassTag: Ordering](
+      as: Stream[A])(f: A => B)(ascending: Boolean)(
+      numPartitions: Int): Stream[A] = {
+    val ordering = implicitly[Ordering[B]]
+    as.sortBy(f)(if (ascending) ordering else ordering.reverse)
+  }
+
   override final def collectAsArray[A: ClassTag](as: Stream[A]): Array[A] =
     as.toArray
 

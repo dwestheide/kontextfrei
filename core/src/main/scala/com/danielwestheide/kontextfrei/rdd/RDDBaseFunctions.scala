@@ -56,6 +56,11 @@ private[kontextfrei] trait RDDBaseFunctions
       f: (A) => B)(ascending: Boolean): RDD[A] =
     as.sortBy(f, ascending)
 
+  override final def sortByWithNumPartitions[A: ClassTag,
+                                             B: ClassTag: Ordering](
+      as: RDD[A])(f: A => B)(ascending: Boolean)(numPartitions: Int): RDD[A] =
+    as.sortBy(f, ascending, numPartitions)
+
   override final def collectAsArray[A: ClassTag](as: RDD[A]): Array[A] =
     as.collect()
 

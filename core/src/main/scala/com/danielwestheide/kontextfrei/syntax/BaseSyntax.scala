@@ -51,6 +51,11 @@ class BaseSyntax[DCollection[_], A: ClassTag](
       ascending: Boolean = true): DCollection[A] =
     self.sortBy(coll)(f)(ascending)
 
+  final def sortBy[B: ClassTag: Ordering](f: A => B,
+                                          ascending: Boolean,
+                                          numPartitions: Int): DCollection[A] =
+    self.sortByWithNumPartitions(coll)(f)(ascending)(numPartitions)
+
   final def collect(): Array[A] = self.collectAsArray(coll)
 
   final def count(): Long = self.count(coll)
