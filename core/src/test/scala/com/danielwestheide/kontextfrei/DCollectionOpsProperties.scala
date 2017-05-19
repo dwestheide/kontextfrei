@@ -63,6 +63,19 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
+  property(
+    "distinctWithNumPartitions returns a DCollection of distinct elements") {
+    forAll(listWithDuplicates[String]) { xs =>
+      whenever(xs.distinct !== xs) {
+        unit(xs).distinct(numPartitions = 4).collect().sorted mustEqual unit(
+          xs)
+          .collect()
+          .distinct
+          .sorted
+      }
+    }
+  }
+
   property("Map adheres to the first functor law") {
     forAll { xs: List[Int] =>
       unit(xs).map(identity).collect() mustEqual unit(xs).collect()

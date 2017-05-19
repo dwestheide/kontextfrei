@@ -17,6 +17,9 @@ class BaseSyntax[DCollection[_], A: ClassTag](
 
   final def distinct(): DCollection[A] = self.distinct(coll)
 
+  final def distinct(numPartitions: Int): DCollection[A] =
+    self.distinctWithNumPartitions(coll)(numPartitions)
+
   final def map[B: ClassTag](f: A => B): DCollection[B] = self.map(coll)(f)
 
   final def flatMap[B: ClassTag](f: A => TraversableOnce[B]): DCollection[B] =

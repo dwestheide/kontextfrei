@@ -21,6 +21,9 @@ private[kontextfrei] trait StreamBaseFunctions
   override final def distinct[A: ClassTag](as: Stream[A]): Stream[A] =
     as.distinct
 
+  override def distinctWithNumPartitions[A: ClassTag](as: Stream[A])(
+      numPartitions: Int): Stream[A] = as.distinct
+
   override final def map[A: ClassTag, B: ClassTag](as: Stream[A])(
       f: A => B): Stream[B] =
     as.map(f)

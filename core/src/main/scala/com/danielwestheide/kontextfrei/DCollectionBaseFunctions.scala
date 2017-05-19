@@ -13,6 +13,9 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
 
   def distinct[A: ClassTag](as: DCollection[A]): DCollection[A]
 
+  def distinctWithNumPartitions[A: ClassTag](as: DCollection[A])(
+      numPartitions: Int): DCollection[A]
+
   def map[A: ClassTag, B: ClassTag](as: DCollection[A])(
       f: A => B): DCollection[B]
 

@@ -15,7 +15,11 @@ private[kontextfrei] trait RDDBaseFunctions
   override final def collect[A: ClassTag, B: ClassTag](as: RDD[A])(
       pf: PartialFunction[A, B]): RDD[B] =
     as.collect(pf)
+
   override final def distinct[A: ClassTag](as: RDD[A]): RDD[A] = as.distinct()
+
+  override def distinctWithNumPartitions[A: ClassTag](as: RDD[A])(
+      numPartitions: Int): RDD[A] = as.distinct(numPartitions)
 
   override final def map[A: ClassTag, B: ClassTag](as: RDD[A])(
       f: A => B): RDD[B] =
