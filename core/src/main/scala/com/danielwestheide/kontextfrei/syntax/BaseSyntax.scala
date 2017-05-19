@@ -62,6 +62,9 @@ class BaseSyntax[DCollection[_], A: ClassTag](
   final def takeOrdered(num: Int)(implicit ord: Ordering[A]): Array[A] =
     self.takeOrdered(coll)(num)
 
+  final def top(num: Int)(implicit ord: Ordering[A]): Array[A] =
+    self.top(coll)(num)
+
   final def repartition(numPartitions: Int): DCollection[A] =
     self.repartition(coll)(numPartitions)
 

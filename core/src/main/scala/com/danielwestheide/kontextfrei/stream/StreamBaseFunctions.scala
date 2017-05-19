@@ -81,6 +81,10 @@ private[kontextfrei] trait StreamBaseFunctions
   override def takeOrdered[A: ClassTag](as: Stream[A])(num: Int)(
       implicit ord: Ordering[A]): Array[A] = as.sorted.take(num).toArray
 
+  override def top[A: ClassTag](as: Stream[A])(num: Int)(
+      implicit ord: Ordering[A]): Array[A] =
+    as.sorted(ord.reverse).take(num).toArray
+
   override def repartition[A: ClassTag](as: Stream[A])(
       numPartitions: Int): Stream[A] = as
 

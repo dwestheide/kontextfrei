@@ -54,6 +54,9 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
   def takeOrdered[A: ClassTag](as: DCollection[A])(num: Int)(
       implicit ord: Ordering[A]): Array[A]
 
+  def top[A: ClassTag](as: DCollection[A])(num: Int)(
+      implicit ord: Ordering[A]): Array[A]
+
   def repartition[A: ClassTag](as: DCollection[A])(
       numPartitions: Int): DCollection[A]
 

@@ -68,6 +68,9 @@ private[kontextfrei] trait RDDBaseFunctions
   override def takeOrdered[A: ClassTag](as: RDD[A])(num: Int)(
       implicit ord: Ordering[A]): Array[A] = as.takeOrdered(num)
 
+  override def top[A: ClassTag](as: RDD[A])(num: Int)(
+      implicit ord: Ordering[A]): Array[A] = as.top(num)
+
   override def repartition[A: ClassTag](as: RDD[A])(
       numPartitions: Int): RDD[A] = as.repartition(numPartitions)
 

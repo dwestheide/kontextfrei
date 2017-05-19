@@ -562,6 +562,16 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
+  property(
+    "top returns the top N elements of the DCollection, according to the implicit Ordering") {
+    forAll(Gen.choose(0, 10000)) { x1 =>
+      val x2 = x1 + 1
+      val x3 = x1 + 2
+      val xs = List(x2, x1, x3)
+      unit(xs).top(2) mustEqual Array(x3, x2)
+    }
+  }
+
   property("repartition doesn't have any visible effect on a DCollection") {
     forAll(Gen.listOfN(4, Gen.alphaStr)) { xs =>
       val result = unit(xs).repartition(2).collect().toList
