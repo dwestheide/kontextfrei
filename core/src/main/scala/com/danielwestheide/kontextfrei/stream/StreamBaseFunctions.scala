@@ -1,6 +1,7 @@
 package com.danielwestheide.kontextfrei.stream
 
 import com.danielwestheide.kontextfrei.DCollectionBaseFunctions
+import org.apache.spark.Partitioner
 
 import scala.reflect.ClassTag
 
@@ -43,6 +44,11 @@ private[kontextfrei] trait StreamBaseFunctions
   override final def groupByWithNumPartitions[A, B: ClassTag](as: Stream[A])(
       f: (A) => B,
       numPartitions: Int): Stream[(B, Iterable[A])] =
+    groupBy(as)(f)
+
+  override final def groupByWithPartitioner[A, B: ClassTag](as: Stream[A])(
+      f: (A) => B,
+      partitioner: Partitioner): Stream[(B, Iterable[A])] =
     groupBy(as)(f)
 
   override final def mapPartitions[A: ClassTag, B: ClassTag](as: Stream[A])(

@@ -1,6 +1,7 @@
 package com.danielwestheide.kontextfrei.rdd
 
 import com.danielwestheide.kontextfrei.DCollectionBaseFunctions
+import org.apache.spark.Partitioner
 import org.apache.spark.rdd.RDD
 
 import scala.collection.Map
@@ -37,8 +38,12 @@ private[kontextfrei] trait RDDBaseFunctions
     as.groupBy(f)
 
   override final def groupByWithNumPartitions[A, B: ClassTag](
-      as: RDD[A])(f: A => B, numPartitios: Int): RDD[(B, Iterable[A])] =
-    as.groupBy(f, numPartitios)
+      as: RDD[A])(f: A => B, numPartitions: Int): RDD[(B, Iterable[A])] =
+    as.groupBy(f, numPartitions)
+
+  override final def groupByWithPartitioner[A, B: ClassTag](
+      as: RDD[A])(f: A => B, partitioner: Partitioner): RDD[(B, Iterable[A])] =
+    as.groupBy(f, partitioner)
 
   override final def mapPartitions[A: ClassTag, B: ClassTag](as: RDD[A])(
       f: Iterator[A] => Iterator[B],

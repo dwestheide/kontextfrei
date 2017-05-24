@@ -1,6 +1,7 @@
 package com.danielwestheide.kontextfrei.syntax
 
 import com.danielwestheide.kontextfrei.DCollectionOps
+import org.apache.spark.Partitioner
 
 import scala.collection.Map
 import scala.reflect.ClassTag
@@ -33,6 +34,11 @@ class BaseSyntax[DCollection[_], A: ClassTag](
       f: A => B,
       numPartitions: Int): DCollection[(B, Iterable[A])] =
     self.groupByWithNumPartitions(coll)(f, numPartitions)
+
+  final def groupBy[B: ClassTag](
+      f: A => B,
+      partitioner: Partitioner): DCollection[(B, Iterable[A])] =
+    self.groupByWithPartitioner(coll)(f, partitioner)
 
   final def mapPartitions[B: ClassTag](
       f: Iterator[A] => Iterator[B],

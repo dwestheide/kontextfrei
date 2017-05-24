@@ -1,5 +1,6 @@
 package com.danielwestheide.kontextfrei
 
+import org.apache.spark.HashPartitioner
 import org.scalacheck.Gen
 import org.scalatest.{DiagrammedAssertions, Inspectors}
 
@@ -213,6 +214,39 @@ trait DCollectionOpsProperties[DColl[_]]
     import SmallNumbers._
     forAll { (xs: List[String], f: String => Int, numPartitions: Int) =>
       val groupedXs = unit(xs).groupBy(f, numPartitions).collect()
+      groupedXs.flatMap(_._2).size mustEqual xs.size
+    }
+  }
+
+  property("groupBy with partitioner returns DCollection with distinct keys") {
+    import SmallNumbers._
+    forAll { (xs: List[String], f: String => Int, numPartitions: Int) =>
+      val partitioner = new HashPartitioner(numPartitions)
+      val groupedXs   = unit(xs).groupBy(f, partitioner).collect()
+      groupedXs.map(_._1) mustEqual groupedXs.map(_._1).distinct
+    }
+  }
+
+  property(
+    "groupBy with partitioner groups all values a with the same result f(a) together") {
+    import SmallNumbers._
+    forAll { (xs: List[String], f: String => Int, numPartitions: Int) =>
+      val partitioner = new HashPartitioner(numPartitions)
+      val groupedXs   = unit(xs).groupBy(f, partitioner).collect()
+      Inspectors.forAll(groupedXs) {
+        case (k, v) =>
+          Inspectors.forAll(xs.filter(x => f(x) === k)) { x =>
+            assert(v.toSet(x))
+          }
+      }
+    }
+  }
+
+  property("groupBy with partitioner does not change number of total values") {
+    import SmallNumbers._
+    forAll { (xs: List[String], f: String => Int, numPartitions: Int) =>
+      val partitioner = new HashPartitioner(numPartitions)
+      val groupedXs   = unit(xs).groupBy(f, partitioner).collect()
       groupedXs.flatMap(_._2).size mustEqual xs.size
     }
   }
