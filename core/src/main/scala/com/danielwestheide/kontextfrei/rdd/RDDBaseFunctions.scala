@@ -57,6 +57,18 @@ private[kontextfrei] trait RDDBaseFunctions
   override final def union[A: ClassTag](xs: RDD[A])(ys: RDD[A]): RDD[A] =
     xs.union(ys)
 
+  override final def intersection[A: ClassTag](xs: RDD[A])(
+      ys: RDD[A]): RDD[A] =
+    xs.intersection(ys)
+
+  override final def intersectionWithPartitioner[A: ClassTag](
+      xs: RDD[A])(ys: RDD[A], partitioner: Partitioner): RDD[A] =
+    xs.intersection(ys, partitioner)
+
+  override final def intersectionWithNumPartitions[A: ClassTag](
+      xs: RDD[A])(ys: RDD[A], numPartitions: Int): RDD[A] =
+    xs.intersection(ys, numPartitions)
+
   override final def sortBy[A: ClassTag, B: ClassTag: Ordering](as: RDD[A])(
       f: (A) => B)(ascending: Boolean): RDD[A] =
     as.sortBy(f, ascending)

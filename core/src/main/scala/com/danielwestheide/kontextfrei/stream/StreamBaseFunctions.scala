@@ -65,6 +65,18 @@ private[kontextfrei] trait StreamBaseFunctions
       ys: Stream[A]): Stream[A] =
     xs.union(ys)
 
+  override final def intersection[A: ClassTag](xs: Stream[A])(
+      ys: Stream[A]): Stream[A] =
+    xs.distinct.intersect(ys.distinct)
+
+  override final def intersectionWithPartitioner[A: ClassTag](
+      xs: Stream[A])(ys: Stream[A], partitioner: Partitioner): Stream[A] =
+    intersection(xs)(ys)
+
+  override final def intersectionWithNumPartitions[A: ClassTag](
+      xs: Stream[A])(ys: Stream[A], numPartitions: Int): Stream[A] =
+    intersection(xs)(ys)
+
   override final def sortBy[A: ClassTag, B: ClassTag: Ordering](as: Stream[A])(
       f: (A) => B)(ascending: Boolean): Stream[A] = {
     val ordering = implicitly[Ordering[B]]

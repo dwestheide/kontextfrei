@@ -46,6 +46,17 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
   def union[A: ClassTag](xs: DCollection[A])(
       ys: DCollection[A]): DCollection[A]
 
+  def intersection[A: ClassTag](xs: DCollection[A])(
+      ys: DCollection[A]): DCollection[A]
+
+  def intersectionWithPartitioner[A: ClassTag](xs: DCollection[A])(
+      ys: DCollection[A],
+      partitioner: Partitioner): DCollection[A]
+
+  def intersectionWithNumPartitions[A: ClassTag](xs: DCollection[A])(
+      ys: DCollection[A],
+      numPartitions: Int): DCollection[A]
+
   def sortBy[A: ClassTag, B: ClassTag: Ordering](as: DCollection[A])(
       f: A => B)(ascending: Boolean): DCollection[A]
 

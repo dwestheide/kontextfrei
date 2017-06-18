@@ -295,6 +295,82 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property(
+    "The intersection of xs and ys contains only elements both in xs and ys") {
+    forAll { (numbers: List[Int]) =>
+      val evenNumbers = numbers.filter(_ % 2 == 0)
+      val xs          = unit(evenNumbers)
+      val ys          = unit(numbers)
+      Inspectors.forAll(xs.intersection(ys).collect()) { x =>
+        assert(evenNumbers.contains(x) && numbers.contains(x))
+      }
+    }
+  }
+
+  property("The intersection of xs and ys contains no duplicates") {
+    forAll { (numbers: List[Int]) =>
+      val evenNumbers = numbers.filter(_ % 2 == 0)
+      val xs          = unit(evenNumbers)
+      val ys          = unit(numbers) ++ xs
+      assert(
+        xs.intersection(ys)
+          .collect()
+          .toList
+          .sorted === evenNumbers.distinct.sorted)
+    }
+  }
+
+  property(
+    "intersectionWithPartitioner of xs and ys contains only elements both in xs and ys") {
+    forAll { (numbers: List[Int]) =>
+      val evenNumbers = numbers.filter(_ % 2 == 0)
+      val xs          = unit(evenNumbers)
+      val ys          = unit(numbers)
+      Inspectors.forAll(xs.intersection(ys, new HashPartitioner(2)).collect()) {
+        x =>
+          assert(evenNumbers.contains(x) && numbers.contains(x))
+      }
+    }
+  }
+
+  property("intersectionWithPartitioner of xs and ys contains no duplicates") {
+    forAll { (numbers: List[Int]) =>
+      val evenNumbers = numbers.filter(_ % 2 == 0)
+      val xs          = unit(evenNumbers)
+      val ys          = unit(numbers) ++ xs
+      assert(
+        xs.intersection(ys, new HashPartitioner(2))
+          .collect()
+          .toList
+          .sorted === evenNumbers.distinct.sorted)
+    }
+  }
+
+  property(
+    "intersectionWithNumPartitions of xs and ys contains only elements both in xs and ys") {
+    forAll { (numbers: List[Int]) =>
+      val evenNumbers = numbers.filter(_ % 2 == 0)
+      val xs          = unit(evenNumbers)
+      val ys          = unit(numbers)
+      Inspectors.forAll(xs.intersection(ys, 2).collect()) { x =>
+        assert(evenNumbers.contains(x) && numbers.contains(x))
+      }
+    }
+  }
+
+  property("intersectionWithNumPartitions of xs and ys contains no duplicates") {
+    forAll { (numbers: List[Int]) =>
+      val evenNumbers = numbers.filter(_ % 2 == 0)
+      val xs          = unit(evenNumbers)
+      val ys          = unit(numbers) ++ xs
+      assert(
+        xs.intersection(ys, 2)
+          .collect()
+          .toList
+          .sorted === evenNumbers.distinct.sorted)
+    }
+  }
+
+  property(
     "sortBy returns a DCollection sorted by the given function, ascending") {
     forAll { (xs: List[String], f: String => Int) =>
       val result = unit(xs).sortBy(f, ascending = true).collect()

@@ -1,7 +1,7 @@
 package com.danielwestheide.kontextfrei.syntax
 
 import com.danielwestheide.kontextfrei.DCollectionOps
-import org.apache.spark.Partitioner
+import org.apache.spark.{HashPartitioner, Partitioner}
 
 import scala.collection.Map
 import scala.reflect.ClassTag
@@ -51,6 +51,17 @@ class BaseSyntax[DCollection[_], A: ClassTag](
     self.union(coll)(other)
 
   final def ++(other: DCollection[A]): DCollection[A] = self.union(coll)(other)
+
+  final def intersection(other: DCollection[A]): DCollection[A] =
+    self.intersection(coll)(other)
+
+  final def intersection(other: DCollection[A],
+                         partitioner: Partitioner): DCollection[A] =
+    self.intersectionWithPartitioner(coll)(other, partitioner)
+
+  final def intersection(other: DCollection[A],
+                         numPartitions: Int): DCollection[A] =
+    self.intersectionWithNumPartitions(coll)(other, numPartitions)
 
   final def sortBy[B: ClassTag: Ordering](
       f: A => B,
