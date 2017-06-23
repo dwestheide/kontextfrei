@@ -1,7 +1,7 @@
 package com.danielwestheide.kontextfrei.stream
 
 import com.danielwestheide.kontextfrei.DCollectionBaseFunctions
-import org.apache.spark.Partitioner
+import org.apache.spark.{Partitioner, SparkException}
 
 import scala.reflect.ClassTag
 
@@ -76,6 +76,15 @@ private[kontextfrei] trait StreamBaseFunctions
   override final def intersectionWithNumPartitions[A: ClassTag](
       xs: Stream[A])(ys: Stream[A], numPartitions: Int): Stream[A] =
     intersection(xs)(ys)
+
+  override final def zip[A: ClassTag, B: ClassTag](xs: Stream[A])(
+      ys: Stream[B]): Stream[(A, B)] = {
+    val result = xs.zip(ys)
+    if (result.size < xs.size || result.size < ys.size)
+      throw new SparkException(
+        "Zipping only works if both collections have same number of elements")
+    else result
+  }
 
   override final def sortBy[A: ClassTag, B: ClassTag: Ordering](as: Stream[A])(
       f: (A) => B)(ascending: Boolean): Stream[A] = {

@@ -57,6 +57,9 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
       ys: DCollection[A],
       numPartitions: Int): DCollection[A]
 
+  def zip[A: ClassTag, B: ClassTag](xs: DCollection[A])(
+      ys: DCollection[B]): DCollection[(A, B)]
+
   def sortBy[A: ClassTag, B: ClassTag: Ordering](as: DCollection[A])(
       f: A => B)(ascending: Boolean): DCollection[A]
 

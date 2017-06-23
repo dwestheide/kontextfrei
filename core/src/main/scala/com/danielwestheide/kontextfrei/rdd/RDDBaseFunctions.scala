@@ -69,6 +69,9 @@ private[kontextfrei] trait RDDBaseFunctions
       xs: RDD[A])(ys: RDD[A], numPartitions: Int): RDD[A] =
     xs.intersection(ys, numPartitions)
 
+  override final def zip[A: ClassTag, B: ClassTag](xs: RDD[A])(
+      ys: RDD[B]): RDD[(A, B)] = xs.zip(ys)
+
   override final def sortBy[A: ClassTag, B: ClassTag: Ordering](as: RDD[A])(
       f: (A) => B)(ascending: Boolean): RDD[A] =
     as.sortBy(f, ascending)

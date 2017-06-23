@@ -63,6 +63,9 @@ class BaseSyntax[DCollection[_], A: ClassTag](
                          numPartitions: Int): DCollection[A] =
     self.intersectionWithNumPartitions(coll)(other, numPartitions)
 
+  final def zip[B: ClassTag](other: DCollection[B]): DCollection[(A, B)] =
+    self.zip(coll)(other)
+
   final def sortBy[B: ClassTag: Ordering](
       f: A => B,
       ascending: Boolean = true): DCollection[A] =

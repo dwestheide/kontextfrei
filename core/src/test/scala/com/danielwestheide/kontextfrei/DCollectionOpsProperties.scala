@@ -1,6 +1,6 @@
 package com.danielwestheide.kontextfrei
 
-import org.apache.spark.HashPartitioner
+import org.apache.spark.{HashPartitioner, SparkException}
 import org.scalacheck.Gen
 import org.scalatest.{DiagrammedAssertions, Inspectors}
 
@@ -367,6 +367,35 @@ trait DCollectionOpsProperties[DColl[_]]
           .collect()
           .toList
           .sorted === evenNumbers.distinct.sorted)
+    }
+  }
+
+  property("zipping with itself returns tuples of equal values") {
+    forAll { (xs: List[Int]) =>
+      val result = unit(xs).zip(unit(xs)).collect()
+      Inspectors.forAll(result) {
+        case (x, y) =>
+          assert(x === y)
+      }
+    }
+  }
+
+  property("zipping doesn't change the order of elements") {
+    forAll { (numbers: List[Int]) =>
+      val strings = numbers.map(_.toString)
+      val result  = unit(numbers).zip(unit(strings)).collect().toList
+      assert(result.map(_._1) === numbers)
+      assert(result.map(_._2) === strings)
+    }
+  }
+
+  property("zipping fails for unequal collection sizes") {
+    forAll { (xs: List[Int]) =>
+      whenever(xs.nonEmpty) {
+        intercept[SparkException] {
+          unit(xs).zip(unit(xs ++ xs)).collect()
+        }
+      }
     }
   }
 
