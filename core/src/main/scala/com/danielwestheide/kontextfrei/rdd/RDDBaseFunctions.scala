@@ -3,6 +3,7 @@ package com.danielwestheide.kontextfrei.rdd
 import com.danielwestheide.kontextfrei.DCollectionBaseFunctions
 import org.apache.spark.Partitioner
 import org.apache.spark.rdd.RDD
+import org.apache.spark.storage.StorageLevel
 
 import scala.collection.Map
 import scala.reflect.ClassTag
@@ -82,6 +83,15 @@ private[kontextfrei] trait RDDBaseFunctions
   override final def subtractWithPartitioner[A: ClassTag](
       xs: RDD[A])(ys: RDD[A], partitioner: Partitioner): RDD[A] =
     xs.subtract(ys, partitioner)
+
+  override final def persist[A: ClassTag](xs: RDD[A]): RDD[A] = xs.persist()
+
+  override final def persistWithStorageLevel[A: ClassTag](xs: RDD[A])(
+      level: StorageLevel): RDD[A] = xs.persist(level)
+
+  override final def unpersist[A: ClassTag](xs: RDD[A])(blocking: Boolean =
+                                                          true): RDD[A] =
+    xs.unpersist(blocking)
 
   override final def sortBy[A: ClassTag, B: ClassTag: Ordering](as: RDD[A])(
       f: (A) => B)(ascending: Boolean): RDD[A] =

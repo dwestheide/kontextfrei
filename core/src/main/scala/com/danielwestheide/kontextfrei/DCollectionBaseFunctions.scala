@@ -1,6 +1,7 @@
 package com.danielwestheide.kontextfrei
 
 import org.apache.spark.Partitioner
+import org.apache.spark.storage.StorageLevel
 
 import scala.collection.Map
 import scala.reflect.ClassTag
@@ -70,6 +71,14 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
   def subtractWithPartitioner[A: ClassTag](xs: DCollection[A])(
       ys: DCollection[A],
       partitioner: Partitioner): DCollection[A]
+
+  def persist[A: ClassTag](xs: DCollection[A]): DCollection[A]
+
+  def persistWithStorageLevel[A: ClassTag](xs: DCollection[A])(
+      level: StorageLevel): DCollection[A]
+
+  def unpersist[A: ClassTag](xs: DCollection[A])(
+      blocking: Boolean = true): DCollection[A]
 
   def sortBy[A: ClassTag, B: ClassTag: Ordering](as: DCollection[A])(
       f: A => B)(ascending: Boolean): DCollection[A]

@@ -1,6 +1,7 @@
 package com.danielwestheide.kontextfrei.syntax
 
 import com.danielwestheide.kontextfrei.DCollectionOps
+import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{HashPartitioner, Partitioner}
 
 import scala.collection.Map
@@ -76,6 +77,14 @@ class BaseSyntax[DCollection[_], A: ClassTag](
   final def subtract(other: DCollection[A],
                      partititioner: Partitioner): DCollection[A] =
     self.subtractWithPartitioner(coll)(other, partititioner)
+
+  final def persist(): DCollection[A] = self.persist(coll)
+
+  final def persist(newLevel: StorageLevel): DCollection[A] =
+    self.persistWithStorageLevel(coll)(newLevel)
+
+  final def unpersist(blocking: Boolean = true): DCollection[A] =
+    self.unpersist(coll)(blocking)
 
   final def sortBy[B: ClassTag: Ordering](
       f: A => B,

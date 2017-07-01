@@ -1,6 +1,7 @@
 package com.danielwestheide.kontextfrei.stream
 
 import com.danielwestheide.kontextfrei.DCollectionBaseFunctions
+import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{Partitioner, SparkException}
 
 import scala.reflect.ClassTag
@@ -96,6 +97,14 @@ private[kontextfrei] trait StreamBaseFunctions
   override final def subtractWithPartitioner[A: ClassTag](
       xs: Stream[A])(ys: Stream[A], partitioner: Partitioner): Stream[A] =
     subtract(xs)(ys)
+
+  override final def persist[A: ClassTag](xs: Stream[A]): Stream[A] = xs
+
+  override final def persistWithStorageLevel[A: ClassTag](xs: Stream[A])(
+      level: StorageLevel): Stream[A] = xs
+
+  override final def unpersist[A: ClassTag](xs: Stream[A])(
+      blocking: Boolean = true): Stream[A] = xs
 
   override final def sortBy[A: ClassTag, B: ClassTag: Ordering](as: Stream[A])(
       f: (A) => B)(ascending: Boolean): Stream[A] = {

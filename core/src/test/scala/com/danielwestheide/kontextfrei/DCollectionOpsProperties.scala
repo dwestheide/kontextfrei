@@ -1,5 +1,6 @@
 package com.danielwestheide.kontextfrei
 
+import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{HashPartitioner, SparkException}
 import org.scalacheck.Gen
 import org.scalatest.{DiagrammedAssertions, Inspectors}
@@ -450,6 +451,34 @@ trait DCollectionOpsProperties[DColl[_]]
     forAll { (xs: List[Int]) =>
       assert(
         unit(xs).subtract(unit(xs), new HashPartitioner(2)).collect().isEmpty)
+    }
+  }
+
+  property("persist has no observable effect") {
+    forAll { (xs: List[Int]) =>
+      val coll = unit(xs)
+      assert(coll.persist().collect().toList === coll.collect().toList)
+    }
+  }
+
+  property("persistWithStorageLevel has no observable effect") {
+    forAll { (xs: List[Int]) =>
+      val coll = unit(xs)
+      assert(
+        coll
+          .persist(StorageLevel.MEMORY_AND_DISK_SER_2)
+          .collect()
+          .toList === coll.collect().toList)
+    }
+  }
+
+  property("unpersist has no observable effect") {
+    forAll { (xs: List[Int]) =>
+      val coll = unit(xs).persist()
+      assert(
+        coll.unpersist(blocking = true).collect().toList === coll
+          .collect()
+          .toList)
     }
   }
 
