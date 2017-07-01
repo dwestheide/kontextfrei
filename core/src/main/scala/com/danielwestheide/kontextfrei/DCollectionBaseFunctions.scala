@@ -80,6 +80,8 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
   def unpersist[A: ClassTag](xs: DCollection[A])(
       blocking: Boolean = true): DCollection[A]
 
+  def glom[A: ClassTag](xs: DCollection[A]): DCollection[Array[A]]
+
   def sortBy[A: ClassTag, B: ClassTag: Ordering](as: DCollection[A])(
       f: A => B)(ascending: Boolean): DCollection[A]
 

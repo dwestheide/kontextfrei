@@ -93,6 +93,8 @@ private[kontextfrei] trait RDDBaseFunctions
                                                           true): RDD[A] =
     xs.unpersist(blocking)
 
+  override final def glom[A: ClassTag](xs: RDD[A]): RDD[Array[A]] = xs.glom()
+
   override final def sortBy[A: ClassTag, B: ClassTag: Ordering](as: RDD[A])(
       f: (A) => B)(ascending: Boolean): RDD[A] =
     as.sortBy(f, ascending)

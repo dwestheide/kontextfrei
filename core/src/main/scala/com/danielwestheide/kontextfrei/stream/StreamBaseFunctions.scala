@@ -106,6 +106,9 @@ private[kontextfrei] trait StreamBaseFunctions
   override final def unpersist[A: ClassTag](xs: Stream[A])(
       blocking: Boolean = true): Stream[A] = xs
 
+  override final def glom[A: ClassTag](xs: Stream[A]): Stream[Array[A]] =
+    Stream(xs.toArray)
+
   override final def sortBy[A: ClassTag, B: ClassTag: Ordering](as: Stream[A])(
       f: (A) => B)(ascending: Boolean): Stream[A] = {
     val ordering = implicitly[Ordering[B]]

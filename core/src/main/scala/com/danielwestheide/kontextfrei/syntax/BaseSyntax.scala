@@ -1,8 +1,8 @@
 package com.danielwestheide.kontextfrei.syntax
 
 import com.danielwestheide.kontextfrei.DCollectionOps
+import org.apache.spark.Partitioner
 import org.apache.spark.storage.StorageLevel
-import org.apache.spark.{HashPartitioner, Partitioner}
 
 import scala.collection.Map
 import scala.reflect.ClassTag
@@ -85,6 +85,8 @@ class BaseSyntax[DCollection[_], A: ClassTag](
 
   final def unpersist(blocking: Boolean = true): DCollection[A] =
     self.unpersist(coll)(blocking)
+
+  final def glom(): DCollection[Array[A]] = self.glom(coll)
 
   final def sortBy[B: ClassTag: Ordering](
       f: A => B,

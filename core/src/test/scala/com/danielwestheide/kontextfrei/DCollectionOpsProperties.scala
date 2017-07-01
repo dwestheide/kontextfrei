@@ -482,6 +482,13 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
+  property("glom does not add or remove elements") {
+    forAll { (xs: List[Int]) =>
+      val result = unit(xs).glom().collect().flatten.toList
+      assert(result === xs)
+    }
+  }
+
   property(
     "sortBy returns a DCollection sorted by the given function, ascending") {
     forAll { (xs: List[String], f: String => Int) =>
