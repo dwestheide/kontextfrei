@@ -66,6 +66,17 @@ class BaseSyntax[DCollection[_], A: ClassTag](
   final def zip[B: ClassTag](other: DCollection[B]): DCollection[(A, B)] =
     self.zip(coll)(other)
 
+  final def subtract(other: DCollection[A]): DCollection[A] =
+    self.subtract(coll)(other)
+
+  final def subtract(other: DCollection[A],
+                     numPartitions: Int): DCollection[A] =
+    self.subtractWithNumPartitions(coll)(other, numPartitions)
+
+  final def subtract(other: DCollection[A],
+                     partititioner: Partitioner): DCollection[A] =
+    self.subtractWithPartitioner(coll)(other, partititioner)
+
   final def sortBy[B: ClassTag: Ordering](
       f: A => B,
       ascending: Boolean = true): DCollection[A] =

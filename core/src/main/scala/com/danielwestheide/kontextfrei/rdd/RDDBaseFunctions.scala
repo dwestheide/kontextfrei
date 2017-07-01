@@ -72,6 +72,17 @@ private[kontextfrei] trait RDDBaseFunctions
   override final def zip[A: ClassTag, B: ClassTag](xs: RDD[A])(
       ys: RDD[B]): RDD[(A, B)] = xs.zip(ys)
 
+  override final def subtract[A: ClassTag](xs: RDD[A])(ys: RDD[A]): RDD[A] =
+    xs.subtract(ys)
+
+  override final def subtractWithNumPartitions[A: ClassTag](
+      xs: RDD[A])(ys: RDD[A], numPartitions: Int): RDD[A] =
+    xs.subtract(ys, numPartitions)
+
+  override final def subtractWithPartitioner[A: ClassTag](
+      xs: RDD[A])(ys: RDD[A], partitioner: Partitioner): RDD[A] =
+    xs.subtract(ys, partitioner)
+
   override final def sortBy[A: ClassTag, B: ClassTag: Ordering](as: RDD[A])(
       f: (A) => B)(ascending: Boolean): RDD[A] =
     as.sortBy(f, ascending)

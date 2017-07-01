@@ -400,6 +400,60 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property(
+    "subtract does not change collection if other one has no common elements") {
+    forAll { (x: Int) =>
+      val coll   = List.fill(2)(x) ::: List.fill(2)(x + 1) ::: Nil
+      val other  = List.fill(4)(x + 2)
+      val result = unit(coll).subtract(unit(other)).collect().toList
+      assert(result.sorted === coll.sorted)
+    }
+  }
+
+  property("subtract collection from itself leads to empty collection") {
+    forAll { (xs: List[Int]) =>
+      assert(unit(xs).subtract(unit(xs)).collect().isEmpty)
+    }
+  }
+
+  property(
+    "subtractWithNumPartitions does not change collection if other one has no common elements") {
+    forAll { (x: Int) =>
+      val coll   = List.fill(2)(x) ::: List.fill(2)(x + 1) ::: Nil
+      val other  = List.fill(4)(x + 2)
+      val result = unit(coll).subtract(unit(other), 2).collect().toList
+      assert(result.sorted === coll.sorted)
+    }
+  }
+
+  property(
+    "subtractWithNumPartitions collection from itself leads to empty collection") {
+    forAll { (xs: List[Int]) =>
+      assert(unit(xs).subtract(unit(xs), 2).collect().isEmpty)
+    }
+  }
+
+  property(
+    "subtractWithPartitioner does not change collection if other one has no common elements") {
+    forAll { (x: Int) =>
+      val coll  = List.fill(2)(x) ::: List.fill(2)(x + 1) ::: Nil
+      val other = List.fill(4)(x + 2)
+      val result = unit(coll)
+        .subtract(unit(other), new HashPartitioner(2))
+        .collect()
+        .toList
+      assert(result.sorted === coll.sorted)
+    }
+  }
+
+  property(
+    "subtractWithPartitioner collection from itself leads to empty collection") {
+    forAll { (xs: List[Int]) =>
+      assert(
+        unit(xs).subtract(unit(xs), new HashPartitioner(2)).collect().isEmpty)
+    }
+  }
+
+  property(
     "sortBy returns a DCollection sorted by the given function, ascending") {
     forAll { (xs: List[String], f: String => Int) =>
       val result = unit(xs).sortBy(f, ascending = true).collect()

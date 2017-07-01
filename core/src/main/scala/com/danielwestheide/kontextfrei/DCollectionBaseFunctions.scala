@@ -60,6 +60,17 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
   def zip[A: ClassTag, B: ClassTag](xs: DCollection[A])(
       ys: DCollection[B]): DCollection[(A, B)]
 
+  def subtract[A: ClassTag](xs: DCollection[A])(
+      ys: DCollection[A]): DCollection[A]
+
+  def subtractWithNumPartitions[A: ClassTag](xs: DCollection[A])(
+      ys: DCollection[A],
+      numPartitions: Int): DCollection[A]
+
+  def subtractWithPartitioner[A: ClassTag](xs: DCollection[A])(
+      ys: DCollection[A],
+      partitioner: Partitioner): DCollection[A]
+
   def sortBy[A: ClassTag, B: ClassTag: Ordering](as: DCollection[A])(
       f: A => B)(ascending: Boolean): DCollection[A]
 

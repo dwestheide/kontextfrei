@@ -86,6 +86,17 @@ private[kontextfrei] trait StreamBaseFunctions
     else result
   }
 
+  override final def subtract[A: ClassTag](xs: Stream[A])(
+      ys: Stream[A]): Stream[A] = xs.filterNot(ys.toSet)
+
+  override final def subtractWithNumPartitions[A: ClassTag](
+      xs: Stream[A])(ys: Stream[A], numPartitions: Int): Stream[A] =
+    subtract(xs)(ys)
+
+  override final def subtractWithPartitioner[A: ClassTag](
+      xs: Stream[A])(ys: Stream[A], partitioner: Partitioner): Stream[A] =
+    subtract(xs)(ys)
+
   override final def sortBy[A: ClassTag, B: ClassTag: Ordering](as: Stream[A])(
       f: (A) => B)(ascending: Boolean): Stream[A] = {
     val ordering = implicitly[Ordering[B]]
