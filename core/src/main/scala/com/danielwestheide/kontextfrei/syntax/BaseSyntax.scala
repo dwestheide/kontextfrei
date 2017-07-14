@@ -117,6 +117,9 @@ class BaseSyntax[DCollection[_], A: ClassTag](
 
   final def foreach(f: A => Unit): Unit = self.foreach(coll)(f)
 
+  final def foreachPartition(f: Iterator[A] => Unit): Unit =
+    self.foreachPartition(coll)(f)
+
   final def isEmpty(): Boolean = self.isEmpty(coll)
 
   final def toLocalIterator: Iterator[A] = self.toLocalIterator(coll)

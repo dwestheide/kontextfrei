@@ -124,6 +124,9 @@ private[kontextfrei] trait RDDBaseFunctions
   override final def foreach[A: ClassTag](as: RDD[A])(f: A => Unit): Unit =
     as.foreach(f)
 
+  override final def foreachPartition[A: ClassTag](as: RDD[A])(
+      f: Iterator[A] => Unit): Unit = as.foreachPartition(f)
+
   override final def isEmpty[A: ClassTag](as: RDD[A]): Boolean = as.isEmpty()
 
   override final def toLocalIterator[A: ClassTag](as: RDD[A]): Iterator[A] =

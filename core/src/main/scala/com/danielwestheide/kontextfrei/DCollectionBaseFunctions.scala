@@ -107,6 +107,9 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
 
   def foreach[A: ClassTag](as: DCollection[A])(f: A => Unit): Unit
 
+  def foreachPartition[A: ClassTag](as: DCollection[A])(
+      f: Iterator[A] => Unit): Unit
+
   def isEmpty[A: ClassTag](as: DCollection[A]): Boolean
 
   def toLocalIterator[A: ClassTag](as: DCollection[A]): Iterator[A]

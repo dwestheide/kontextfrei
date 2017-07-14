@@ -149,6 +149,9 @@ private[kontextfrei] trait StreamBaseFunctions
   override final def foreach[A: ClassTag](as: Stream[A])(f: A => Unit): Unit =
     as.foreach(f)
 
+  override final def foreachPartition[A: ClassTag](as: Stream[A])(
+      f: Iterator[A] => Unit): Unit = f(as.toIterator)
+
   override final def isEmpty[A: ClassTag](as: Stream[A]): Boolean = as.isEmpty
 
   override final def toLocalIterator[A: ClassTag](as: Stream[A]): Iterator[A] =
