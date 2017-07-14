@@ -44,8 +44,7 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
 
   def keyBy[A: ClassTag, B](as: DCollection[A])(f: A => B): DCollection[(B, A)]
 
-  def union[A: ClassTag](xs: DCollection[A])(
-      ys: DCollection[A]): DCollection[A]
+  def union[A: ClassTag](xs: DCollection[A])(ys: DCollection[A]): DCollection[A]
 
   def intersection[A: ClassTag](xs: DCollection[A])(
       ys: DCollection[A]): DCollection[A]
@@ -82,8 +81,8 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
 
   def glom[A: ClassTag](xs: DCollection[A]): DCollection[Array[A]]
 
-  def sortBy[A: ClassTag, B: ClassTag: Ordering](as: DCollection[A])(
-      f: A => B)(ascending: Boolean): DCollection[A]
+  def sortBy[A: ClassTag, B: ClassTag: Ordering](as: DCollection[A])(f: A => B)(
+      ascending: Boolean): DCollection[A]
 
   def sortByWithNumPartitions[A: ClassTag, B: ClassTag: Ordering](
       as: DCollection[A])(f: A => B)(ascending: Boolean)(
@@ -107,6 +106,8 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
       implicit ord: Ordering[A]): Array[A]
 
   def foreach[A: ClassTag](as: DCollection[A])(f: A => Unit): Unit
+
+  def isEmpty[A: ClassTag](as: DCollection[A]): Boolean
 
   def repartition[A: ClassTag](as: DCollection[A])(
       numPartitions: Int): DCollection[A]

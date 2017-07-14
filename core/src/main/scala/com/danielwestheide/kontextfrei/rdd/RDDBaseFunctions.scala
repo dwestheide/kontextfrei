@@ -51,15 +51,13 @@ private[kontextfrei] trait RDDBaseFunctions
       preservesPartitioning: Boolean = false): RDD[B] =
     as.mapPartitions(f, preservesPartitioning)
 
-  override final def keyBy[A: ClassTag, B](as: RDD[A])(
-      f: A => B): RDD[(B, A)] =
+  override final def keyBy[A: ClassTag, B](as: RDD[A])(f: A => B): RDD[(B, A)] =
     as.keyBy(f)
 
   override final def union[A: ClassTag](xs: RDD[A])(ys: RDD[A]): RDD[A] =
     xs.union(ys)
 
-  override final def intersection[A: ClassTag](xs: RDD[A])(
-      ys: RDD[A]): RDD[A] =
+  override final def intersection[A: ClassTag](xs: RDD[A])(ys: RDD[A]): RDD[A] =
     xs.intersection(ys)
 
   override final def intersectionWithPartitioner[A: ClassTag](
@@ -89,8 +87,8 @@ private[kontextfrei] trait RDDBaseFunctions
   override final def persistWithStorageLevel[A: ClassTag](xs: RDD[A])(
       level: StorageLevel): RDD[A] = xs.persist(level)
 
-  override final def unpersist[A: ClassTag](xs: RDD[A])(blocking: Boolean =
-                                                          true): RDD[A] =
+  override final def unpersist[A: ClassTag](xs: RDD[A])(
+      blocking: Boolean = true): RDD[A] =
     xs.unpersist(blocking)
 
   override final def glom[A: ClassTag](xs: RDD[A]): RDD[Array[A]] = xs.glom()
@@ -100,8 +98,8 @@ private[kontextfrei] trait RDDBaseFunctions
     as.sortBy(f, ascending)
 
   override final def sortByWithNumPartitions[A: ClassTag,
-                                             B: ClassTag: Ordering](
-      as: RDD[A])(f: A => B)(ascending: Boolean)(numPartitions: Int): RDD[A] =
+                                             B: ClassTag: Ordering](as: RDD[A])(
+      f: A => B)(ascending: Boolean)(numPartitions: Int): RDD[A] =
     as.sortBy(f, ascending, numPartitions)
 
   override final def collectAsArray[A: ClassTag](as: RDD[A]): Array[A] =
@@ -125,6 +123,8 @@ private[kontextfrei] trait RDDBaseFunctions
 
   override final def foreach[A: ClassTag](as: RDD[A])(f: A => Unit): Unit =
     as.foreach(f)
+
+  override final def isEmpty[A: ClassTag](as: RDD[A]): Boolean = as.isEmpty()
 
   override def repartition[A: ClassTag](as: RDD[A])(
       numPartitions: Int): RDD[A] = as.repartition(numPartitions)

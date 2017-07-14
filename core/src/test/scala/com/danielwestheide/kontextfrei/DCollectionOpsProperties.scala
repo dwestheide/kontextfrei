@@ -1,15 +1,10 @@
 package com.danielwestheide.kontextfrei
 
-import java.io.PrintWriter
-import java.nio.file.{Files, StandardOpenOption}
-
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{HashPartitioner, SparkException}
 import org.scalacheck.Gen
 import org.scalatest.concurrent.{Eventually, IntegrationPatience}
 import org.scalatest.{DiagrammedAssertions, Inspectors, Tag}
-
-import scala.io.Source
 
 trait DCollectionOpsProperties[DColl[_]]
     extends BaseSpec[DColl]
@@ -833,6 +828,18 @@ trait DCollectionOpsProperties[DColl[_]]
       val x3 = x1 + 2
       val xs = List(x2, x1, x3)
       unit(xs).top(2) mustEqual Array(x3, x2)
+    }
+  }
+
+  property("isEmpty returns true for empty collection") {
+    assert(unit(List.empty[String]).isEmpty())
+  }
+
+  property("isEmpty returns false for non-empty collections") {
+    forAll { (xs: List[String]) =>
+      whenever(xs.nonEmpty) {
+        assert(!unit(xs).isEmpty())
+      }
     }
   }
 
