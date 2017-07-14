@@ -1,13 +1,21 @@
 package com.danielwestheide.kontextfrei
 
+import java.io.PrintWriter
+import java.nio.file.{Files, StandardOpenOption}
+
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{HashPartitioner, SparkException}
 import org.scalacheck.Gen
-import org.scalatest.{DiagrammedAssertions, Inspectors}
+import org.scalatest.concurrent.{Eventually, IntegrationPatience}
+import org.scalatest.{DiagrammedAssertions, Inspectors, Tag}
+
+import scala.io.Source
 
 trait DCollectionOpsProperties[DColl[_]]
     extends BaseSpec[DColl]
-    with DiagrammedAssertions {
+    with DiagrammedAssertions
+    with Eventually
+    with IntegrationPatience {
 
   import syntax.Imports._
   import org.scalatest.OptionValues._
@@ -19,8 +27,7 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
-  property(
-    "cartesian returns a DCollection where each A is paired with each B") {
+  property("cartesian returns a DCollection where each A is paired with each B") {
     forAll { (xs: List[String], ys: List[Int]) =>
       val result = unit(xs).cartesian(unit(ys)).collect()
       Inspectors.forAll(xs) { x =>
@@ -69,8 +76,7 @@ trait DCollectionOpsProperties[DColl[_]]
     "distinctWithNumPartitions returns a DCollection of distinct elements") {
     forAll(listWithDuplicates[String]) { xs =>
       whenever(xs.distinct !== xs) {
-        unit(xs).distinct(numPartitions = 4).collect().sorted mustEqual unit(
-          xs)
+        unit(xs).distinct(numPartitions = 4).collect().sorted mustEqual unit(xs)
           .collect()
           .distinct
           .sorted
@@ -252,16 +258,14 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
-  property(
-    "mapPartitions with identity function returns unchanged DCollection") {
+  property("mapPartitions with identity function returns unchanged DCollection") {
     forAll { (xs: List[String]) =>
       val result = unit(xs).mapPartitions(identity).collect()
       assert(result.toList === xs)
     }
   }
 
-  property(
-    "mapPartitions removes elements according to the passed in function") {
+  property("mapPartitions removes elements according to the passed in function") {
     forAll { (xs: List[Int]) =>
       val result = unit(xs).mapPartitions { it =>
         it.collect {

@@ -146,6 +146,9 @@ private[kontextfrei] trait StreamBaseFunctions
       implicit ord: Ordering[A]): Array[A] =
     as.sorted(ord.reverse).take(num).toArray
 
+  override final def foreach[A: ClassTag](as: Stream[A])(f: A => Unit): Unit =
+    as.foreach(f)
+
   override def repartition[A: ClassTag](as: Stream[A])(
       numPartitions: Int): Stream[A] = as
 

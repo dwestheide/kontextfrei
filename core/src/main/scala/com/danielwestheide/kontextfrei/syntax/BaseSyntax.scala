@@ -115,6 +115,8 @@ class BaseSyntax[DCollection[_], A: ClassTag](
   final def top(num: Int)(implicit ord: Ordering[A]): Array[A] =
     self.top(coll)(num)
 
+  final def foreach(f: A => Unit): Unit = self.foreach(coll)(f)
+
   final def repartition(numPartitions: Int): DCollection[A] =
     self.repartition(coll)(numPartitions)
 
