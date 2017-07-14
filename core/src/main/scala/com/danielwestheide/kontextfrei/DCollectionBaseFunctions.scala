@@ -60,6 +60,53 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
   def zip[A: ClassTag, B: ClassTag](xs: DCollection[A])(
       ys: DCollection[B]): DCollection[(A, B)]
 
+  def zipPartitions[A: ClassTag, B: ClassTag, C: ClassTag](as: DCollection[A])(
+      bs: DCollection[B])(
+      f: (Iterator[A], Iterator[B]) => Iterator[C]): DCollection[C]
+
+  def zipPartitionsWithPreservesPartitioning[A: ClassTag,
+                                             B: ClassTag,
+                                             C: ClassTag](
+      as: DCollection[A])(bs: DCollection[B], preservesPartitioning: Boolean)(
+      f: (Iterator[A], Iterator[B]) => Iterator[C]): DCollection[C]
+
+  def zipPartitions3[A: ClassTag, B: ClassTag, C: ClassTag, D: ClassTag](
+      as: DCollection[A])(bs: DCollection[B], cs: DCollection[C])(
+      f: (Iterator[A], Iterator[B], Iterator[C]) => Iterator[D]): DCollection[D]
+
+  def zipPartitions3WithPreservesPartitioning[A: ClassTag,
+                                              B: ClassTag,
+                                              C: ClassTag,
+                                              D: ClassTag](as: DCollection[A])(
+      bs: DCollection[B],
+      cs: DCollection[C],
+      preservesPartitioning: Boolean)(
+      f: (Iterator[A], Iterator[B], Iterator[C]) => Iterator[D]): DCollection[D]
+
+  def zipPartitions4[A: ClassTag,
+                     B: ClassTag,
+                     C: ClassTag,
+                     D: ClassTag,
+                     E: ClassTag](as: DCollection[A])(
+      bs: DCollection[B],
+      cs: DCollection[C],
+      ds: DCollection[D])(f: (Iterator[A],
+                              Iterator[B],
+                              Iterator[C],
+                              Iterator[D]) => Iterator[E]): DCollection[E]
+
+  def zipPartitions4WithPreservesPartitioning[A: ClassTag,
+                                              B: ClassTag,
+                                              C: ClassTag,
+                                              D: ClassTag,
+                                              E: ClassTag](as: DCollection[A])(
+      bs: DCollection[B],
+      cs: DCollection[C],
+      ds: DCollection[D],
+      preservesPartitioning: Boolean)(
+      f: (Iterator[A], Iterator[B], Iterator[C], Iterator[D]) => Iterator[E])
+    : DCollection[E]
+
   def subtract[A: ClassTag](xs: DCollection[A])(
       ys: DCollection[A]): DCollection[A]
 

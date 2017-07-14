@@ -71,6 +71,62 @@ private[kontextfrei] trait RDDBaseFunctions
   override final def zip[A: ClassTag, B: ClassTag](xs: RDD[A])(
       ys: RDD[B]): RDD[(A, B)] = xs.zip(ys)
 
+  override final def zipPartitions[A: ClassTag, B: ClassTag, C: ClassTag](
+      as: RDD[A])(bs: RDD[B])(
+      f: (Iterator[A], Iterator[B]) => Iterator[C]): RDD[C] =
+    as.zipPartitions(bs)(f)
+
+  override final def zipPartitionsWithPreservesPartitioning[A: ClassTag,
+                                                            B: ClassTag,
+                                                            C: ClassTag](
+      as: RDD[A])(bs: RDD[B], preservesPartitioning: Boolean)(
+      f: (Iterator[A], Iterator[B]) => Iterator[C]): RDD[C] =
+    as.zipPartitions(bs, preservesPartitioning)(f)
+
+  override final def zipPartitions3[A: ClassTag,
+                                    B: ClassTag,
+                                    C: ClassTag,
+                                    D: ClassTag](as: RDD[A])(bs: RDD[B],
+                                                             cs: RDD[C])(
+      f: (Iterator[A], Iterator[B], Iterator[C]) => Iterator[D]): RDD[D] =
+    as.zipPartitions(bs, cs)(f)
+
+  override final def zipPartitions3WithPreservesPartitioning[A: ClassTag,
+                                                             B: ClassTag,
+                                                             C: ClassTag,
+                                                             D: ClassTag](
+      as: RDD[A])(bs: RDD[B], cs: RDD[C], preservesPartitioning: Boolean)(
+      f: (Iterator[A], Iterator[B], Iterator[C]) => Iterator[D]): RDD[D] =
+    as.zipPartitions(bs, cs, preservesPartitioning)(f)
+
+  override final def zipPartitions4[A: ClassTag,
+                                    B: ClassTag,
+                                    C: ClassTag,
+                                    D: ClassTag,
+                                    E: ClassTag](as: RDD[A])(
+      bs: RDD[B],
+      cs: RDD[C],
+      ds: RDD[D])(f: (Iterator[A],
+                      Iterator[B],
+                      Iterator[C],
+                      Iterator[D]) => Iterator[E]): RDD[E] =
+    as.zipPartitions(bs, cs, ds)(f)
+
+  override final def zipPartitions4WithPreservesPartitioning[A: ClassTag,
+                                                             B: ClassTag,
+                                                             C: ClassTag,
+                                                             D: ClassTag,
+                                                             E: ClassTag](
+      as: RDD[A])(
+      bs: RDD[B],
+      cs: RDD[C],
+      ds: RDD[D],
+      preservesPartitioning: Boolean)(f: (Iterator[A],
+                                          Iterator[B],
+                                          Iterator[C],
+                                          Iterator[D]) => Iterator[E]): RDD[E] =
+    as.zipPartitions(bs, cs, ds, preservesPartitioning)(f)
+
   override final def subtract[A: ClassTag](xs: RDD[A])(ys: RDD[A]): RDD[A] =
     xs.subtract(ys)
 

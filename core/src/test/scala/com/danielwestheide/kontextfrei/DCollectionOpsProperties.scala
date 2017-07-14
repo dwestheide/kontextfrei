@@ -399,6 +399,59 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
+  property("zipPartitions applies passed in function to each partition") {
+    forAll { (xs: List[Int]) =>
+      val result = unit(xs).zipPartitions(unit(xs))(_ ++ _)
+      assert(result.collect().toList.sorted === (xs ++ xs).sorted)
+    }
+  }
+
+  property(
+    "zipPartitionsWithPreservesPartitioning applies passed in function to each partition") {
+    forAll { (xs: List[Int]) =>
+      val result =
+        unit(xs).zipPartitions(unit(xs), preservesPartitioning = true)(_ ++ _)
+      assert(result.collect().toList.sorted === (xs ++ xs).sorted)
+    }
+  }
+
+  property("zipPartitions3 applies passed in function to each partition") {
+    forAll { (xs: List[Int]) =>
+      val result = unit(xs).zipPartitions(unit(xs), unit(xs))(_ ++ _ ++ _)
+      assert(result.collect().toList.sorted === (xs ++ xs ++ xs).sorted)
+    }
+  }
+
+  property(
+    "zipPartitions3WithPreservesPartitioning applies passed in function to each partition") {
+    forAll { (xs: List[Int]) =>
+      val result =
+        unit(xs).zipPartitions(unit(xs), unit(xs), preservesPartioning = true)(
+          _ ++ _ ++ _)
+      assert(result.collect().toList.sorted === (xs ++ xs ++ xs).sorted)
+    }
+  }
+
+  property("zipPartitions4 applies passed in function to each partition") {
+    forAll { (xs: List[Int]) =>
+      val result =
+        unit(xs).zipPartitions(unit(xs), unit(xs), unit(xs))(_ ++ _ ++ _ ++ _)
+      assert(result.collect().toList.sorted === (xs ++ xs ++ xs ++ xs).sorted)
+    }
+  }
+
+  property(
+    "zipPartitions4WithPreservesPartitioning applies passed in function to each partition") {
+    forAll { (xs: List[Int]) =>
+      val result =
+        unit(xs).zipPartitions(unit(xs),
+                               unit(xs),
+                               unit(xs),
+                               preservesPartitioning = true)(_ ++ _ ++ _ ++ _)
+      assert(result.collect().toList.sorted === (xs ++ xs ++ xs ++ xs).sorted)
+    }
+  }
+
   property(
     "subtract does not change collection if other one has no common elements") {
     forAll { (x: Int) =>

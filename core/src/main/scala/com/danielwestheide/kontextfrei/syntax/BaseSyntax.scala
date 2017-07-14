@@ -67,6 +67,55 @@ class BaseSyntax[DCollection[_], A: ClassTag](
   final def zip[B: ClassTag](other: DCollection[B]): DCollection[(A, B)] =
     self.zip(coll)(other)
 
+  final def zipPartitions[B: ClassTag, C: ClassTag](other: DCollection[B])(
+      f: (Iterator[A], Iterator[B]) => Iterator[C]): DCollection[C] =
+    self.zipPartitions(coll)(other)(f)
+
+  final def zipPartitions[B: ClassTag, C: ClassTag](
+      other: DCollection[B],
+      preservesPartitioning: Boolean)(
+      f: (Iterator[A], Iterator[B]) => Iterator[C]): DCollection[C] =
+    self.zipPartitionsWithPreservesPartitioning(coll)(other,
+                                                      preservesPartitioning)(f)
+
+  final def zipPartitions[B: ClassTag, C: ClassTag, D: ClassTag](
+      other1: DCollection[B],
+      other2: DCollection[C])(f: (Iterator[A],
+                                  Iterator[B],
+                                  Iterator[C]) => Iterator[D]): DCollection[D] =
+    self.zipPartitions3(coll)(other1, other2)(f)
+
+  final def zipPartitions[B: ClassTag, C: ClassTag, D: ClassTag](
+      other1: DCollection[B],
+      other2: DCollection[C],
+      preservesPartioning: Boolean)(
+      f: (Iterator[A], Iterator[B], Iterator[C]) => Iterator[D])
+    : DCollection[D] =
+    self.zipPartitions3WithPreservesPartitioning(coll)(other1,
+                                                       other2,
+                                                       preservesPartioning)(f)
+
+  final def zipPartitions[B: ClassTag, C: ClassTag, D: ClassTag, E: ClassTag](
+      other1: DCollection[B],
+      other2: DCollection[C],
+      other3: DCollection[D])(f: (Iterator[A],
+                                  Iterator[B],
+                                  Iterator[C],
+                                  Iterator[D]) => Iterator[E]): DCollection[E] =
+    self.zipPartitions4(coll)(other1, other2, other3)(f)
+
+  final def zipPartitions[B: ClassTag, C: ClassTag, D: ClassTag, E: ClassTag](
+      other1: DCollection[B],
+      other2: DCollection[C],
+      other3: DCollection[D],
+      preservesPartitioning: Boolean)(
+      f: (Iterator[A], Iterator[B], Iterator[C], Iterator[D]) => Iterator[E])
+    : DCollection[E] =
+    self.zipPartitions4WithPreservesPartitioning(coll)(other1,
+                                                       other2,
+                                                       other3,
+                                                       preservesPartitioning)(f)
+
   final def subtract(other: DCollection[A]): DCollection[A] =
     self.subtract(coll)(other)
 

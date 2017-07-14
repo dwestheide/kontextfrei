@@ -87,6 +87,61 @@ private[kontextfrei] trait StreamBaseFunctions
     else result
   }
 
+  override final def zipPartitions[A: ClassTag, B: ClassTag, C: ClassTag](
+      as: Stream[A])(bs: Stream[B])(
+      f: (Iterator[A], Iterator[B]) => Iterator[C]): Stream[C] =
+    f(as.toIterator, bs.toIterator).toStream
+
+  override final def zipPartitionsWithPreservesPartitioning[A: ClassTag,
+                                                            B: ClassTag,
+                                                            C: ClassTag](
+      as: Stream[A])(bs: Stream[B], preservesPartitioning: Boolean)(
+      f: (Iterator[A], Iterator[B]) => Iterator[C]): Stream[C] =
+    zipPartitions(as)(bs)(f)
+
+  override final def zipPartitions3[A: ClassTag,
+                                    B: ClassTag,
+                                    C: ClassTag,
+                                    D: ClassTag](as: Stream[A])(bs: Stream[B],
+                                                                cs: Stream[C])(
+      f: (Iterator[A], Iterator[B], Iterator[C]) => Iterator[D]): Stream[D] =
+    f(as.toIterator, bs.toIterator, cs.toIterator).toStream
+
+  override final def zipPartitions3WithPreservesPartitioning[A: ClassTag,
+                                                             B: ClassTag,
+                                                             C: ClassTag,
+                                                             D: ClassTag](
+      as: Stream[A])(bs: Stream[B],
+                     cs: Stream[C],
+                     preservesPartitioning: Boolean)(
+      f: (Iterator[A], Iterator[B], Iterator[C]) => Iterator[D]): Stream[D] =
+    zipPartitions3(as)(bs, cs)(f)
+
+  override final def zipPartitions4[A: ClassTag,
+                                    B: ClassTag,
+                                    C: ClassTag,
+                                    D: ClassTag,
+                                    E: ClassTag](as: Stream[A])(
+      bs: Stream[B],
+      cs: Stream[C],
+      ds: Stream[D])(f: (Iterator[A],
+                         Iterator[B],
+                         Iterator[C],
+                         Iterator[D]) => Iterator[E]): Stream[E] =
+    f(as.toIterator, bs.toIterator, cs.toIterator, ds.toIterator).toStream
+
+  override final def zipPartitions4WithPreservesPartitioning[A: ClassTag,
+                                                             B: ClassTag,
+                                                             C: ClassTag,
+                                                             D: ClassTag,
+                                                             E: ClassTag](
+      as: Stream[A])(bs: Stream[B],
+                     cs: Stream[C],
+                     ds: Stream[D],
+                     preservesPartitioning: Boolean)(
+      f: (Iterator[A], Iterator[B], Iterator[C], Iterator[D]) => Iterator[E])
+    : Stream[E] = zipPartitions4(as)(bs, cs, ds)(f)
+
   override final def subtract[A: ClassTag](xs: Stream[A])(
       ys: Stream[A]): Stream[A] = xs.filterNot(ys.toSet)
 
