@@ -151,6 +151,9 @@ private[kontextfrei] trait StreamBaseFunctions
 
   override final def isEmpty[A: ClassTag](as: Stream[A]): Boolean = as.isEmpty
 
+  override final def toLocalIterator[A: ClassTag](as: Stream[A]): Iterator[A] =
+    as.toIterator
+
   override def repartition[A: ClassTag](as: Stream[A])(
       numPartitions: Int): Stream[A] = as
 

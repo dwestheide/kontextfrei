@@ -119,6 +119,8 @@ class BaseSyntax[DCollection[_], A: ClassTag](
 
   final def isEmpty(): Boolean = self.isEmpty(coll)
 
+  final def toLocalIterator: Iterator[A] = self.toLocalIterator(coll)
+
   final def repartition(numPartitions: Int): DCollection[A] =
     self.repartition(coll)(numPartitions)
 

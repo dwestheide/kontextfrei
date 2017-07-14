@@ -843,6 +843,12 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
+  property("toLocalIterator returns an iterator of all elements") {
+    forAll { xs: List[String] =>
+      assert(unit(xs).toLocalIterator.toList === xs)
+    }
+  }
+
   property("repartition doesn't have any visible effect on a DCollection") {
     forAll(Gen.listOfN(4, Gen.alphaStr)) { xs =>
       val result = unit(xs).repartition(2).collect().toList

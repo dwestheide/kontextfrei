@@ -109,6 +109,8 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
 
   def isEmpty[A: ClassTag](as: DCollection[A]): Boolean
 
+  def toLocalIterator[A: ClassTag](as: DCollection[A]): Iterator[A]
+
   def repartition[A: ClassTag](as: DCollection[A])(
       numPartitions: Int): DCollection[A]
 

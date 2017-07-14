@@ -126,6 +126,9 @@ private[kontextfrei] trait RDDBaseFunctions
 
   override final def isEmpty[A: ClassTag](as: RDD[A]): Boolean = as.isEmpty()
 
+  override final def toLocalIterator[A: ClassTag](as: RDD[A]): Iterator[A] =
+    as.toLocalIterator
+
   override def repartition[A: ClassTag](as: RDD[A])(
       numPartitions: Int): RDD[A] = as.repartition(numPartitions)
 
