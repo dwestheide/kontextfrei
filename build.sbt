@@ -20,8 +20,8 @@ val common = Seq(
                         "-language:implicitConversions")
 )
 
-val scalatest  = "org.scalatest"  %% "scalatest"  % "3.0.1"
-val scalacheck = "org.scalacheck" %% "scalacheck" % "1.13.4"
+val scalatest  = "org.scalatest"  %% "scalatest"  % "3.0.4"
+val scalacheck = "org.scalacheck" %% "scalacheck" % "1.13.5"
 
 def spark(version: String) =
   "org.apache.spark" %% "spark-core" % version % "provided"

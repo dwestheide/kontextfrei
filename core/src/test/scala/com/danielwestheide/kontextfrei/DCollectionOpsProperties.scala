@@ -4,7 +4,7 @@ import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{HashPartitioner, SparkException}
 import org.scalacheck.Gen
 import org.scalatest.concurrent.{Eventually, IntegrationPatience}
-import org.scalatest.{DiagrammedAssertions, Inspectors, Tag}
+import org.scalatest.{DiagrammedAssertions, Inspectors}
 
 trait DCollectionOpsProperties[DColl[_]]
     extends BaseSpec[DColl]
@@ -39,11 +39,11 @@ trait DCollectionOpsProperties[DColl[_]]
       result.map(_._1).toSet mustEqual (xs.map(_._1) ::: ys.map(_._1)).toSet
       Inspectors.forAll(xs) {
         case (k, v) =>
-          result.find(_._1 == k).exists(_._2._1.exists(_ == v))
+          result.find(_._1 === k).exists(_._2._1.exists(_ === v)) mustBe true
       }
       Inspectors.forAll(ys) {
         case (k, v) =>
-          result.find(_._1 == k).exists(_._2._2.exists(_ == v))
+          result.find(_._1 === k).exists(_._2._2.exists(_ === v)) mustBe true
       }
     }
   }
@@ -106,7 +106,7 @@ trait DCollectionOpsProperties[DColl[_]]
     forAll { (xs: List[String], pred: String => Boolean) =>
       val allMatchingXs = xs.filter(pred)
       val filteredXs    = unit(xs).filter(pred).collect()
-      Inspectors.forAll(allMatchingXs)(filteredXs.contains(_))
+      Inspectors.forAll(allMatchingXs)(filteredXs.contains(_) mustBe true)
     }
   }
 
@@ -186,7 +186,7 @@ trait DCollectionOpsProperties[DColl[_]]
   property("groupBy does not change number of total values") {
     forAll { (xs: List[String], f: String => Int) =>
       val groupedXs = unit(xs).groupBy(f).collect()
-      groupedXs.flatMap(_._2).size mustEqual xs.size
+      groupedXs.flatMap(_._2).length mustEqual xs.size
     }
   }
 
@@ -216,7 +216,7 @@ trait DCollectionOpsProperties[DColl[_]]
     import SmallNumbers._
     forAll { (xs: List[String], f: String => Int, numPartitions: Int) =>
       val groupedXs = unit(xs).groupBy(f, numPartitions).collect()
-      groupedXs.flatMap(_._2).size mustEqual xs.size
+      groupedXs.flatMap(_._2).length mustEqual xs.size
     }
   }
 
@@ -249,7 +249,7 @@ trait DCollectionOpsProperties[DColl[_]]
     forAll { (xs: List[String], f: String => Int, numPartitions: Int) =>
       val partitioner = new HashPartitioner(numPartitions)
       val groupedXs   = unit(xs).groupBy(f, partitioner).collect()
-      groupedXs.flatMap(_._2).size mustEqual xs.size
+      groupedXs.flatMap(_._2).length mustEqual xs.size
     }
   }
 
@@ -267,7 +267,7 @@ trait DCollectionOpsProperties[DColl[_]]
           case x if x % 2 == 0 => x
         }
       }
-      assert(result.collect().toList === xs.filter(_ % 2 == 0))
+      result.collect().toList mustEqual xs.filter(_ % 2 === 0)
     }
   }
 
@@ -278,7 +278,7 @@ trait DCollectionOpsProperties[DColl[_]]
         case (k, x) =>
           assert(k === f(x))
       }
-      assert(xs === result.toList.map(_._2))
+      xs mustEqual result.toList.map(_._2)
     }
   }
 
@@ -288,8 +288,8 @@ trait DCollectionOpsProperties[DColl[_]]
       val result  = (unit(xs) ++ unit(ys)).collect()
       val result2 = unit(xs).union(unit(ys)).collect()
       assert(result.length === xs.size + ys.size)
-      Inspectors.forAll(xs)(result.contains)
-      Inspectors.forAll(ys)(result.contains)
+      Inspectors.forAll(xs)(x => assert(result.contains(x)))
+      Inspectors.forAll(ys)(x => assert(result.contains(x)))
       assert(result.toSeq === result2.toSeq)
     }
   }
@@ -297,7 +297,7 @@ trait DCollectionOpsProperties[DColl[_]]
   property(
     "The intersection of xs and ys contains only elements both in xs and ys") {
     forAll { (numbers: List[Int]) =>
-      val evenNumbers = numbers.filter(_ % 2 == 0)
+      val evenNumbers = numbers.filter(_ % 2 === 0)
       val xs          = unit(evenNumbers)
       val ys          = unit(numbers)
       Inspectors.forAll(xs.intersection(ys).collect()) { x =>
@@ -308,7 +308,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property("The intersection of xs and ys contains no duplicates") {
     forAll { (numbers: List[Int]) =>
-      val evenNumbers = numbers.filter(_ % 2 == 0)
+      val evenNumbers = numbers.filter(_ % 2 === 0)
       val xs          = unit(evenNumbers)
       val ys          = unit(numbers) ++ xs
       assert(
@@ -322,7 +322,7 @@ trait DCollectionOpsProperties[DColl[_]]
   property(
     "intersectionWithPartitioner of xs and ys contains only elements both in xs and ys") {
     forAll { (numbers: List[Int]) =>
-      val evenNumbers = numbers.filter(_ % 2 == 0)
+      val evenNumbers = numbers.filter(_ % 2 === 0)
       val xs          = unit(evenNumbers)
       val ys          = unit(numbers)
       Inspectors.forAll(xs.intersection(ys, new HashPartitioner(2)).collect()) {
@@ -334,7 +334,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property("intersectionWithPartitioner of xs and ys contains no duplicates") {
     forAll { (numbers: List[Int]) =>
-      val evenNumbers = numbers.filter(_ % 2 == 0)
+      val evenNumbers = numbers.filter(_ % 2 === 0)
       val xs          = unit(evenNumbers)
       val ys          = unit(numbers) ++ xs
       assert(
@@ -348,7 +348,7 @@ trait DCollectionOpsProperties[DColl[_]]
   property(
     "intersectionWithNumPartitions of xs and ys contains only elements both in xs and ys") {
     forAll { (numbers: List[Int]) =>
-      val evenNumbers = numbers.filter(_ % 2 == 0)
+      val evenNumbers = numbers.filter(_ % 2 === 0)
       val xs          = unit(evenNumbers)
       val ys          = unit(numbers)
       Inspectors.forAll(xs.intersection(ys, 2).collect()) { x =>
@@ -359,7 +359,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property("intersectionWithNumPartitions of xs and ys contains no duplicates") {
     forAll { (numbers: List[Int]) =>
-      val evenNumbers = numbers.filter(_ % 2 == 0)
+      val evenNumbers = numbers.filter(_ % 2 === 0)
       val xs          = unit(evenNumbers)
       val ys          = unit(numbers) ++ xs
       assert(
@@ -375,7 +375,7 @@ trait DCollectionOpsProperties[DColl[_]]
       val result = unit(xs).zip(unit(xs)).collect()
       Inspectors.forAll(result) {
         case (x, y) =>
-          assert(x === y)
+          x mustEqual y
       }
     }
   }
@@ -384,8 +384,8 @@ trait DCollectionOpsProperties[DColl[_]]
     forAll { (numbers: List[Int]) =>
       val strings = numbers.map(_.toString)
       val result  = unit(numbers).zip(unit(strings)).collect().toList
-      assert(result.map(_._1) === numbers)
-      assert(result.map(_._2) === strings)
+      result.map(_._1) mustEqual numbers
+      result.map(_._2) mustEqual strings
     }
   }
 
@@ -528,7 +528,7 @@ trait DCollectionOpsProperties[DColl[_]]
     forAll { (xs: List[Int]) =>
       val coll = unit(xs).persist()
       assert(
-        coll.unpersist(blocking = true).collect().toList === coll
+        coll.unpersist().collect().toList === coll
           .collect()
           .toList)
     }
@@ -603,7 +603,7 @@ trait DCollectionOpsProperties[DColl[_]]
       val result = left.leftOuterJoin(right).collect()
       result.length mustEqual n
       Inspectors.forAll(1 to n) { x =>
-        result.contains((k, (k, Some(x))))
+        result.contains((k, (k, Some(x)))) mustBe true
       }
     }
   }
@@ -614,7 +614,7 @@ trait DCollectionOpsProperties[DColl[_]]
       val right  = unit(xs).map(x => f(x) -> x)
       val result = left.leftOuterJoin(right).collect()
       Inspectors.forAll(result) {
-        case (k, (l, r)) => f(l) mustEqual f(r.value)
+        case (_, (l, r)) => f(l) mustEqual f(r.value)
       }
     }
   }
@@ -627,7 +627,7 @@ trait DCollectionOpsProperties[DColl[_]]
       val result = left.leftOuterJoin(right).collect()
       result.length mustEqual xs.size
       Inspectors.forAll(result) {
-        case (k, (l, r)) => assert(r.isEmpty)
+        case (_, (_, r)) => assert(r.isEmpty)
       }
     }
   }
@@ -639,7 +639,7 @@ trait DCollectionOpsProperties[DColl[_]]
       val right  = unit(xs.distinct).map(x => x -> f(x))
       val result = left.rightOuterJoin(right).collect()
       Inspectors.forAll(result) {
-        case (k, (l, r)) => l.value mustEqual r
+        case (_, (l, r)) => l.value mustEqual r
       }
     }
   }
@@ -653,7 +653,7 @@ trait DCollectionOpsProperties[DColl[_]]
       val result = left.rightOuterJoin(right).collect()
       result.length mustEqual n
       Inspectors.forAll(1 to n) { x =>
-        result.contains((k, (Some(x), k)))
+        assert(result.contains((k, (Some(x), k))))
       }
     }
   }
@@ -664,7 +664,7 @@ trait DCollectionOpsProperties[DColl[_]]
       val right  = unit(xs).map(x => f(x) -> x)
       val result = left.rightOuterJoin(right).collect()
       Inspectors.forAll(result) {
-        case (k, (l, r)) => f(l.value) mustEqual f(r)
+        case (_, (l, r)) => f(l.value) mustEqual f(r)
       }
     }
   }
@@ -677,7 +677,7 @@ trait DCollectionOpsProperties[DColl[_]]
       val result = left.rightOuterJoin(right).collect()
       result.length mustEqual xs.size
       Inspectors.forAll(result) {
-        case (k, (l, r)) => assert(l.isEmpty)
+        case (_, (l, _)) => assert(l.isEmpty)
       }
     }
   }
@@ -689,7 +689,7 @@ trait DCollectionOpsProperties[DColl[_]]
       val right  = unit(xs.distinct).map(x => x -> f(x))
       val result = left.fullOuterJoin(right).collect()
       Inspectors.forAll(result) {
-        case (k, (l, r)) => l.value mustEqual r.value
+        case (_, (l, r)) => l.value mustEqual r.value
       }
     }
   }
@@ -700,7 +700,7 @@ trait DCollectionOpsProperties[DColl[_]]
       val right  = unit(xs).map(x => f(x) -> x)
       val result = left.fullOuterJoin(right).collect()
       Inspectors.forAll(result) {
-        case (k, (l, r)) => f(l.value) mustEqual f(r.value)
+        case (_, (l, r)) => f(l.value) mustEqual f(r.value)
       }
     }
   }
@@ -713,7 +713,7 @@ trait DCollectionOpsProperties[DColl[_]]
       val result = left.fullOuterJoin(right).collect()
       result.length mustEqual xs.size
       Inspectors.forAll(result) {
-        case (k, (l, r)) =>
+        case (_, (l, r)) =>
           assert(l.isEmpty)
           assert(r.nonEmpty)
       }
@@ -728,7 +728,7 @@ trait DCollectionOpsProperties[DColl[_]]
       val result = left.fullOuterJoin(right).collect()
       result.length mustEqual xs.size
       Inspectors.forAll(result) {
-        case (k, (l, r)) =>
+        case (_, (l, r)) =>
           assert(r.isEmpty)
           assert(l.nonEmpty)
       }
@@ -819,7 +819,7 @@ trait DCollectionOpsProperties[DColl[_]]
     forAll { xs: List[String] =>
       val result = unit(xs).countByValue()
       Inspectors.forAll(result) {
-        case (element, count) => count mustEqual xs.count(_ == element)
+        case (element, count) => count mustEqual xs.count(_ === element)
       }
     }
   }
@@ -829,7 +829,7 @@ trait DCollectionOpsProperties[DColl[_]]
     forAll { xs: List[(Int, String)] =>
       val result = unit(xs).countByKey()
       Inspectors.forAll(result) {
-        case (key, count) => count mustEqual xs.count(_._1 == key)
+        case (k, count) => count mustEqual xs.count(_._1 === k)
       }
     }
   }
@@ -838,8 +838,8 @@ trait DCollectionOpsProperties[DColl[_]]
     forAll { xs: List[(Int, String)] =>
       val result = unit(xs ++ xs).collectAsMap()
       Inspectors.forAll(xs) {
-        case (key, _) =>
-          result.contains(key)
+        case (k, _) =>
+          assert(result.contains(k))
       }
     }
   }
