@@ -9,11 +9,11 @@ _kontextfrei_ is currently divided into two separate modules:
 
 @@@ note
 
-If you decide to use `kontextfrei-scalatest`, this will come with a transitive dependency on the ScalaTest and ScalaCheck libraries. `kontextfrei` is compiled against ScalaTest 3.0.1 and ScalaCheck 1.13.4.
+If you decide to use `kontextfrei-scalatest`, this will come with a transitive dependency on the ScalaTest and ScalaCheck libraries. `kontextfrei` is compiled against ScalaTest 3.0.4 and ScalaCheck 1.13.5.
 
 @@@
 
-Currently, _kontextfrei_ binary releases are built against Spark 1.4.1, 2.0.0 and 2.1.0, each of them both for  Scala 2.11 and 2.10.
+Currently, _kontextfrei_ binary releases are built against Spark 1.4.1, 2.0.0, 2.1.0, and 2.2.0, each of them both for  Scala 2.11 and 2.10.
 
 Here is what you need to add to your `build.sbt` file in order to use `kontextfrei-core` and `kontextfrei-scalatest` in your SBT project:
 
@@ -21,8 +21,8 @@ Here is what you need to add to your `build.sbt` file in order to use `kontextfr
 
 ```scala
 resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-1.4.1" % "0.5.0"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-1.4.1" % "0.5.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-1.4.1" % "0.6.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-1.4.1" % "0.6.0"
 libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.1" % "provided"
 ```
 
@@ -30,8 +30,8 @@ libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.1" % "provided"
 
 ```scala
 resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-2.0.0" % "0.5.0"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.0.0" % "0.5.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-2.0.0" % "0.6.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.0.0" % "0.6.0"
 libraryDependencies += "org.apache.spark" %% "spark-core" % "2.0.0" % "provided"
 ```
 
@@ -39,7 +39,16 @@ libraryDependencies += "org.apache.spark" %% "spark-core" % "2.0.0" % "provided"
 
 ```scala
 resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-2.1.0" % "0.5.0"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.1.0" % "0.5.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-2.1.0" % "0.6.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.1.0" % "0.6.0"
 libraryDependencies += "org.apache.spark" %% "spark-core" % "2.1.0" % "provided"
+```
+
+## Spark 2.2.0
+
+```scala
+resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-2.2.0" % "0.6.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.2.0" % "0.6.0"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "2.2.0" % "provided"
 ```

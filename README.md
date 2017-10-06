@@ -30,7 +30,7 @@ The library is split up into two modules:
 
 _kontextfrei_ assumes that the Spark dependency is provided by your application, so have to explicitly add a dependency to Spark.
 
-Currently, _kontextfrei_ binary releases are built against Spark 1.4.1, Spark 2.0.0, and Spark 2.1.0 , each of them both for Scala 2.11 and Scala 2.10.
+Currently, _kontextfrei_ binary releases are built against Spark 1.4.1, 2.0.0, 2.1.0, and 2.2.0, each of them both for Scala 2.11 and Scala 2.10.
 
 Adding a dependency on the the current version of `kontextfrei-core` and `kontextfrei-scalatest` to your `build.sbt` looks like this:
 
@@ -38,8 +38,8 @@ Adding a dependency on the the current version of `kontextfrei-core` and `kontex
 
 ```scala
 resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-1.4.1" % "0.5.0"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-1.4.1" % "0.5.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-1.4.1" % "0.6.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-1.4.1" % "0.6.0"
 libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.1" % "provided"
 ```
 
@@ -47,8 +47,8 @@ libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.1" % "provided"
 
 ```scala
 resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-2.0.0" % "0.5.0"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.0.0" % "0.5.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-2.0.0" % "0.6.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.0.0" % "0.6.0"
 libraryDependencies += "org.apache.spark" %% "spark-core" % "2.0.0" % "provided"
 ```
 
@@ -56,16 +56,25 @@ libraryDependencies += "org.apache.spark" %% "spark-core" % "2.0.0" % "provided"
 
 ```scala
 resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-2.1.0" % "0.5.0"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.1.0" % "0.5.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-2.1.0" % "0.6.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.1.0" % "0.6.0"
 libraryDependencies += "org.apache.spark" %% "spark-core" % "2.1.0" % "provided"
+```
+
+### Spark 2.2.0
+
+```scala
+resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-2.2.0" % "0.6.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.2.0" % "0.6.0"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "2.2.0" % "provided"
 ```
 
 As you can see, you need the specify the Spark version against which the library is supposed to be built as part of the artifact name.
 
 ## Status
 
-This library is in an early stage and is not feature-complete: only a subset of the operations available on `RDD`s is supported so far
+This library is in an early stage and is not feature-complete: only a subset of the operations available on `RDD`s is supported so far.
 
 ## Contributions welcome
 
