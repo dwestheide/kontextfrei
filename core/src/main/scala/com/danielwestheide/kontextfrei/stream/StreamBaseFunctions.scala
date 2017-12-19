@@ -193,6 +193,10 @@ private[kontextfrei] trait StreamBaseFunctions
       op: (A, A) => A): A =
     as.foldLeft(zeroValue)(op)
 
+  override final def aggregate[A: ClassTag, B: ClassTag](as: Stream[A])(
+      zeroValue: B)(seqOp: (B, A) => B, combOp: (B, B) => B): B =
+    as.aggregate(zeroValue)(seqOp, combOp)
+
   override final def first[A: ClassTag](as: Stream[A]): A =
     as.headOption getOrElse {
       throw new UnsupportedOperationException("empty collection")

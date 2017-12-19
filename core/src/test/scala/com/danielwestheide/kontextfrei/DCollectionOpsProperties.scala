@@ -870,6 +870,19 @@ trait DCollectionOpsProperties[DColl[_]]
     assert(unit(List.empty[Int]).fold(0)(_ + _) === 0)
   }
 
+  property("aggregate applies the given commutative function to each element of the DCollection") {
+    forAll { (xs: List[String]) =>
+      whenever(xs.nonEmpty) {
+        val result = unit(xs).aggregate(0)(_ + _.length, _ + _)
+        assert(result === xs.map(_.length).sum)
+      }
+    }
+  }
+
+  property("aggregate returns the zero value for an empty DCollection") {
+    assert(unit(List.empty[String]).aggregate(0)(_ + _.length, _ + _) === 0)
+  }
+
   property("first returns the first element of the DCollection") {
     forAll { xs: Set[String] =>
       whenever(xs.nonEmpty) {

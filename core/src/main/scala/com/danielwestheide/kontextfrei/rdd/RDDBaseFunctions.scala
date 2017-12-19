@@ -167,9 +167,15 @@ private[kontextfrei] trait RDDBaseFunctions
       implicit ord: Ordering[A]): Map[A, Long] =
     as.countByValue()
 
-  override final def reduce[A: ClassTag](as: RDD[A])(f: (A, A) => A): A = as.reduce(f)
+  override final def reduce[A: ClassTag](as: RDD[A])(f: (A, A) => A): A =
+    as.reduce(f)
 
-  override final def fold[A: ClassTag](as: RDD[A])(zeroValue: A)(op: (A, A) => A): A = as.fold(zeroValue)(op)
+  override final def fold[A: ClassTag](as: RDD[A])(zeroValue: A)(
+      op: (A, A) => A): A = as.fold(zeroValue)(op)
+
+  override final def aggregate[A: ClassTag, B: ClassTag](as: RDD[A])(
+      zeroValue: B)(seqOp: (B, A) => B, combOp: (B, B) => B): B =
+    as.aggregate(zeroValue)(seqOp, combOp)
 
   override final def first[A: ClassTag](as: RDD[A]): A = as.first()
 

@@ -156,7 +156,12 @@ class BaseSyntax[DCollection[_], A: ClassTag](
 
   final def reduce(f: (A, A) => A): A = self.reduce(coll)(f)
 
-  final def fold(zeroValue: A)(op: (A, A) => A): A = self.fold(coll)(zeroValue)(op)
+  final def fold(zeroValue: A)(op: (A, A) => A): A =
+    self.fold(coll)(zeroValue)(op)
+
+  final def aggregate[B: ClassTag](zeroValue: B)(seqOp: (B, A) => B,
+                                                 combOp: (B, B) => B): B =
+    self.aggregate(coll)(zeroValue)(seqOp, combOp)
 
   final def first(): A = self.first(coll)
 
