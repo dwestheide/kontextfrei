@@ -156,6 +156,8 @@ class BaseSyntax[DCollection[_], A: ClassTag](
 
   final def reduce(f: (A, A) => A): A = self.reduce(coll)(f)
 
+  final def fold(zeroValue: A)(op: (A, A) => A): A = self.fold(coll)(zeroValue)(op)
+
   final def first(): A = self.first(coll)
 
   final def take(num: Int): Array[A] = self.take(coll)(num)

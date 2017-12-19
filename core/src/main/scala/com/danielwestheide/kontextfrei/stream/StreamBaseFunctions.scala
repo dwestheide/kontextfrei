@@ -186,7 +186,12 @@ private[kontextfrei] trait StreamBaseFunctions
       implicit ord: Ordering[A]): collection.Map[A, Long] =
     as.groupBy(identity) map { case (k, v) => (k, v.size.toLong) }
 
-  override final def reduce[A: ClassTag](as: Stream[A])(f: (A, A) => A): A = as.reduceLeft(f)
+  override final def reduce[A: ClassTag](as: Stream[A])(f: (A, A) => A): A =
+    as.reduceLeft(f)
+
+  override final def fold[A: ClassTag](as: Stream[A])(zeroValue: A)(
+      op: (A, A) => A): A =
+    as.foldLeft(zeroValue)(op)
 
   override final def first[A: ClassTag](as: Stream[A]): A =
     as.headOption getOrElse {

@@ -144,6 +144,8 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
 
   def reduce[A: ClassTag](as: DCollection[A])(f: (A, A) => A): A
 
+  def fold[A: ClassTag](as: DCollection[A])(zeroValue: A)(op: (A, A) => A): A
+
   def first[A: ClassTag](as: DCollection[A]): A
 
   def take[A: ClassTag](as: DCollection[A])(n: Int): Array[A]

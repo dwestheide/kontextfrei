@@ -169,6 +169,8 @@ private[kontextfrei] trait RDDBaseFunctions
 
   override final def reduce[A: ClassTag](as: RDD[A])(f: (A, A) => A): A = as.reduce(f)
 
+  override final def fold[A: ClassTag](as: RDD[A])(zeroValue: A)(op: (A, A) => A): A = as.fold(zeroValue)(op)
+
   override final def first[A: ClassTag](as: RDD[A]): A = as.first()
 
   override def take[A: ClassTag](as: RDD[A])(n: Int): Array[A] = as.take(n)
