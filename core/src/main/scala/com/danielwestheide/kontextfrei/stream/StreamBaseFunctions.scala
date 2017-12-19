@@ -87,6 +87,11 @@ private[kontextfrei] trait StreamBaseFunctions
     else result
   }
 
+  override final def zipWithIndex[A: ClassTag](
+      xs: Stream[A]): Stream[(A, Long)] = xs.zipWithIndex.map {
+    case (k, v) => (k, v.toLong)
+  }
+
   override final def zipPartitions[A: ClassTag, B: ClassTag, C: ClassTag](
       as: Stream[A])(bs: Stream[B])(
       f: (Iterator[A], Iterator[B]) => Iterator[C]): Stream[C] =

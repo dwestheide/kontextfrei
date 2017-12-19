@@ -399,6 +399,12 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
+  property("zipWithIndex returns DCollection with indexes") {
+    forAll { (xs: List[String]) =>
+      assert(unit(xs).zipWithIndex.values.collect().sorted.toList === xs.indices.toList.map(_.toLong))
+    }
+  }
+
   property("zipPartitions applies passed in function to each partition") {
     forAll { (xs: List[Int]) =>
       val result = unit(xs).zipPartitions(unit(xs))(_ ++ _)
