@@ -844,6 +844,20 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
+  property("reduce throws an UnsupportedOperationException for empty DCollection") {
+    intercept[UnsupportedOperationException] {
+      unit(List.empty[String]).reduce(_ ++ _)
+    }
+  }
+
+  property("reduce applies the given function to each element of the DCollection") {
+    forAll { (xs: List[Int]) =>
+      whenever(xs.nonEmpty) {
+        assert(unit(xs).reduce(_ + _) === xs.sum)
+      }
+    }
+  }
+
   property("first returns the first element of the DCollection") {
     forAll { xs: Set[String] =>
       whenever(xs.nonEmpty) {

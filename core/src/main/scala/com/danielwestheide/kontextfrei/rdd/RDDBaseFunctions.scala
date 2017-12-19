@@ -167,6 +167,8 @@ private[kontextfrei] trait RDDBaseFunctions
       implicit ord: Ordering[A]): Map[A, Long] =
     as.countByValue()
 
+  override final def reduce[A: ClassTag](as: RDD[A])(f: (A, A) => A): A = as.reduce(f)
+
   override final def first[A: ClassTag](as: RDD[A]): A = as.first()
 
   override def take[A: ClassTag](as: RDD[A])(n: Int): Array[A] = as.take(n)

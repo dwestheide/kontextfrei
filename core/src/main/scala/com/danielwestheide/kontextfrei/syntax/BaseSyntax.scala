@@ -154,6 +154,8 @@ class BaseSyntax[DCollection[_], A: ClassTag](
   final def countByValue()(implicit ord: Ordering[A]): Map[A, Long] =
     self.countByValue(coll)
 
+  final def reduce(f: (A, A) => A): A = self.reduce(coll)(f)
+
   final def first(): A = self.first(coll)
 
   final def take(num: Int): Array[A] = self.take(coll)(num)
