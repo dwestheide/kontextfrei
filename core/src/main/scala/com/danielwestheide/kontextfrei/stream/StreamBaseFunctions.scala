@@ -92,6 +92,10 @@ private[kontextfrei] trait StreamBaseFunctions
     case (k, v) => (k, v.toLong)
   }
 
+  override final def zipWithUniqueId[A: ClassTag](
+      xs: Stream[A]): Stream[(A, Long)] =
+    zipWithIndex(xs)
+
   override final def zipPartitions[A: ClassTag, B: ClassTag, C: ClassTag](
       as: Stream[A])(bs: Stream[B])(
       f: (Iterator[A], Iterator[B]) => Iterator[C]): Stream[C] =

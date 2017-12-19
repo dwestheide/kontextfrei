@@ -71,7 +71,11 @@ private[kontextfrei] trait RDDBaseFunctions
   override final def zip[A: ClassTag, B: ClassTag](xs: RDD[A])(
       ys: RDD[B]): RDD[(A, B)] = xs.zip(ys)
 
-  override final def zipWithIndex[A: ClassTag](xs: RDD[A]): RDD[(A, Long)] = xs.zipWithIndex()
+  override final def zipWithIndex[A: ClassTag](xs: RDD[A]): RDD[(A, Long)] =
+    xs.zipWithIndex()
+
+  override final def zipWithUniqueId[A: ClassTag](xs: RDD[A]): RDD[(A, Long)] =
+    xs.zipWithUniqueId()
 
   override final def zipPartitions[A: ClassTag, B: ClassTag, C: ClassTag](
       as: RDD[A])(bs: RDD[B])(

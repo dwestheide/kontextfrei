@@ -62,6 +62,8 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
 
   def zipWithIndex[A: ClassTag](xs: DCollection[A]): DCollection[(A, Long)]
 
+  def zipWithUniqueId[A: ClassTag](xs: DCollection[A]): DCollection[(A, Long)]
+
   def zipPartitions[A: ClassTag, B: ClassTag, C: ClassTag](as: DCollection[A])(
       bs: DCollection[B])(
       f: (Iterator[A], Iterator[B]) => Iterator[C]): DCollection[C]

@@ -405,6 +405,13 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
+  property("zipWithUniqueId returns DCollection with unique ids") {
+    forAll { (xs: List[String]) =>
+      val uniqueIds = unit(xs).zipWithUniqueId.values.collect().sorted.toList
+      assert(uniqueIds === uniqueIds.distinct)
+    }
+  }
+
   property("zipPartitions applies passed in function to each partition") {
     forAll { (xs: List[Int]) =>
       val result = unit(xs).zipPartitions(unit(xs))(_ ++ _)

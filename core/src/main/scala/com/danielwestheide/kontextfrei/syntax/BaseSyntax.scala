@@ -69,6 +69,8 @@ class BaseSyntax[DCollection[_], A: ClassTag](
 
   final def zipWithIndex: DCollection[(A, Long)] = self.zipWithIndex(coll)
 
+  final def zipWithUniqueId: DCollection[(A, Long)] = self.zipWithUniqueId(coll)
+
   final def zipPartitions[B: ClassTag, C: ClassTag](other: DCollection[B])(
       f: (Iterator[A], Iterator[B]) => Iterator[C]): DCollection[C] =
     self.zipPartitions(coll)(other)(f)
