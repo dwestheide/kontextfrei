@@ -193,6 +193,10 @@ private[kontextfrei] trait RDDBaseFunctions
   override def top[A: ClassTag](as: RDD[A])(num: Int)(
       implicit ord: Ordering[A]): Array[A] = as.top(num)
 
+  override final def min[A: ClassTag](as: RDD[A])(implicit ord: Ordering[A]): A = as.min()
+
+  override final def max[A: ClassTag](as: RDD[A])(implicit ord: Ordering[A]): A = as.max()
+
   override final def foreach[A: ClassTag](as: RDD[A])(f: A => Unit): Unit =
     as.foreach(f)
 

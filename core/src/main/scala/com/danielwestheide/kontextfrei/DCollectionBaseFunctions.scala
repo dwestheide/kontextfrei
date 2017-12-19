@@ -163,6 +163,10 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
   def top[A: ClassTag](as: DCollection[A])(num: Int)(
       implicit ord: Ordering[A]): Array[A]
 
+  def min[A: ClassTag](as: DCollection[A])(implicit ord: Ordering[A]): A
+
+  def max[A: ClassTag](as: DCollection[A])(implicit ord: Ordering[A]): A
+
   def foreach[A: ClassTag](as: DCollection[A])(f: A => Unit): Unit
 
   def foreachPartition[A: ClassTag](as: DCollection[A])(

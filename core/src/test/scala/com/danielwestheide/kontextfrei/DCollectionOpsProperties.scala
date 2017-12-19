@@ -401,7 +401,11 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property("zipWithIndex returns DCollection with indexes") {
     forAll { (xs: List[String]) =>
-      assert(unit(xs).zipWithIndex.values.collect().sorted.toList === xs.indices.toList.map(_.toLong))
+      assert(
+        unit(xs).zipWithIndex.values
+          .collect()
+          .sorted
+          .toList === xs.indices.toList.map(_.toLong))
     }
   }
 
@@ -857,13 +861,15 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
-  property("reduce throws an UnsupportedOperationException for empty DCollection") {
+  property(
+    "reduce throws an UnsupportedOperationException for empty DCollection") {
     intercept[UnsupportedOperationException] {
       unit(List.empty[String]).reduce(_ ++ _)
     }
   }
 
-  property("reduce applies the given function to each element of the DCollection") {
+  property(
+    "reduce applies the given function to each element of the DCollection") {
     forAll { (xs: List[Int]) =>
       whenever(xs.nonEmpty) {
         assert(unit(xs).reduce(_ + _) === xs.sum)
@@ -871,7 +877,8 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
-  property("fold applies the given commutative function to each element of the DCollection") {
+  property(
+    "fold applies the given commutative function to each element of the DCollection") {
     forAll { (xs: List[Int]) =>
       whenever(xs.nonEmpty) {
         assert(unit(xs).fold(0)(_ + _) === xs.sum)
@@ -883,7 +890,8 @@ trait DCollectionOpsProperties[DColl[_]]
     assert(unit(List.empty[Int]).fold(0)(_ + _) === 0)
   }
 
-  property("aggregate applies the given commutative function to each element of the DCollection") {
+  property(
+    "aggregate applies the given commutative function to each element of the DCollection") {
     forAll { (xs: List[String]) =>
       whenever(xs.nonEmpty) {
         val result = unit(xs).aggregate(0)(_ + _.length, _ + _)
@@ -933,6 +941,34 @@ trait DCollectionOpsProperties[DColl[_]]
       val x3 = x1 + 2
       val xs = List(x2, x1, x3)
       unit(xs).top(2) mustEqual Array(x3, x2)
+    }
+  }
+
+  property("min returns the smallest element of the DCollection") {
+    forAll { (xs: List[Int]) =>
+      whenever(xs.nonEmpty) {
+        assert(unit(xs).min() === xs.min)
+      }
+    }
+  }
+
+  property("min fails for empty collections") {
+    intercept[UnsupportedOperationException] {
+      unit(List.empty[Int]).min()
+    }
+  }
+
+  property("max returns the biggest element of the DCollection") {
+    forAll { (xs: List[Int]) =>
+      whenever(xs.nonEmpty) {
+        assert(unit(xs).max() === xs.max)
+      }
+    }
+  }
+
+  property("max fails for empty collections") {
+    intercept[UnsupportedOperationException] {
+      unit(List.empty[Int]).max()
     }
   }
 

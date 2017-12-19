@@ -177,6 +177,10 @@ class BaseSyntax[DCollection[_], A: ClassTag](
   final def top(num: Int)(implicit ord: Ordering[A]): Array[A] =
     self.top(coll)(num)
 
+  final def min()(implicit ord: Ordering[A]): A = self.min(coll)
+
+  final def max()(implicit ord: Ordering[A]): A = self.max(coll)
+
   final def foreach(f: A => Unit): Unit = self.foreach(coll)(f)
 
   final def foreachPartition(f: Iterator[A] => Unit): Unit =

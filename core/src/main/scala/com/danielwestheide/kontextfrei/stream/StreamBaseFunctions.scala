@@ -221,6 +221,10 @@ private[kontextfrei] trait StreamBaseFunctions
       implicit ord: Ordering[A]): Array[A] =
     as.sorted(ord.reverse).take(num).toArray
 
+  override final def min[A: ClassTag](as: Stream[A])(implicit ord: Ordering[A]): A = as.min
+
+  override final def max[A: ClassTag](as: Stream[A])(implicit ord: Ordering[A]): A = as.max
+
   override final def foreach[A: ClassTag](as: Stream[A])(f: A => Unit): Unit =
     as.foreach(f)
 
