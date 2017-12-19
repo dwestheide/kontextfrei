@@ -39,7 +39,7 @@ Adding a dependency on the the current version of `kontextfrei-core` and `kontex
 ```scala
 resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
 libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-1.4.1" % "0.6.0"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-1.4.1" % "0.6.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-1.4.1" % "0.6.0" % "test,it"
 libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.1" % "provided"
 ```
 
@@ -48,7 +48,7 @@ libraryDependencies += "org.apache.spark" %% "spark-core" % "1.4.1" % "provided"
 ```scala
 resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
 libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-2.0.0" % "0.6.0"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.0.0" % "0.6.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.0.0" % "0.6.0" % "test,it"
 libraryDependencies += "org.apache.spark" %% "spark-core" % "2.0.0" % "provided"
 ```
 
@@ -57,7 +57,7 @@ libraryDependencies += "org.apache.spark" %% "spark-core" % "2.0.0" % "provided"
 ```scala
 resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
 libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-2.1.0" % "0.6.0"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.1.0" % "0.6.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.1.0" % "0.6.0" % "test,it"
 libraryDependencies += "org.apache.spark" %% "spark-core" % "2.1.0" % "provided"
 ```
 
@@ -66,7 +66,7 @@ libraryDependencies += "org.apache.spark" %% "spark-core" % "2.1.0" % "provided"
 ```scala
 resolvers += "dwestheide" at "https://dl.bintray.com/dwestheide/maven"
 libraryDependencies += "com.danielwestheide" %% "kontextfrei-core-spark-2.2.0" % "0.6.0"
-libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.2.0" % "0.6.0"
+libraryDependencies += "com.danielwestheide" %% "kontextfrei-scalatest-spark-2.2.0" % "0.6.0" % "test,it"
 libraryDependencies += "org.apache.spark" %% "spark-core" % "2.2.0" % "provided"
 ```
 
