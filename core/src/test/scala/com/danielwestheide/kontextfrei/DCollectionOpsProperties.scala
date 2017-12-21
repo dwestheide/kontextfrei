@@ -401,18 +401,17 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property("zipWithIndex returns DCollection with indexes") {
     forAll { (xs: List[String]) =>
-      assert(
         unit(xs).zipWithIndex.values
           .collect()
           .sorted
-          .toList === xs.indices.toList.map(_.toLong))
+          .toList mustEqual xs.indices.toList.map(_.toLong)
     }
   }
 
   property("zipWithUniqueId returns DCollection with unique ids") {
     forAll { (xs: List[String]) =>
       val uniqueIds = unit(xs).zipWithUniqueId.values.collect().sorted.toList
-      assert(uniqueIds === uniqueIds.distinct)
+      uniqueIds mustEqual uniqueIds.distinct
     }
   }
 
@@ -872,7 +871,7 @@ trait DCollectionOpsProperties[DColl[_]]
     "reduce applies the given function to each element of the DCollection") {
     forAll { (xs: List[Int]) =>
       whenever(xs.nonEmpty) {
-        assert(unit(xs).reduce(_ + _) === xs.sum)
+        unit(xs).reduce(_ + _) mustEqual xs.sum
       }
     }
   }
@@ -881,13 +880,13 @@ trait DCollectionOpsProperties[DColl[_]]
     "fold applies the given commutative function to each element of the DCollection") {
     forAll { (xs: List[Int]) =>
       whenever(xs.nonEmpty) {
-        assert(unit(xs).fold(0)(_ + _) === xs.sum)
+        unit(xs).fold(0)(_ + _) mustEqual xs.sum
       }
     }
   }
 
   property("fold returns the zero value for an empty DCollection") {
-    assert(unit(List.empty[Int]).fold(0)(_ + _) === 0)
+    unit(List.empty[Int]).fold(0)(_ + _) mustEqual 0
   }
 
   property(
@@ -895,13 +894,13 @@ trait DCollectionOpsProperties[DColl[_]]
     forAll { (xs: List[String]) =>
       whenever(xs.nonEmpty) {
         val result = unit(xs).aggregate(0)(_ + _.length, _ + _)
-        assert(result === xs.map(_.length).sum)
+        result mustEqual xs.map(_.length).sum
       }
     }
   }
 
   property("aggregate returns the zero value for an empty DCollection") {
-    assert(unit(List.empty[String]).aggregate(0)(_ + _.length, _ + _) === 0)
+    unit(List.empty[String]).aggregate(0)(_ + _.length, _ + _) mustEqual 0
   }
 
   property(
@@ -915,7 +914,7 @@ trait DCollectionOpsProperties[DColl[_]]
     "treeReduce applies the given function to each element of the DCollection") {
     forAll { (xs: List[Int]) =>
       whenever(xs.nonEmpty) {
-        assert(unit(xs).treeReduce(_ + _) === xs.sum)
+        unit(xs).treeReduce(_ + _) mustEqual xs.sum
       }
     }
   }
@@ -925,13 +924,13 @@ trait DCollectionOpsProperties[DColl[_]]
     forAll { (xs: List[String]) =>
       whenever(xs.nonEmpty) {
         val result = unit(xs).treeAggregate(0)(_ + _.length, _ + _)
-        assert(result === xs.map(_.length).sum)
+        result mustEqual xs.map(_.length).sum
       }
     }
   }
 
   property("treeAggregate returns the zero value for an empty DCollection") {
-    assert(unit(List.empty[String]).treeAggregate(0)(_ + _.length, _ + _) === 0)
+    unit(List.empty[String]).treeAggregate(0)(_ + _.length, _ + _) mustEqual 0
   }
 
   property("first returns the first element of the DCollection") {
@@ -977,7 +976,7 @@ trait DCollectionOpsProperties[DColl[_]]
   property("min returns the smallest element of the DCollection") {
     forAll { (xs: List[Int]) =>
       whenever(xs.nonEmpty) {
-        assert(unit(xs).min() === xs.min)
+        unit(xs).min() mustEqual xs.min
       }
     }
   }
@@ -991,7 +990,7 @@ trait DCollectionOpsProperties[DColl[_]]
   property("max returns the biggest element of the DCollection") {
     forAll { (xs: List[Int]) =>
       whenever(xs.nonEmpty) {
-        assert(unit(xs).max() === xs.max)
+        unit(xs).max() mustEqual xs.max
       }
     }
   }
