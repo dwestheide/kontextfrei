@@ -210,6 +210,12 @@ private[kontextfrei] trait StreamBaseFunctions
                                                             depth: Int = 2): A =
     as.reduceLeft(f)
 
+  override final def treeAggregate[A: ClassTag, B: ClassTag](as: Stream[A])(
+      zeroValue: B)(seqOp: (B, A) => B,
+                    combOp: (B, B) => B,
+                    depth: Int = 2): B =
+    as.aggregate(zeroValue)(seqOp, combOp)
+
   override final def first[A: ClassTag](as: Stream[A]): A =
     as.headOption getOrElse {
       throw new UnsupportedOperationException("empty collection")

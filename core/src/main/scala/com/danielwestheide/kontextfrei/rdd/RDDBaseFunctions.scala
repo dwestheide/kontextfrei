@@ -186,6 +186,12 @@ private[kontextfrei] trait RDDBaseFunctions
   override final def treeReduce[A: ClassTag](
       as: RDD[A])(f: (A, A) => A, depth: Int = 2): A = as.treeReduce(f, depth)
 
+  override final def treeAggregate[A: ClassTag, B: ClassTag](as: RDD[A])(
+      zeroValue: B)(seqOp: (B, A) => B,
+                    combOp: (B, B) => B,
+                    depth: Int = 2): B =
+    as.treeAggregate(zeroValue)(seqOp, combOp, depth)
+
   override final def first[A: ClassTag](as: RDD[A]): A = as.first()
 
   override def take[A: ClassTag](as: RDD[A])(n: Int): Array[A] = as.take(n)

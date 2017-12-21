@@ -920,6 +920,20 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
+  property(
+    "treeAggregate applies the given commutative function to each element of the DCollection") {
+    forAll { (xs: List[String]) =>
+      whenever(xs.nonEmpty) {
+        val result = unit(xs).treeAggregate(0)(_ + _.length, _ + _)
+        assert(result === xs.map(_.length).sum)
+      }
+    }
+  }
+
+  property("treeAggregate returns the zero value for an empty DCollection") {
+    assert(unit(List.empty[String]).treeAggregate(0)(_ + _.length, _ + _) === 0)
+  }
+
   property("first returns the first element of the DCollection") {
     forAll { xs: Set[String] =>
       whenever(xs.nonEmpty) {

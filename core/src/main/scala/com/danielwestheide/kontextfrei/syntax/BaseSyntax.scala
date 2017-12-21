@@ -167,7 +167,13 @@ class BaseSyntax[DCollection[_], A: ClassTag](
                                                  combOp: (B, B) => B): B =
     self.aggregate(coll)(zeroValue)(seqOp, combOp)
 
-  final def treeReduce(f: (A, A) => A, depth: Int = 2): A = self.treeReduce(coll)(f, depth)
+  final def treeReduce(f: (A, A) => A, depth: Int = 2): A =
+    self.treeReduce(coll)(f, depth)
+
+  final def treeAggregate[B: ClassTag](zeroValue: B)(seqOp: (B, A) => B,
+                                                 combOp: (B, B) => B,
+                                                 depth: Int = 2): B =
+    self.treeAggregate(coll)(zeroValue)(seqOp, combOp, depth)
 
   final def first(): A = self.first(coll)
 
