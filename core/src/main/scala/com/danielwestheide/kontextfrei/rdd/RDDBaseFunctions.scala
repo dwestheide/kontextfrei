@@ -183,6 +183,9 @@ private[kontextfrei] trait RDDBaseFunctions
       zeroValue: B)(seqOp: (B, A) => B, combOp: (B, B) => B): B =
     as.aggregate(zeroValue)(seqOp, combOp)
 
+  override final def treeReduce[A: ClassTag](
+      as: RDD[A])(f: (A, A) => A, depth: Int = 2): A = as.treeReduce(f, depth)
+
   override final def first[A: ClassTag](as: RDD[A]): A = as.first()
 
   override def take[A: ClassTag](as: RDD[A])(n: Int): Array[A] = as.take(n)
@@ -193,9 +196,11 @@ private[kontextfrei] trait RDDBaseFunctions
   override def top[A: ClassTag](as: RDD[A])(num: Int)(
       implicit ord: Ordering[A]): Array[A] = as.top(num)
 
-  override final def min[A: ClassTag](as: RDD[A])(implicit ord: Ordering[A]): A = as.min()
+  override final def min[A: ClassTag](as: RDD[A])(
+      implicit ord: Ordering[A]): A = as.min()
 
-  override final def max[A: ClassTag](as: RDD[A])(implicit ord: Ordering[A]): A = as.max()
+  override final def max[A: ClassTag](as: RDD[A])(
+      implicit ord: Ordering[A]): A = as.max()
 
   override final def foreach[A: ClassTag](as: RDD[A])(f: A => Unit): Unit =
     as.foreach(f)

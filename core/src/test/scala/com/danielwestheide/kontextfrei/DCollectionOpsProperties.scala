@@ -904,6 +904,22 @@ trait DCollectionOpsProperties[DColl[_]]
     assert(unit(List.empty[String]).aggregate(0)(_ + _.length, _ + _) === 0)
   }
 
+  property(
+    "treeReduce throws an UnsupportedOperationException for empty DCollection") {
+    intercept[UnsupportedOperationException] {
+      unit(List.empty[String]).treeReduce(_ ++ _)
+    }
+  }
+
+  property(
+    "treeReduce applies the given function to each element of the DCollection") {
+    forAll { (xs: List[Int]) =>
+      whenever(xs.nonEmpty) {
+        assert(unit(xs).treeReduce(_ + _) === xs.sum)
+      }
+    }
+  }
+
   property("first returns the first element of the DCollection") {
     forAll { xs: Set[String] =>
       whenever(xs.nonEmpty) {

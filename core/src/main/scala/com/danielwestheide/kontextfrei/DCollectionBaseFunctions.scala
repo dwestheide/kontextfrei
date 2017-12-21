@@ -153,6 +153,8 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
   def aggregate[A: ClassTag, B: ClassTag](as: DCollection[A])(
       zeroValue: B)(seqOp: (B, A) => B, combOp: (B, B) => B): B
 
+  def treeReduce[A: ClassTag](as: DCollection[A])(f: (A, A) => A, depth: Int = 2): A
+
   def first[A: ClassTag](as: DCollection[A]): A
 
   def take[A: ClassTag](as: DCollection[A])(n: Int): Array[A]
