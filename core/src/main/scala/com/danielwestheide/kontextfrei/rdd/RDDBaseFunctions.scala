@@ -219,11 +219,11 @@ private[kontextfrei] trait RDDBaseFunctions
   override final def toLocalIterator[A: ClassTag](as: RDD[A]): Iterator[A] =
     as.toLocalIterator
 
-  override def repartition[A: ClassTag](as: RDD[A])(
+  override final def repartition[A: ClassTag](as: RDD[A])(
       numPartitions: Int): RDD[A] = as.repartition(numPartitions)
 
-  override def coalesce[A: ClassTag](as: RDD[A])(numPartitions: Int,
-                                                 shuffle: Boolean = false) =
+  override final def coalesce[A: ClassTag](
+      as: RDD[A])(numPartitions: Int, shuffle: Boolean = false): RDD[A] =
     as.coalesce(numPartitions, shuffle)
 
 }

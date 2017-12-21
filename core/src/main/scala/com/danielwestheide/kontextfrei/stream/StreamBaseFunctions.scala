@@ -23,7 +23,7 @@ private[kontextfrei] trait StreamBaseFunctions
   override final def distinct[A: ClassTag](as: Stream[A]): Stream[A] =
     as.distinct
 
-  override def distinctWithNumPartitions[A: ClassTag](as: Stream[A])(
+  override final def distinctWithNumPartitions[A: ClassTag](as: Stream[A])(
       numPartitions: Int): Stream[A] = as.distinct
 
   override final def map[A: ClassTag, B: ClassTag](as: Stream[A])(
@@ -81,7 +81,7 @@ private[kontextfrei] trait StreamBaseFunctions
   override final def zip[A: ClassTag, B: ClassTag](xs: Stream[A])(
       ys: Stream[B]): Stream[(A, B)] = {
     val result = xs.zip(ys)
-    if (result.size < xs.size || result.size < ys.size)
+    if (result.lengthCompare(xs.size) < 0 || result.lengthCompare(ys.size) < 0)
       throw new SparkException(
         "Zipping only works if both collections have same number of elements")
     else result
@@ -221,13 +221,13 @@ private[kontextfrei] trait StreamBaseFunctions
       throw new UnsupportedOperationException("empty collection")
     }
 
-  override def take[A: ClassTag](as: Stream[A])(n: Int): Array[A] =
+  override final def take[A: ClassTag](as: Stream[A])(n: Int): Array[A] =
     as.take(n).toArray
 
-  override def takeOrdered[A: ClassTag](as: Stream[A])(num: Int)(
+  override final def takeOrdered[A: ClassTag](as: Stream[A])(num: Int)(
       implicit ord: Ordering[A]): Array[A] = as.sorted.take(num).toArray
 
-  override def top[A: ClassTag](as: Stream[A])(num: Int)(
+  override final def top[A: ClassTag](as: Stream[A])(num: Int)(
       implicit ord: Ordering[A]): Array[A] =
     as.sorted(ord.reverse).take(num).toArray
 
@@ -248,10 +248,10 @@ private[kontextfrei] trait StreamBaseFunctions
   override final def toLocalIterator[A: ClassTag](as: Stream[A]): Iterator[A] =
     as.toIterator
 
-  override def repartition[A: ClassTag](as: Stream[A])(
+  override final def repartition[A: ClassTag](as: Stream[A])(
       numPartitions: Int): Stream[A] = as
 
-  override def coalesce[A: ClassTag](
+  override final def coalesce[A: ClassTag](
       as: Stream[A])(numPartitions: Int, shuffle: Boolean = false): Stream[A] =
     as
 
