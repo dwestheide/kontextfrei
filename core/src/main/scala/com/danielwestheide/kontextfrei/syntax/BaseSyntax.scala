@@ -205,4 +205,6 @@ class BaseSyntax[DCollection[_], A: ClassTag](
                      shuffle: Boolean = false): DCollection[A] =
     self.coalesce(coll)(numPartitions, shuffle)
 
+  final def setName(name: String): DCollection[A] =
+    self.setName(coll)(name)
 }

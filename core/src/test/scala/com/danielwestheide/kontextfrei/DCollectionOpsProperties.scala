@@ -1034,4 +1034,11 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
+  property("setName doesn't have any visible effect on a DCollection") {
+    forAll(Gen.listOfN(4, Gen.alphaStr)) { xs =>
+      val result = unit(xs).setName("blah").collect().toList
+      assert(result.sorted === xs.sorted)
+    }
+  }
+
 }
