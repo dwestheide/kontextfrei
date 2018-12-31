@@ -255,4 +255,6 @@ private[kontextfrei] trait StreamBaseFunctions
       as: Stream[A])(numPartitions: Int, shuffle: Boolean = false): Stream[A] =
     as
 
+  override def setName[A: ClassTag](as: Stream[A])(
+      name: String): Stream[A] = as
 }

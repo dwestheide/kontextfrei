@@ -188,4 +188,6 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
       numPartitions: Int,
       shuffle: Boolean = false): DCollection[A]
 
+  def setName[A: ClassTag](as: DCollection[A])(
+    name: String): DCollection[A]
 }

@@ -226,4 +226,5 @@ private[kontextfrei] trait RDDBaseFunctions
       as: RDD[A])(numPartitions: Int, shuffle: Boolean = false): RDD[A] =
     as.coalesce(numPartitions, shuffle)
 
+  override final def setName[A: ClassTag](as: RDD[A])(name: String): RDD[A] = as.setName(name)
 }
