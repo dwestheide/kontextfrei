@@ -983,7 +983,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property("min fails for empty collections") {
     intercept[UnsupportedOperationException] {
-      unit(List.empty[Int]).min()
+      syntax.Imports.empty[DColl, Int].min()
     }
   }
 
@@ -1002,7 +1002,7 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("isEmpty returns true for empty collection") {
-    assert(unit(List.empty[String]).isEmpty())
+    assert(syntax.Imports.empty.isEmpty())
   }
 
   property("isEmpty returns false for non-empty collections") {

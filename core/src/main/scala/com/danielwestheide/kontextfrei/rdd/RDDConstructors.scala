@@ -11,4 +11,6 @@ private[kontextfrei] trait RDDConstructors
     with RDDBase {
   override final def unit[A: ClassTag](as: Seq[A]): RDD[A] =
     sparkContext.parallelize(as)
+
+  override final def empty[A: ClassTag]: RDD[A] = sparkContext.emptyRDD
 }
