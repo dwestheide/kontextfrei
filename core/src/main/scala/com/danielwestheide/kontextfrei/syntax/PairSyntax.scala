@@ -1,6 +1,7 @@
 package com.danielwestheide.kontextfrei.syntax
 
 import com.danielwestheide.kontextfrei.DCollectionOps
+import org.apache.spark.Partitioner
 
 import scala.collection.Map
 import scala.reflect.ClassTag
@@ -57,4 +58,6 @@ class PairSyntax[DCollection[_], A: ClassTag, B: ClassTag](
 
   final def collectAsMap(): Map[A, B] = self.collectAsMap(coll)
 
+  final def partitionBy(partitioner: Partitioner): DCollection[(A, B)] =
+    self.partitionBy(coll)(partitioner)
 }

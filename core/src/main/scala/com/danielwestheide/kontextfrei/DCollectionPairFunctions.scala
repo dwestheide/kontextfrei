@@ -1,5 +1,7 @@
 package com.danielwestheide.kontextfrei
 
+import org.apache.spark.Partitioner
+
 import scala.collection.Map
 import scala.reflect.ClassTag
 
@@ -52,4 +54,7 @@ private[kontextfrei] trait DCollectionPairFunctions[DCollection[_]] {
 
   def collectAsMap[A: ClassTag, B: ClassTag](
       xs: DCollection[(A, B)]): Map[A, B]
+
+  def partitionBy[A: ClassTag, B: ClassTag](
+    xs: DCollection[(A, B)])(partitioner: Partitioner): DCollection[(A, B)]
 }

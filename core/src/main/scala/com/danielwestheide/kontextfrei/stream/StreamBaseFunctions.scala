@@ -2,7 +2,7 @@ package com.danielwestheide.kontextfrei.stream
 
 import com.danielwestheide.kontextfrei.DCollectionBaseFunctions
 import org.apache.spark.storage.StorageLevel
-import org.apache.spark.{Partitioner, SparkException}
+import org.apache.spark.{HashPartitioner, Partitioner, SparkException}
 
 import scala.reflect.ClassTag
 
@@ -257,4 +257,11 @@ private[kontextfrei] trait StreamBaseFunctions
 
   override def setName[A: ClassTag](as: Stream[A])(
       name: String): Stream[A] = as
+
+  override final def defaultPartitioner[A: ClassTag](
+      as: Stream[A])(others: Stream[_]*): Partitioner =
+    new Partitioner {
+      override def numPartitions: Int          = ???
+      override def getPartition(key: Any): Int = ???
+    }
 }
