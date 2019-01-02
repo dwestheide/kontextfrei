@@ -254,14 +254,14 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("mapPartitions with identity function returns unchanged DCollection") {
-    forAll { (xs: List[String]) =>
+    forAll { xs: List[String] =>
       val result = unit(xs).mapPartitions(identity).collect()
       assert(result.toList === xs)
     }
   }
 
   property("mapPartitions removes elements according to the passed in function") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       val result = unit(xs).mapPartitions { it =>
         it.collect {
           case x if x % 2 == 0 => x
@@ -296,7 +296,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property(
     "The intersection of xs and ys contains only elements both in xs and ys") {
-    forAll { (numbers: List[Int]) =>
+    forAll { numbers: List[Int] =>
       val evenNumbers = numbers.filter(_ % 2 === 0)
       val xs          = unit(evenNumbers)
       val ys          = unit(numbers)
@@ -307,7 +307,7 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("The intersection of xs and ys contains no duplicates") {
-    forAll { (numbers: List[Int]) =>
+    forAll { numbers: List[Int] =>
       val evenNumbers = numbers.filter(_ % 2 === 0)
       val xs          = unit(evenNumbers)
       val ys          = unit(numbers) ++ xs
@@ -321,7 +321,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property(
     "intersectionWithPartitioner of xs and ys contains only elements both in xs and ys") {
-    forAll { (numbers: List[Int]) =>
+    forAll { numbers: List[Int] =>
       val evenNumbers = numbers.filter(_ % 2 === 0)
       val xs          = unit(evenNumbers)
       val ys          = unit(numbers)
@@ -333,7 +333,7 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("intersectionWithPartitioner of xs and ys contains no duplicates") {
-    forAll { (numbers: List[Int]) =>
+    forAll { numbers: List[Int] =>
       val evenNumbers = numbers.filter(_ % 2 === 0)
       val xs          = unit(evenNumbers)
       val ys          = unit(numbers) ++ xs
@@ -347,7 +347,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property(
     "intersectionWithNumPartitions of xs and ys contains only elements both in xs and ys") {
-    forAll { (numbers: List[Int]) =>
+    forAll { numbers: List[Int] =>
       val evenNumbers = numbers.filter(_ % 2 === 0)
       val xs          = unit(evenNumbers)
       val ys          = unit(numbers)
@@ -358,7 +358,7 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("intersectionWithNumPartitions of xs and ys contains no duplicates") {
-    forAll { (numbers: List[Int]) =>
+    forAll { numbers: List[Int] =>
       val evenNumbers = numbers.filter(_ % 2 === 0)
       val xs          = unit(evenNumbers)
       val ys          = unit(numbers) ++ xs
@@ -371,7 +371,7 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("zipping with itself returns tuples of equal values") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       val result = unit(xs).zip(unit(xs)).collect()
       Inspectors.forAll(result) {
         case (x, y) =>
@@ -381,7 +381,7 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("zipping doesn't change the order of elements") {
-    forAll { (numbers: List[Int]) =>
+    forAll { numbers: List[Int] =>
       val strings = numbers.map(_.toString)
       val result  = unit(numbers).zip(unit(strings)).collect().toList
       result.map(_._1) mustEqual numbers
@@ -390,7 +390,7 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("zipping fails for unequal collection sizes") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       whenever(xs.nonEmpty) {
         intercept[SparkException] {
           unit(xs).zip(unit(xs ++ xs)).collect()
@@ -400,7 +400,7 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("zipWithIndex returns DCollection with indexes") {
-    forAll { (xs: List[String]) =>
+    forAll { xs: List[String] =>
         unit(xs).zipWithIndex.values
           .collect()
           .sorted
@@ -409,14 +409,14 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("zipWithUniqueId returns DCollection with unique ids") {
-    forAll { (xs: List[String]) =>
+    forAll { xs: List[String] =>
       val uniqueIds = unit(xs).zipWithUniqueId.values.collect().sorted.toList
       uniqueIds mustEqual uniqueIds.distinct
     }
   }
 
   property("zipPartitions applies passed in function to each partition") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       val result = unit(xs).zipPartitions(unit(xs))(_ ++ _)
       assert(result.collect().toList.sorted === (xs ++ xs).sorted)
     }
@@ -424,7 +424,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property(
     "zipPartitionsWithPreservesPartitioning applies passed in function to each partition") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       val result =
         unit(xs).zipPartitions(unit(xs), preservesPartitioning = true)(_ ++ _)
       assert(result.collect().toList.sorted === (xs ++ xs).sorted)
@@ -432,7 +432,7 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("zipPartitions3 applies passed in function to each partition") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       val result = unit(xs).zipPartitions(unit(xs), unit(xs))(_ ++ _ ++ _)
       assert(result.collect().toList.sorted === (xs ++ xs ++ xs).sorted)
     }
@@ -440,7 +440,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property(
     "zipPartitions3WithPreservesPartitioning applies passed in function to each partition") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       val result =
         unit(xs).zipPartitions(unit(xs), unit(xs), preservesPartioning = true)(
           _ ++ _ ++ _)
@@ -449,7 +449,7 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("zipPartitions4 applies passed in function to each partition") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       val result =
         unit(xs).zipPartitions(unit(xs), unit(xs), unit(xs))(_ ++ _ ++ _ ++ _)
       assert(result.collect().toList.sorted === (xs ++ xs ++ xs ++ xs).sorted)
@@ -458,7 +458,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property(
     "zipPartitions4WithPreservesPartitioning applies passed in function to each partition") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       val result =
         unit(xs).zipPartitions(unit(xs),
                                unit(xs),
@@ -470,7 +470,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property(
     "subtract does not change collection if other one has no common elements") {
-    forAll { (x: Int) =>
+    forAll { x: Int =>
       val coll   = List.fill(2)(x) ::: List.fill(2)(x + 1) ::: Nil
       val other  = List.fill(4)(x + 2)
       val result = unit(coll).subtract(unit(other)).collect().toList
@@ -479,14 +479,14 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("subtract collection from itself leads to empty collection") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       assert(unit(xs).subtract(unit(xs)).collect().isEmpty)
     }
   }
 
   property(
     "subtractWithNumPartitions does not change collection if other one has no common elements") {
-    forAll { (x: Int) =>
+    forAll { x: Int =>
       val coll   = List.fill(2)(x) ::: List.fill(2)(x + 1) ::: Nil
       val other  = List.fill(4)(x + 2)
       val result = unit(coll).subtract(unit(other), 2).collect().toList
@@ -496,14 +496,14 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property(
     "subtractWithNumPartitions collection from itself leads to empty collection") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       assert(unit(xs).subtract(unit(xs), 2).collect().isEmpty)
     }
   }
 
   property(
     "subtractWithPartitioner does not change collection if other one has no common elements") {
-    forAll { (x: Int) =>
+    forAll { x: Int =>
       val coll  = List.fill(2)(x) ::: List.fill(2)(x + 1) ::: Nil
       val other = List.fill(4)(x + 2)
       val result = unit(coll)
@@ -516,21 +516,21 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property(
     "subtractWithPartitioner collection from itself leads to empty collection") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       assert(
         unit(xs).subtract(unit(xs), new HashPartitioner(2)).collect().isEmpty)
     }
   }
 
   property("persist has no observable effect") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       val coll = unit(xs)
       assert(coll.persist().collect().toList === coll.collect().toList)
     }
   }
 
   property("persistWithStorageLevel has no observable effect") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       val coll = unit(xs)
       assert(
         coll
@@ -541,7 +541,7 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("unpersist has no observable effect") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       val coll = unit(xs).persist()
       assert(
         coll.unpersist().collect().toList === coll
@@ -551,7 +551,7 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("glom does not add or remove elements") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       val result = unit(xs).glom().collect().flatten.toList
       assert(result === xs)
     }
@@ -768,13 +768,13 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("keys == map(_._1)") {
-    forAll { (xs: List[(Int, String)]) =>
+    forAll { xs: List[(Int, String)] =>
       unit(xs).keys.collect() mustEqual unit(xs.map(_._1)).collect()
     }
   }
 
   property("values == map(_._2)") {
-    forAll { (xs: List[(Int, String)]) =>
+    forAll { xs: List[(Int, String)] =>
       unit(xs).values.collect() mustEqual unit(xs.map(_._2)).collect()
     }
   }
@@ -803,7 +803,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property(
     "aggregateByKey applies associative functions on all elements with the same key") {
-    forAll { (xs: List[(String, String)]) =>
+    forAll { xs: List[(String, String)] =>
       val result  = unit(xs).aggregateByKey(0)(_ + _.length, _ + _).collect()
       val xsByKey = xs.groupBy(_._1).mapValues(_.map(_._2))
       Inspectors.forAll(result) {
@@ -814,7 +814,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property(
     "combineByKey applies associative functions on all elements with the same key") {
-    forAll { (xs: List[(String, String)]) =>
+    forAll { xs: List[(String, String)] =>
       val result =
         unit(xs).combineByKey[Int](_.length, _ + _.length, _ + _).collect()
       val xsByKey = xs.groupBy(_._1).mapValues(_.map(_._2))
@@ -869,7 +869,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property(
     "reduce applies the given function to each element of the DCollection") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       whenever(xs.nonEmpty) {
         unit(xs).reduce(_ + _) mustEqual xs.sum
       }
@@ -878,7 +878,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property(
     "fold applies the given commutative function to each element of the DCollection") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       whenever(xs.nonEmpty) {
         unit(xs).fold(0)(_ + _) mustEqual xs.sum
       }
@@ -891,7 +891,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property(
     "aggregate applies the given commutative function to each element of the DCollection") {
-    forAll { (xs: List[String]) =>
+    forAll { xs: List[String] =>
       whenever(xs.nonEmpty) {
         val result = unit(xs).aggregate(0)(_ + _.length, _ + _)
         result mustEqual xs.map(_.length).sum
@@ -912,7 +912,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property(
     "treeReduce applies the given function to each element of the DCollection") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       whenever(xs.nonEmpty) {
         unit(xs).treeReduce(_ + _) mustEqual xs.sum
       }
@@ -921,7 +921,7 @@ trait DCollectionOpsProperties[DColl[_]]
 
   property(
     "treeAggregate applies the given commutative function to each element of the DCollection") {
-    forAll { (xs: List[String]) =>
+    forAll { xs: List[String] =>
       whenever(xs.nonEmpty) {
         val result = unit(xs).treeAggregate(0)(_ + _.length, _ + _)
         result mustEqual xs.map(_.length).sum
@@ -974,7 +974,7 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("min returns the smallest element of the DCollection") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       whenever(xs.nonEmpty) {
         unit(xs).min() mustEqual xs.min
       }
@@ -988,7 +988,7 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("max returns the biggest element of the DCollection") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       whenever(xs.nonEmpty) {
         unit(xs).max() mustEqual xs.max
       }
@@ -1006,7 +1006,7 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("isEmpty returns false for non-empty collections") {
-    forAll { (xs: List[String]) =>
+    forAll { xs: List[String] =>
       whenever(xs.nonEmpty) {
         assert(!unit(xs).isEmpty())
       }
