@@ -7,3 +7,4 @@ class StreamOps
     with StreamBaseFunctions
     with StreamPairFunctions
     with StreamConstructors
+    with StreamOrderedFunctions

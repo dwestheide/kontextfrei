@@ -10,3 +10,4 @@ class RDDOps(override final val sparkContext: SparkContext)
     with RDDBaseFunctions
     with RDDPairFunctions
     with RDDConstructors
+    with RDDOrderedFunctions

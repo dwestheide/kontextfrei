@@ -1041,4 +1041,32 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
+  property("sortByKey returns a DCollection sorted by key") {
+    forAll { xs: List[(Int, String)] =>
+      val result = unit(xs).sortByKey().collect().toList
+      assert(result.map(_._1) === xs.map(_._1).sorted)
+    }
+  }
+
+  property("sortByKeyWithNumPartitions returns a DCollection sorted by key") {
+    forAll { xs: List[(Int, String)] =>
+      val result = unit(xs).sortByKey(numPartitions = 1).collect().toList
+      assert(result.map(_._1) === xs.map(_._1).sorted)
+    }
+  }
+
+  property("sortByKey returns a DCollection sorted by descending key") {
+    forAll { xs: List[(Int, String)] =>
+      val result = unit(xs).sortByKey(ascending = false).collect().toList
+      assert(result.map(_._1) === xs.map(_._1).sorted.reverse)
+    }
+  }
+
+  property("sortByKeyWithNumPartitions returns a DCollection sorted by descending key") {
+    forAll { xs: List[(Int, String)] =>
+      val result = unit(xs).sortByKey(ascending = false, numPartitions = 1).collect().toList
+      assert(result.map(_._1) === xs.map(_._1).sorted.reverse)
+    }
+  }
+
 }
