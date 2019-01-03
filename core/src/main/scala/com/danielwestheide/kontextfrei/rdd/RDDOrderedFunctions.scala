@@ -15,4 +15,8 @@ private[kontextfrei] trait RDDOrderedFunctions
       x: RDD[(A, B)])(ascending: Boolean, numPartitions: Int): RDD[(A, B)] =
     x.sortByKey(ascending, numPartitions)
 
+  override final def filterByRange[A: ClassTag: Ordering, B: ClassTag](
+      x: RDD[(A, B)])(lower: A, upper: A): RDD[(A, B)] =
+    x.filterByRange(lower, upper)
+
 }

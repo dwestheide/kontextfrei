@@ -1069,4 +1069,14 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
+  property("filterByRange returns a DCollection including only elements within the specified range") {
+    forAll { (xs: List[(Int, String)], lower: Int, upper: Int) =>
+      val result = unit(xs).filterByRange(lower, upper).collect().toList
+      Inspectors.forAll(result) { x =>
+        assert(x._1 >= lower && x._1 <= upper)
+      }
+    }
+  }
+
+
 }

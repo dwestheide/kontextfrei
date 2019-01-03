@@ -16,4 +16,7 @@ class OrderedSyntax[DCollection[_], A: ClassTag : Ordering, B: ClassTag](
   final def sortByKey(ascending: Boolean = true, numPartitions: Int): DCollection[(A, B)] =
     self.sortByKeyWithNumPartitions(coll)(ascending, numPartitions)
 
+  final def filterByRange(lower: A, upper: A): DCollection[(A, B)] =
+    self.filterByRange(coll)(lower, upper)
+
 }
