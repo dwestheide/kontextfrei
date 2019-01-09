@@ -261,7 +261,7 @@ private[kontextfrei] trait StreamBaseFunctions
   override final def defaultPartitioner[A: ClassTag](
       as: Stream[A])(others: Stream[_]*): Partitioner =
     new Partitioner {
-      override def numPartitions: Int          = ???
-      override def getPartition(key: Any): Int = ???
+      override def numPartitions: Int          = -1
+      override def getPartition(key: Any): Int = -1
     }
 }
