@@ -1,6 +1,7 @@
 package com.danielwestheide.kontextfrei.rdd
 
 import com.danielwestheide.kontextfrei.DCollectionPairFunctions
+import org.apache.spark.Partitioner
 import org.apache.spark.rdd.RDD
 
 import scala.collection.Map
@@ -64,4 +65,7 @@ private[kontextfrei] trait RDDPairFunctions
   override final def collectAsMap[A: ClassTag, B: ClassTag](
       xs: RDD[(A, B)]): Map[A, B] =
     xs.collectAsMap()
+
+  override final def partitionBy[A: ClassTag, B: ClassTag](
+      xs: RDD[(A, B)])(partitioner: Partitioner): RDD[(A, B)] = xs.partitionBy(partitioner)
 }

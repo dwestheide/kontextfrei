@@ -207,4 +207,7 @@ class BaseSyntax[DCollection[_], A: ClassTag](
 
   final def setName(name: String): DCollection[A] =
     self.setName(coll)(name)
+
+  final def defaultPartitioner(others: DCollection[_]*): Partitioner =
+    self.defaultPartitioner(coll)(others:_*)
 }

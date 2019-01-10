@@ -190,4 +190,7 @@ private[kontextfrei] trait DCollectionBaseFunctions[DCollection[_]] {
 
   def setName[A: ClassTag](as: DCollection[A])(
     name: String): DCollection[A]
+
+  def defaultPartitioner[A: ClassTag](as: DCollection[A])(
+      others: DCollection[_]*): Partitioner
 }

@@ -1,6 +1,7 @@
 package com.danielwestheide.kontextfrei.stream
 
 import com.danielwestheide.kontextfrei.DCollectionPairFunctions
+import org.apache.spark.Partitioner
 
 import scala.collection.Map
 import scala.reflect.ClassTag
@@ -136,4 +137,6 @@ private[kontextfrei] trait StreamPairFunctions
       xs: Stream[(A, B)]): Map[A, B] =
     xs.toMap
 
+  override def partitionBy[A: ClassTag, B: ClassTag](
+      xs: Stream[(A, B)])(partitioner: Partitioner): Stream[(A, B)] = xs
 }
