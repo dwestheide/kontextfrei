@@ -8,16 +8,19 @@ private[kontextfrei] trait RDDBase {
 
   def withSite[A, R](as: RDD[A])(body: RDD[A] => R): R = {
 
-    val (method, site) = callSiteInfo("com.danielwestheide.kontextfrei")
+    val (method, site) = RDDBase.callSiteInfo
 
     as.sparkContext.setCallSite(s"$method at $site")
     body(as)
   }
+}
 
-  def callSiteInfo(prefix: String): (String, String) = {
+object RDDBase {
+
+  def callSiteInfo: (String, String) = {
 
     def isInKf(ste: StackTraceElement): Boolean = {
-      Option(ste.getClassName()).exists(_.startsWith(prefix))
+      Option(ste.getClassName()).exists(_.startsWith("com.danielwestheide.kontextfrei"))
     }
 
     val (kf, user) = Thread.currentThread().getStackTrace()
