@@ -9,101 +9,127 @@ import scala.collection.Map
 import scala.reflect.ClassTag
 
 private[kontextfrei] trait RDDBaseFunctions
-    extends DCollectionBaseFunctions[RDD] {
+    extends DCollectionBaseFunctions[RDD] { this: RDDBase =>
   override final def cartesian[A: ClassTag, B: ClassTag](as: RDD[A])(
-      bs: RDD[B]): RDD[(A, B)] =
-    as.cartesian(bs)
+      bs: RDD[B]): RDD[(A, B)] = withSite(as) {
+    _.cartesian(bs)
+  }
 
   override final def collect[A: ClassTag, B: ClassTag](as: RDD[A])(
-      pf: PartialFunction[A, B]): RDD[B] =
-    as.collect(pf)
+      pf: PartialFunction[A, B]): RDD[B] = withSite(as) {
+    _.collect(pf)
+  }
 
-  override final def distinct[A: ClassTag](as: RDD[A]): RDD[A] = as.distinct()
+  override final def distinct[A: ClassTag](as: RDD[A]): RDD[A] = withSite(as) {
+    _.distinct()
+  }
 
   override def distinctWithNumPartitions[A: ClassTag](as: RDD[A])(
-      numPartitions: Int): RDD[A] = as.distinct(numPartitions)
+      numPartitions: Int): RDD[A] = withSite(as) {
+    _.distinct(numPartitions)
+  }
 
   override final def map[A: ClassTag, B: ClassTag](as: RDD[A])(
-      f: A => B): RDD[B] =
-    as.map(f)
+      f: A => B): RDD[B] = withSite(as) {
+    _.map(f)
+  }
 
   override final def flatMap[A: ClassTag, B: ClassTag](as: RDD[A])(
-      f: A => TraversableOnce[B]): RDD[B] =
-    as.flatMap(f)
+      f: A => TraversableOnce[B]): RDD[B] = withSite(as) {
+    _.flatMap(f)
+  }
 
-  override final def filter[A: ClassTag](as: RDD[A])(f: A => Boolean): RDD[A] =
-    as.filter(f)
+  override final def filter[A: ClassTag](as: RDD[A])(f: A => Boolean): RDD[A] = withSite(as) {
+    _.filter(f)
+  }
 
   override final def groupBy[A, B: ClassTag](as: RDD[A])(
-      f: A => B): RDD[(B, Iterable[A])] =
-    as.groupBy(f)
+      f: A => B): RDD[(B, Iterable[A])] = withSite(as) {
+    _.groupBy(f)
+  }
 
   override final def groupByWithNumPartitions[A, B: ClassTag](
-      as: RDD[A])(f: A => B, numPartitions: Int): RDD[(B, Iterable[A])] =
-    as.groupBy(f, numPartitions)
+      as: RDD[A])(f: A => B, numPartitions: Int): RDD[(B, Iterable[A])] = withSite(as) {
+    _.groupBy(f, numPartitions)
+  }
 
   override final def groupByWithPartitioner[A, B: ClassTag](
-      as: RDD[A])(f: A => B, partitioner: Partitioner): RDD[(B, Iterable[A])] =
-    as.groupBy(f, partitioner)
+      as: RDD[A])(f: A => B, partitioner: Partitioner): RDD[(B, Iterable[A])] = withSite(as) {
+    _.groupBy(f, partitioner)
+  }
 
   override final def mapPartitions[A: ClassTag, B: ClassTag](as: RDD[A])(
       f: Iterator[A] => Iterator[B],
-      preservesPartitioning: Boolean = false): RDD[B] =
-    as.mapPartitions(f, preservesPartitioning)
+      preservesPartitioning: Boolean = false): RDD[B] = withSite(as) {
+    _.mapPartitions(f, preservesPartitioning)
+  }
 
-  override final def keyBy[A: ClassTag, B](as: RDD[A])(f: A => B): RDD[(B, A)] =
-    as.keyBy(f)
+  override final def keyBy[A: ClassTag, B](as: RDD[A])(f: A => B): RDD[(B, A)] = withSite(as) {
+    _.keyBy(f)
+  }
 
-  override final def union[A: ClassTag](xs: RDD[A])(ys: RDD[A]): RDD[A] =
-    xs.union(ys)
+  override final def union[A: ClassTag](xs: RDD[A])(ys: RDD[A]): RDD[A] = withSite(xs) {
+    _.union(ys)
+  }
 
-  override final def intersection[A: ClassTag](xs: RDD[A])(ys: RDD[A]): RDD[A] =
-    xs.intersection(ys)
+  override final def intersection[A: ClassTag](xs: RDD[A])(ys: RDD[A]): RDD[A] = withSite(xs) {
+    _.intersection(ys)
+  }
 
   override final def intersectionWithPartitioner[A: ClassTag](
-      xs: RDD[A])(ys: RDD[A], partitioner: Partitioner): RDD[A] =
-    xs.intersection(ys, partitioner)
+      xs: RDD[A])(ys: RDD[A], partitioner: Partitioner): RDD[A] = withSite(xs) {
+    _.intersection(ys, partitioner)
+  }
 
   override final def intersectionWithNumPartitions[A: ClassTag](
-      xs: RDD[A])(ys: RDD[A], numPartitions: Int): RDD[A] =
-    xs.intersection(ys, numPartitions)
+      xs: RDD[A])(ys: RDD[A], numPartitions: Int): RDD[A] = withSite(xs) {
+    _.intersection(ys, numPartitions)
+  }
 
   override final def zip[A: ClassTag, B: ClassTag](xs: RDD[A])(
-      ys: RDD[B]): RDD[(A, B)] = xs.zip(ys)
+      ys: RDD[B]): RDD[(A, B)] = withSite(xs) {
+    _.zip(ys)
+  }
 
-  override final def zipWithIndex[A: ClassTag](xs: RDD[A]): RDD[(A, Long)] =
-    xs.zipWithIndex()
+  override final def zipWithIndex[A: ClassTag](xs: RDD[A]): RDD[(A, Long)] = withSite(xs) {
+    _.zipWithIndex()
+  }
 
-  override final def zipWithUniqueId[A: ClassTag](xs: RDD[A]): RDD[(A, Long)] =
-    xs.zipWithUniqueId()
+  override final def zipWithUniqueId[A: ClassTag](xs: RDD[A]): RDD[(A, Long)] = withSite(xs) {
+    _.zipWithUniqueId()
+  }
 
   override final def zipPartitions[A: ClassTag, B: ClassTag, C: ClassTag](
       as: RDD[A])(bs: RDD[B])(
-      f: (Iterator[A], Iterator[B]) => Iterator[C]): RDD[C] =
-    as.zipPartitions(bs)(f)
+      f: (Iterator[A], Iterator[B]) => Iterator[C]): RDD[C] = withSite(as) {
+    _.zipPartitions(bs)(f)
+  }
 
   override final def zipPartitionsWithPreservesPartitioning[A: ClassTag,
                                                             B: ClassTag,
                                                             C: ClassTag](
       as: RDD[A])(bs: RDD[B], preservesPartitioning: Boolean)(
-      f: (Iterator[A], Iterator[B]) => Iterator[C]): RDD[C] =
-    as.zipPartitions(bs, preservesPartitioning)(f)
+      f: (Iterator[A], Iterator[B]) => Iterator[C]): RDD[C] = withSite(as) {
+    _.zipPartitions(bs, preservesPartitioning)(f)
+  }
 
   override final def zipPartitions3[A: ClassTag,
                                     B: ClassTag,
                                     C: ClassTag,
                                     D: ClassTag](as: RDD[A])(bs: RDD[B],
                                                              cs: RDD[C])(
-      f: (Iterator[A], Iterator[B], Iterator[C]) => Iterator[D]): RDD[D] =
-    as.zipPartitions(bs, cs)(f)
+      f: (Iterator[A], Iterator[B], Iterator[C]) => Iterator[D]): RDD[D] = withSite(as) {
+    _.zipPartitions(bs, cs)(f)
+  }
 
   override final def zipPartitions3WithPreservesPartitioning[A: ClassTag,
                                                              B: ClassTag,
                                                              C: ClassTag,
                                                              D: ClassTag](
       as: RDD[A])(bs: RDD[B], cs: RDD[C], preservesPartitioning: Boolean)(
-      f: (Iterator[A], Iterator[B], Iterator[C]) => Iterator[D]): RDD[D] =
-    as.zipPartitions(bs, cs, preservesPartitioning)(f)
+      f: (Iterator[A], Iterator[B], Iterator[C]) => Iterator[D]): RDD[D] = withSite(as) {
+    _.zipPartitions(bs, cs, preservesPartitioning)(f)
+  }
 
   override final def zipPartitions4[A: ClassTag,
                                     B: ClassTag,
@@ -115,8 +141,9 @@ private[kontextfrei] trait RDDBaseFunctions
       ds: RDD[D])(f: (Iterator[A],
                       Iterator[B],
                       Iterator[C],
-                      Iterator[D]) => Iterator[E]): RDD[E] =
-    as.zipPartitions(bs, cs, ds)(f)
+                      Iterator[D]) => Iterator[E]): RDD[E] = withSite(as) {
+    _.zipPartitions(bs, cs, ds)(f)
+  }
 
   override final def zipPartitions4WithPreservesPartitioning[A: ClassTag,
                                                              B: ClassTag,
@@ -130,101 +157,144 @@ private[kontextfrei] trait RDDBaseFunctions
       preservesPartitioning: Boolean)(f: (Iterator[A],
                                           Iterator[B],
                                           Iterator[C],
-                                          Iterator[D]) => Iterator[E]): RDD[E] =
-    as.zipPartitions(bs, cs, ds, preservesPartitioning)(f)
+                                          Iterator[D]) => Iterator[E]): RDD[E] = withSite(as) {
+    _.zipPartitions(bs, cs, ds, preservesPartitioning)(f)
+  }
 
-  override final def subtract[A: ClassTag](xs: RDD[A])(ys: RDD[A]): RDD[A] =
-    xs.subtract(ys)
+  override final def subtract[A: ClassTag](xs: RDD[A])(ys: RDD[A]): RDD[A] = withSite(xs) {
+    _.subtract(ys)
+  }
 
   override final def subtractWithNumPartitions[A: ClassTag](
-      xs: RDD[A])(ys: RDD[A], numPartitions: Int): RDD[A] =
-    xs.subtract(ys, numPartitions)
+      xs: RDD[A])(ys: RDD[A], numPartitions: Int): RDD[A] = withSite(xs) {
+    _.subtract(ys, numPartitions)
+  }
 
   override final def subtractWithPartitioner[A: ClassTag](
-      xs: RDD[A])(ys: RDD[A], partitioner: Partitioner): RDD[A] =
-    xs.subtract(ys, partitioner)
+      xs: RDD[A])(ys: RDD[A], partitioner: Partitioner): RDD[A] = withSite(xs) {
+    _.subtract(ys, partitioner)
+  }
 
-  override final def persist[A: ClassTag](xs: RDD[A]): RDD[A] = xs.persist()
+  override final def persist[A: ClassTag](xs: RDD[A]): RDD[A] = withSite(xs) {
+    _.persist()
+  }
 
   override final def persistWithStorageLevel[A: ClassTag](xs: RDD[A])(
-      level: StorageLevel): RDD[A] = xs.persist(level)
+      level: StorageLevel): RDD[A] = withSite(xs) {
+    _.persist(level)
+  }
 
   override final def unpersist[A: ClassTag](xs: RDD[A])(
-      blocking: Boolean = true): RDD[A] =
-    xs.unpersist(blocking)
+      blocking: Boolean = true): RDD[A] = withSite(xs) {
+    _.unpersist(blocking)
+  }
 
-  override final def glom[A: ClassTag](xs: RDD[A]): RDD[Array[A]] = xs.glom()
+  override final def glom[A: ClassTag](xs: RDD[A]): RDD[Array[A]] = withSite(xs) {
+    _.glom()
+  }
 
   override final def sortBy[A: ClassTag, B: ClassTag: Ordering](as: RDD[A])(
-      f: (A) => B)(ascending: Boolean): RDD[A] =
-    as.sortBy(f, ascending)
+      f: (A) => B)(ascending: Boolean): RDD[A] = withSite(as) {
+    _.sortBy(f, ascending)
+  }
 
   override final def sortByWithNumPartitions[A: ClassTag,
                                              B: ClassTag: Ordering](as: RDD[A])(
-      f: A => B)(ascending: Boolean)(numPartitions: Int): RDD[A] =
-    as.sortBy(f, ascending, numPartitions)
+      f: A => B)(ascending: Boolean)(numPartitions: Int): RDD[A] = withSite(as) {
+    _.sortBy(f, ascending, numPartitions)
+  }
 
-  override final def collectAsArray[A: ClassTag](as: RDD[A]): Array[A] =
-    as.collect()
+  override final def collectAsArray[A: ClassTag](as: RDD[A]): Array[A] = withSite(as) {
+    _.collect()
+  }
 
-  override final def count[A](as: RDD[A]): Long = as.count()
+  override final def count[A](as: RDD[A]): Long = withSite(as) {
+    _.count()
+  }
 
   override final def countByValue[A: ClassTag](as: RDD[A])(
-      implicit ord: Ordering[A]): Map[A, Long] =
-    as.countByValue()
+      implicit ord: Ordering[A]): Map[A, Long] = withSite(as) {
+    _.countByValue()
+  }
 
-  override final def reduce[A: ClassTag](as: RDD[A])(f: (A, A) => A): A =
-    as.reduce(f)
+  override final def reduce[A: ClassTag](as: RDD[A])(f: (A, A) => A): A = withSite(as) {
+    _.reduce(f)
+  }
 
   override final def fold[A: ClassTag](as: RDD[A])(zeroValue: A)(
-      op: (A, A) => A): A = as.fold(zeroValue)(op)
+      op: (A, A) => A): A = withSite(as) {
+    _.fold(zeroValue)(op)
+  }
 
   override final def aggregate[A: ClassTag, B: ClassTag](as: RDD[A])(
-      zeroValue: B)(seqOp: (B, A) => B, combOp: (B, B) => B): B =
-    as.aggregate(zeroValue)(seqOp, combOp)
+      zeroValue: B)(seqOp: (B, A) => B, combOp: (B, B) => B): B = withSite(as) {
+    _.aggregate(zeroValue)(seqOp, combOp)
+  }
 
   override final def treeReduce[A: ClassTag](
-      as: RDD[A])(f: (A, A) => A, depth: Int = 2): A = as.treeReduce(f, depth)
+      as: RDD[A])(f: (A, A) => A, depth: Int = 2): A = withSite(as) {
+    _.treeReduce(f, depth)
+  }
 
   override final def treeAggregate[A: ClassTag, B: ClassTag](as: RDD[A])(
       zeroValue: B)(seqOp: (B, A) => B,
                     combOp: (B, B) => B,
-                    depth: Int = 2): B =
-    as.treeAggregate(zeroValue)(seqOp, combOp, depth)
+                    depth: Int = 2): B = withSite(as) {
+    _.treeAggregate(zeroValue)(seqOp, combOp, depth)
+  }
 
-  override final def first[A: ClassTag](as: RDD[A]): A = as.first()
+  override final def first[A: ClassTag](as: RDD[A]): A = withSite(as) {
+    _.first()
+  }
 
-  override def take[A: ClassTag](as: RDD[A])(n: Int): Array[A] = as.take(n)
+  override def take[A: ClassTag](as: RDD[A])(n: Int): Array[A] = withSite(as) {
+    _.take(n)
+  }
 
   override def takeOrdered[A: ClassTag](as: RDD[A])(num: Int)(
-      implicit ord: Ordering[A]): Array[A] = as.takeOrdered(num)
+      implicit ord: Ordering[A]): Array[A] = withSite(as) {
+    _.takeOrdered(num)
+  }
 
   override def top[A: ClassTag](as: RDD[A])(num: Int)(
-      implicit ord: Ordering[A]): Array[A] = as.top(num)
+      implicit ord: Ordering[A]): Array[A] = withSite(as) {
+    _.top(num)
+  }
 
   override final def min[A: ClassTag](as: RDD[A])(
-      implicit ord: Ordering[A]): A = as.min()
+      implicit ord: Ordering[A]): A = withSite(as) {
+    _.min()
+  }
 
   override final def max[A: ClassTag](as: RDD[A])(
-      implicit ord: Ordering[A]): A = as.max()
+      implicit ord: Ordering[A]): A = withSite(as) {
+    _.max()
+  }
 
-  override final def foreach[A: ClassTag](as: RDD[A])(f: A => Unit): Unit =
-    as.foreach(f)
+  override final def foreach[A: ClassTag](as: RDD[A])(f: A => Unit): Unit = withSite(as) {
+    _.foreach(f)
+  }
 
   override final def foreachPartition[A: ClassTag](as: RDD[A])(
-      f: Iterator[A] => Unit): Unit = as.foreachPartition(f)
+      f: Iterator[A] => Unit): Unit = withSite(as) {
+    _.foreachPartition(f)
+  }
 
   override final def isEmpty[A: ClassTag](as: RDD[A]): Boolean = as.isEmpty()
 
-  override final def toLocalIterator[A: ClassTag](as: RDD[A]): Iterator[A] =
-    as.toLocalIterator
+  override final def toLocalIterator[A: ClassTag](as: RDD[A]): Iterator[A] = withSite(as) {
+    _.toLocalIterator
+  }
 
   override final def repartition[A: ClassTag](as: RDD[A])(
-      numPartitions: Int): RDD[A] = as.repartition(numPartitions)
+      numPartitions: Int): RDD[A] = withSite(as) {
+    _.repartition(numPartitions)
+  }
 
   override final def coalesce[A: ClassTag](
-      as: RDD[A])(numPartitions: Int, shuffle: Boolean = false): RDD[A] =
-    as.coalesce(numPartitions, shuffle)
+      as: RDD[A])(numPartitions: Int, shuffle: Boolean = false): RDD[A] = withSite(as) {
+    _.coalesce(numPartitions, shuffle)
+  }
 
   override final def setName[A: ClassTag](as: RDD[A])(name: String): RDD[A] = as.setName(name)
 

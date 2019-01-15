@@ -23,3 +23,7 @@ To improve the documentation, please create a [pull request in the kontextfrei r
 ## Code contributions
 
 If you want to make a code contribution, it would be great to make sure that a GitHub issue for it exists beforehand. Like contributions to documentation, code can be contributed by creating a [pull request in the kontextfrei repository](https://github.com/dwestheide/kontextfrei/pulls). Please use the description of the pull request to explain the what, why, and if necessary, how of your change. Also, please rebase your pull request against the master branch and squash the changes in your pull request into a single commit.
+
+### Developer Notes
+* When adding support for new RDD methods, observe the use of withSite loan pattern in the RDDBaseFunction methods to 
+ensure correct reporting of the call site in the Spark UI.
