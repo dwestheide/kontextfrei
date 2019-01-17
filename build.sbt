@@ -5,12 +5,21 @@ name := "kontextfrei"
 
 sparkVersion in ThisBuild := sys.props.getOrElse("kontextfrei.spark.version",
                                                  "1.4.1")
+
+// Only Spark 2.4.0 or later is available for Scala 2.12
+// And Spark 2.4.0 is not available for Scala 2.10
+// This check will have to be made more robust when 2.5.0 comes out
+def scalaVersions(sparkVersion: String): Seq[String] = {
+  if (sparkVersion.startsWith("2.4")) Seq("2.11.12", "2.12.7")
+  else Seq("2.11.12", "2.10.7")
+}
+
 val common = Seq(
   organization := "com.danielwestheide",
   normalizedName := normalizedName.value + "-spark-" + sparkVersion.value,
   version := "0.7.2-SNAPSHOT",
-  scalaVersion := "2.11.8",
-  crossScalaVersions := Seq("2.11.8", "2.10.6"),
+  scalaVersion := "2.11.12",
+  crossScalaVersions := scalaVersions(sparkVersion.value),
   licenses += ("Apache-2.0",
   url("https://opensource.org/licenses/Apache-2.0")),
   bintrayPackageLabels := Seq("scala", "spark", "testing"),
@@ -23,13 +32,20 @@ val common = Seq(
 val scalatest  = "org.scalatest"  %% "scalatest"  % "3.0.5"
 val scalacheck = "org.scalacheck" %% "scalacheck" % "1.14.0"
 
-def spark(version: String) =
-  "org.apache.spark" %% "spark-core" % version % "provided"
+def spark(version: String, scalaVersion: String) = {
+  // A very dirty way of aborting the build successfully in case of incompatible
+  // versions of Scala and Spark; for use in Travis CI, where I cannot figure
+  // out how to make a dependent build only for those combinations of Scala
+  // and Spark version that actually exist
+  if (scalaVersion.startsWith("2.12") && !version.startsWith("2.4")) sys.exit(0)
+  else if (version.startsWith("2.4") && scalaVersion.startsWith("2.10")) sys.exit(0)
+  else "org.apache.spark" %% "spark-core" % version % "provided"
+}
 
 lazy val core = Project(id = "kontextfrei-core", base = file("core"))
   .settings(common)
   .settings(
-    libraryDependencies ++= Seq(spark(sparkVersion.value),
+    libraryDependencies ++= Seq(spark(sparkVersion.value, scalaVersion.value),
                                 scalatest  % Test,
                                 scalacheck % Test))
 
@@ -37,7 +53,7 @@ lazy val scalaTest =
   Project(id = "kontextfrei-scalatest", base = file("scalatest"))
     .settings(common)
     .settings(
-      libraryDependencies ++= Seq(spark(sparkVersion.value),
+      libraryDependencies ++= Seq(spark(sparkVersion.value, scalaVersion.value),
                                   scalatest,
                                   scalacheck))
     .dependsOn(core)
