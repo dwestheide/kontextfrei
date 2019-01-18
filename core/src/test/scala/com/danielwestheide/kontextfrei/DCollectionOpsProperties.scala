@@ -1091,7 +1091,7 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("partitionBy doesn't change set of elements") {
-    forAll { (xs: List[(Int, String)]) =>
+    forAll { xs: List[(Int, String)] =>
       val coll = unit(xs)
       val partitioner = new HashPartitioner(2)
       assert(coll.partitionBy(partitioner).collect().toSet === coll.collect().toSet)
@@ -1099,7 +1099,7 @@ trait DCollectionOpsProperties[DColl[_]]
   }
 
   property("defaultPartitioner returns a partitioner") {
-    forAll { (xs: List[Int]) =>
+    forAll { xs: List[Int] =>
       val coll = unit(xs)
       val partitioner = coll.defaultPartitioner()
       assert(partitioner.isInstanceOf[Partitioner])
