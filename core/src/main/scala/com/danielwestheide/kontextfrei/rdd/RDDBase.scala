@@ -6,7 +6,7 @@ import org.apache.spark.rdd.RDD
 private[kontextfrei] trait RDDBase {
   def sparkContext: SparkContext
 
-  def withSite[A, R](as: RDD[A])(body: RDD[A] => R): R = {
+  private[rdd] def withSite[A, R](as: RDD[A])(body: RDD[A] => R): R = {
 
     val (method, site) = RDDBase.callSiteInfo
 
@@ -17,7 +17,7 @@ private[kontextfrei] trait RDDBase {
 
 object RDDBase {
 
-  def callSiteInfo: (String, String) = {
+  private[rdd] def callSiteInfo: (String, String) = {
 
     def isInKf(ste: StackTraceElement): Boolean = {
       Option(ste.getClassName).exists(_.startsWith("com.danielwestheide.kontextfrei"))
