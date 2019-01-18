@@ -1,5 +1,6 @@
 package com.danielwestheide.kontextfrei.rdd
 import com.danielwestheide.kontextfrei.DCollectionOrderedFunctions
+import org.apache.spark.Partitioner
 import org.apache.spark.rdd.RDD
 
 import scala.reflect.ClassTag
@@ -21,5 +22,14 @@ private[kontextfrei] trait RDDOrderedFunctions
   override final def filterByRange[A: ClassTag: Ordering, B: ClassTag](
       x: RDD[(A, B)])(lower: A, upper: A): RDD[(A, B)] = withSite(x) {
     _.filterByRange(lower, upper)
+  }
+
+  override def repartitionAndSortWithinPartitions[
+      A: ClassTag: Ordering,
+      B: ClassTag](
+      x: RDD[(A, B)])(
+      partitioner: Partitioner)
+    : RDD[(A, B)] = withSite(x) {
+    _.repartitionAndSortWithinPartitions(partitioner)
   }
 }

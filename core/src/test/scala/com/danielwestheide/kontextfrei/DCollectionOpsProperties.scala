@@ -1,7 +1,7 @@
 package com.danielwestheide.kontextfrei
 
 import org.apache.spark.storage.StorageLevel
-import org.apache.spark.{HashPartitioner, Partitioner, SparkException}
+import org.apache.spark.{HashPartitioner, Partitioner, RangePartitioner, SparkException}
 import org.scalacheck.Gen
 import org.scalatest.concurrent.{Eventually, IntegrationPatience}
 import org.scalatest.{DiagrammedAssertions, Inspectors}
@@ -1078,6 +1078,17 @@ trait DCollectionOpsProperties[DColl[_]]
     }
   }
 
+  property(
+    "repartitionAndSortWithinPartitions returns a DCollection sorted by key") {
+    forAll { xs: List[(Int, String)] =>
+      val result = unit(xs)
+        .repartitionAndSortWithinPartitions(DummyRangePartitioner)
+        .collect()
+        .toList
+        .map(_._1)
+      assert(result === result.sorted)
+    }
+  }
 
   property("partitionBy doesn't change set of elements") {
     forAll { (xs: List[(Int, String)]) =>
