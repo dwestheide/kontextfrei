@@ -20,15 +20,15 @@ object RDDBase {
   def callSiteInfo: (String, String) = {
 
     def isInKf(ste: StackTraceElement): Boolean = {
-      Option(ste.getClassName()).exists(_.startsWith("com.danielwestheide.kontextfrei"))
+      Option(ste.getClassName).exists(_.startsWith("com.danielwestheide.kontextfrei"))
     }
 
-    val (kf, user) = Thread.currentThread().getStackTrace()
+    val (kf, user) = Thread.currentThread().getStackTrace
       .dropWhile(!isInKf(_))
       .span(isInKf)
 
     val method = kf.lastOption.map(_.getMethodName()).getOrElse("unknown")
-    val site = user.headOption.map(s => s"${s.getFileName()}:${s.getLineNumber()}").getOrElse("unknown")
+    val site = user.headOption.map(s => s"${ s.getFileName}:${ s.getLineNumber}").getOrElse("unknown")
 
     (method, site)
   }
