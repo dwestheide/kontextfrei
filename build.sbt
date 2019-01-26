@@ -11,13 +11,14 @@ sparkVersion in ThisBuild := sys.props.getOrElse("kontextfrei.spark.version",
 // This check will have to be made more robust when 2.5.0 comes out
 def scalaVersions(sparkVersion: String): Seq[String] = {
   if (sparkVersion.startsWith("2.4")) Seq("2.11.12", "2.12.8")
+  else if (sparkVersion.startsWith("2.3")) Seq("2.11.12")
   else Seq("2.11.12", "2.10.7")
 }
 
 val common = Seq(
   organization := "com.danielwestheide",
   normalizedName := normalizedName.value + "-spark-" + sparkVersion.value,
-  version := "0.7.2-SNAPSHOT",
+  version := "0.8.0",
   scalaVersion := "2.11.12",
   crossScalaVersions := scalaVersions(sparkVersion.value),
   licenses += ("Apache-2.0",
@@ -38,7 +39,7 @@ def spark(version: String, scalaVersion: String) = {
   // out how to make a dependent build only for those combinations of Scala
   // and Spark version that actually exist
   if (scalaVersion.startsWith("2.12") && !version.startsWith("2.4")) sys.exit(0)
-  else if (version.startsWith("2.4") && scalaVersion.startsWith("2.10")) sys.exit(0)
+  else if ((version.startsWith("2.4") || version.startsWith("2.3")) && scalaVersion.startsWith("2.10")) sys.exit(0)
   else "org.apache.spark" %% "spark-core" % version % "provided"
 }
 
