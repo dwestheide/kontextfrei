@@ -10,7 +10,7 @@ script:
   - sbt -Dkontextfrei.spark.version=2.0.2 clean test
   - sbt -Dkontextfrei.spark.version=2.1.3 clean test
   - sbt -Dkontextfrei.spark.version=2.2.3 clean test
-  - sbt -Dkontextfrei.spark.version=2.3.2
+  - sbt -Dkontextfrei.spark.version=2.3.2 clean test
   - sbt -Dkontextfrei.spark.version=2.4.0 clean coverage test coverageReport && sbt coverageAggregate
 after_success:
   - bash <(curl -s https://codecov.io/bash)
