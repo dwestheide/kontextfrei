@@ -2,6 +2,10 @@
 
 This page collects external resources that can help you learn more about _kontextfrei_.
 
+## Blog posts
+
+[Introducing kontextfrei](https://danielwestheide.com/blog/2017/10/31/introducing-kontextfrei.html)
+
 ## Conference talks
 
 ### kontextfrei: A new approach to testable Spark applications, Scalar Conf Warsaw 2017, April 08, 2017
