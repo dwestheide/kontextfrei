@@ -10,7 +10,7 @@ sparkVersion in ThisBuild := sys.props.getOrElse("kontextfrei.spark.version",
 // And Spark 2.4.0 is not available for Scala 2.10
 // This check will have to be made more robust when 2.5.0 comes out
 def scalaVersions(sparkVersion: String): Seq[String] = {
-  if (sparkVersion.startsWith("2.4")) Seq("2.11.12", "2.12.7")
+  if (sparkVersion.startsWith("2.4")) Seq("2.11.12", "2.12.8")
   else Seq("2.11.12", "2.10.7")
 }
 
