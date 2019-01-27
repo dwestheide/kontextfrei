@@ -5,10 +5,11 @@
 <title>Setup · kontextfrei</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="kontextfrei"/>
+<meta name="description" content='kontextfrei'/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="js/page.js"></script>
+<script type="text/javascript" src="js/groups.js"></script>
 <link rel="stylesheet" type="text/css" href="lib/normalize.css/normalize.css"/>
 <link rel="stylesheet" type="text/css" href="lib/foundation/dist/foundation.min.css"/>
 <link rel="stylesheet" type="text/css" href="css/page.css"/>
@@ -29,16 +30,16 @@
 <span class="home-icon">⌂</span>kontextfrei
 </a>
 <div class="version-number">
-0.7.2*
+0.8.1*
 </div>
 </div>
 <div class="nav-toc">
 <ul>
-  <li><a href="setup.html" class="active">Setup</a></li>
-  <li><a href="status.html">Status</a></li>
-  <li><a href="example.html">Example application</a></li>
-  <li><a href="resources.html">Resources</a></li>
-  <li><a href="contribute.html">Contributing</a></li>
+  <li><a href="setup.html" class="active page">Setup</a></li>
+  <li><a href="status.html" class="page">Status</a></li>
+  <li><a href="example.html" class="page">Example application</a></li>
+  <li><a href="resources.html" class="page">Resources</a></li>
+  <li><a href="contribute.html" class="page">Contributing</a></li>
 </ul>
 </div>
 
@@ -70,16 +71,16 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <span class="home-icon">⌂</span>kontextfrei
 </a>
 <div class="version-number">
-0.7.2*
+0.8.1*
 </div>
 </div>
 <div class="nav-toc">
 <ul>
-  <li><a href="setup.html" class="active">Setup</a></li>
-  <li><a href="status.html">Status</a></li>
-  <li><a href="example.html">Example application</a></li>
-  <li><a href="resources.html">Resources</a></li>
-  <li><a href="contribute.html">Contributing</a></li>
+  <li><a href="setup.html" class="active page">Setup</a></li>
+  <li><a href="status.html" class="page">Status</a></li>
+  <li><a href="example.html" class="page">Example application</a></li>
+  <li><a href="resources.html" class="page">Resources</a></li>
+  <li><a href="contribute.html" class="page">Contributing</a></li>
 </ul>
 </div>
 
@@ -108,36 +109,53 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
   <li><code>kontextfrei-core</code>: The main artifact to depend on when using <em>kontextfrei</em></li>
   <li><code>kontextfrei-scalatest</code>: An optional artifact that provides some helpers for using <em>kontextfrei</em> with <a href="http://www.scalatest.org/">ScalaTest</a>.</li>
 </ul>
-<p><code>kontextfrei-core</code> assumes that the Spark dependency is provided by your application, so you have to explicitly add a dependency to Spark in your build definition. This is because you usually want to depend on Spark in <code>provided</code> scope anyway in your applications.</p>
-<p>Currently, <em>kontextfrei</em> binary releases are built against Spark 1.4.1, 2.0.0, 2.1.0, and 2.2.0, each of them both for Scala 2.11 and 2.10.</p>
+<p><code>kontextfrei-core</code> assumes that the Spark dependency is provided by your application, so you have to explicitly add a dependency to Spark in your build definition. This is because you usually want to depend on Spark in <code>provided</code> scope anyway in your applications.</p><div class="callout note "><div class="callout-title">Note</div>
+<p>If you decide to use <code>kontextfrei-scalatest</code>, this will come with a transitive dependency on the ScalaTest and ScalaCheck libraries. <code>kontextfrei</code> is compiled against ScalaTest 3.0.5 and ScalaCheck 1.14.0.</p></div>
+<p>Currently, <em>kontextfrei</em> binary releases are built against Spark 1.4.1, 2.0.2, 2.1.3, 2.2.3 (each of them both for Scala 2.11 and 2.10), 2.3.2 (compiled for Scala 2.11), and 2.4.0 (compiled both for Scala 2.11 and 2.12).</p>
 <p>Here is what you need to add to your <code>build.sbt</code> file in order to use <code>kontextfrei-core</code> and <code>kontextfrei-scalatest</code> in your SBT project:</p>
-<h2><a href="#spark-1-4-1" name="spark-1-4-1" class="anchor"><span class="anchor-link"></span></a>Spark 1.4.1</h2>
+<h2><a href="#spark-1-4" name="spark-1-4" class="anchor"><span class="anchor-link"></span></a>Spark 1.4</h2>
 <pre class="prettyprint"><code class="language-scala">resolvers += &quot;dwestheide&quot; at &quot;https://dl.bintray.com/dwestheide/maven&quot;
-libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-core-spark-1.4.1&quot; % &quot;0.7.1&quot;
-libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-scalatest-spark-1.4.1&quot; % &quot;0.7.1&quot; % &quot;test,it&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-core-spark-1.4.1&quot; % &quot;0.8.0&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-scalatest-spark-1.4.1&quot; % &quot;0.8.0&quot; % &quot;test,it&quot;
 libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;1.4.1&quot; % &quot;provided&quot;
 </code></pre>
 <h2><a href="#spark-2-0" name="spark-2-0" class="anchor"><span class="anchor-link"></span></a>Spark 2.0</h2>
 <pre class="prettyprint"><code class="language-scala">resolvers += &quot;dwestheide&quot; at &quot;https://dl.bintray.com/dwestheide/maven&quot;
-libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-core-spark-2.0.0&quot; % &quot;0.7.1&quot;
-libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-scalatest-spark-2.0.0&quot; % &quot;0.7.1&quot; % &quot;test,it&quot;
-libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;2.0.0&quot; % &quot;provided&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-core-spark-2.0.2&quot; % &quot;0.8.0&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-scalatest-spark-2.0.2&quot; % &quot;0.8.0&quot; % &quot;test,it&quot;
+libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;2.0.2&quot; % &quot;provided&quot;
 </code></pre>
-<h2><a href="#spark-2-1-0" name="spark-2-1-0" class="anchor"><span class="anchor-link"></span></a>Spark 2.1.0</h2>
+<h2><a href="#spark-2-1" name="spark-2-1" class="anchor"><span class="anchor-link"></span></a>Spark 2.1</h2>
 <pre class="prettyprint"><code class="language-scala">resolvers += &quot;dwestheide&quot; at &quot;https://dl.bintray.com/dwestheide/maven&quot;
-libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-core-spark-2.1.0&quot; % &quot;0.7.1&quot;
-libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-scalatest-spark-2.1.0&quot; % &quot;0.7.1&quot; % &quot;test,it&quot;
-libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;2.1.0&quot; % &quot;provided&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-core-spark-2.1.3&quot; % &quot;0.8.0&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-scalatest-spark-2.1.3&quot; % &quot;0.8.0&quot; % &quot;test,it&quot;
+libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;2.1.3&quot; % &quot;provided&quot;
 </code></pre>
-<h2><a href="#spark-2-2-0" name="spark-2-2-0" class="anchor"><span class="anchor-link"></span></a>Spark 2.2.0</h2>
+<h2><a href="#spark-2-2" name="spark-2-2" class="anchor"><span class="anchor-link"></span></a>Spark 2.2</h2>
 <pre class="prettyprint"><code class="language-scala">resolvers += &quot;dwestheide&quot; at &quot;https://dl.bintray.com/dwestheide/maven&quot;
-libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-core-spark-2.2.0&quot; % &quot;0.7.1&quot;
-libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-scalatest-spark-2.2.0&quot; % &quot;0.7.1&quot; % &quot;test,it&quot;
-libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;2.2.0&quot; % &quot;provided&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-core-spark-2.2.3&quot; % &quot;0.8.0&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-scalatest-spark-2.2.3&quot; % &quot;0.8.0&quot; % &quot;test,it&quot;
+libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;2.2.3&quot; % &quot;provided&quot;
 </code></pre>
+<h2><a href="#spark-2-3" name="spark-2-3" class="anchor"><span class="anchor-link"></span></a>Spark 2.3</h2>
+<pre class="prettyprint"><code class="language-scala">resolvers += &quot;dwestheide&quot; at &quot;https://dl.bintray.com/dwestheide/maven&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-core-spark-2.3.2&quot; % &quot;0.8.0&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-scalatest-spark-2.3.2&quot; % &quot;0.8.0&quot; % &quot;test,it&quot;
+libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;2.3.2&quot; % &quot;provided&quot;
+</code></pre>
+<h2><a href="#spark-2-4" name="spark-2-4" class="anchor"><span class="anchor-link"></span></a>Spark 2.4</h2>
+<pre class="prettyprint"><code class="language-scala">resolvers += &quot;dwestheide&quot; at &quot;https://dl.bintray.com/dwestheide/maven&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-core-spark-2.4.0&quot; % &quot;0.8.0&quot;
+libraryDependencies += &quot;com.danielwestheide&quot; %% &quot;kontextfrei-scalatest-spark-2.4.0&quot; % &quot;0.8.0&quot; % &quot;test,it&quot;
+libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % &quot;2.4.0&quot; % &quot;provided&quot;
+</code></pre>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/dwestheide/kontextfrei/tree/master/src/main/paradox/setup.md">here</a>.
+</div>
+
 <div class="nav-next">
 <p><strong>Next:</strong> <a href="status.html">Status</a></p>
-</div class="nav-next">
+</div>
 </div>
 <div class="large-3 show-for-large column" data-sticky-container>
 <nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
@@ -145,12 +163,14 @@ libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % 
 <div class="nav-title">On this page:</div>
 <div class="nav-toc">
 <ul>
-  <li><a href="setup.html#setup">Setup</a>
+  <li><a href="setup.html#setup" class="header">Setup</a>
   <ul>
-    <li><a href="setup.html#spark-1-4-1">Spark 1.4.1</a></li>
-    <li><a href="setup.html#spark-2-0">Spark 2.0</a></li>
-    <li><a href="setup.html#spark-2-1-0">Spark 2.1.0</a></li>
-    <li><a href="setup.html#spark-2-2-0">Spark 2.2.0</a></li>
+    <li><a href="setup.html#spark-1-4" class="header">Spark 1.4</a></li>
+    <li><a href="setup.html#spark-2-0" class="header">Spark 2.0</a></li>
+    <li><a href="setup.html#spark-2-1" class="header">Spark 2.1</a></li>
+    <li><a href="setup.html#spark-2-2" class="header">Spark 2.2</a></li>
+    <li><a href="setup.html#spark-2-3" class="header">Spark 2.3</a></li>
+    <li><a href="setup.html#spark-2-4" class="header">Spark 2.4</a></li>
   </ul></li>
 </ul>
 </div>
@@ -175,7 +195,7 @@ libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % 
 <div class="nav-links">
 <ul>
 <!-- <li><a href="https://www.example.com/products/">Products</a> -->
-<ul>
+</ul>
 </div>
 </div>
 
@@ -193,7 +213,7 @@ libraryDependencies += &quot;org.apache.spark&quot; %% &quot;spark-core&quot; % 
 
 <!--
 <div class="copyright">
-<span class="text">&copy; 2018</span>
+<span class="text">&copy; 2019</span>
 <a href="https://www.example.com" class="logo">logo</a>
 </div>
 -->

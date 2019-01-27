@@ -5,10 +5,11 @@
 <title>Resources · kontextfrei</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="kontextfrei"/>
+<meta name="description" content='kontextfrei'/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="js/page.js"></script>
+<script type="text/javascript" src="js/groups.js"></script>
 <link rel="stylesheet" type="text/css" href="lib/normalize.css/normalize.css"/>
 <link rel="stylesheet" type="text/css" href="lib/foundation/dist/foundation.min.css"/>
 <link rel="stylesheet" type="text/css" href="css/page.css"/>
@@ -29,16 +30,16 @@
 <span class="home-icon">⌂</span>kontextfrei
 </a>
 <div class="version-number">
-0.7.2*
+0.8.1*
 </div>
 </div>
 <div class="nav-toc">
 <ul>
-  <li><a href="setup.html">Setup</a></li>
-  <li><a href="status.html">Status</a></li>
-  <li><a href="example.html">Example application</a></li>
-  <li><a href="resources.html" class="active">Resources</a></li>
-  <li><a href="contribute.html">Contributing</a></li>
+  <li><a href="setup.html" class="page">Setup</a></li>
+  <li><a href="status.html" class="page">Status</a></li>
+  <li><a href="example.html" class="page">Example application</a></li>
+  <li><a href="resources.html" class="active page">Resources</a></li>
+  <li><a href="contribute.html" class="page">Contributing</a></li>
 </ul>
 </div>
 
@@ -70,16 +71,16 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <span class="home-icon">⌂</span>kontextfrei
 </a>
 <div class="version-number">
-0.7.2*
+0.8.1*
 </div>
 </div>
 <div class="nav-toc">
 <ul>
-  <li><a href="setup.html">Setup</a></li>
-  <li><a href="status.html">Status</a></li>
-  <li><a href="example.html">Example application</a></li>
-  <li><a href="resources.html" class="active">Resources</a></li>
-  <li><a href="contribute.html">Contributing</a></li>
+  <li><a href="setup.html" class="page">Setup</a></li>
+  <li><a href="status.html" class="page">Status</a></li>
+  <li><a href="example.html" class="page">Example application</a></li>
+  <li><a href="resources.html" class="active page">Resources</a></li>
+  <li><a href="contribute.html" class="page">Contributing</a></li>
 </ul>
 </div>
 
@@ -104,6 +105,8 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <div class="small-12 large-9 column" id="docs">
 <h1><a href="#resources" name="resources" class="anchor"><span class="anchor-link"></span></a>Resources</h1>
 <p>This page collects external resources that can help you learn more about <em>kontextfrei</em>.</p>
+<h2><a href="#blog-posts" name="blog-posts" class="anchor"><span class="anchor-link"></span></a>Blog posts</h2>
+<p><a href="https://danielwestheide.com/blog/2017/10/31/introducing-kontextfrei.html">Introducing kontextfrei</a></p>
 <h2><a href="#conference-talks" name="conference-talks" class="anchor"><span class="anchor-link"></span></a>Conference talks</h2>
 <h3><a href="#kontextfrei-a-new-approach-to-testable-spark-applications-scalar-conf-warsaw-2017-april-08-2017" name="kontextfrei-a-new-approach-to-testable-spark-applications-scalar-conf-warsaw-2017-april-08-2017" class="anchor"><span class="anchor-link"></span></a>kontextfrei: A new approach to testable Spark applications, Scalar Conf Warsaw 2017, April 08, 2017</h3>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Z_Ab5Y90fuw" frameborder="0" allowfullscreen></iframe>
@@ -111,9 +114,13 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <h4><a href="#abstract" name="abstract" class="anchor"><span class="anchor-link"></span></a>Abstract</h4>
 <p>Apache Spark has become the de-facto standard for writing big data processing pipelines. While the business logic of Spark applications is often at least as complex as what we have been dealing with in a pre-big data world, enabling developers to write comprehensive, fast unit test suites has not been a priority in the design of Spark. The main problem is that you cannot test your code without at least running a local SparkContext. These tests are not really unit tests, and they are too slow for pursuing a test-driven development approach.</p>
 <p>In this talk, I will introduce thekontextfrei library, which aims to liberate you from the chains of the SparkContext. I will show how it helps restoring the fast feedback loop we are taking for granted. In addition, I will explain how kontextfrei is implemented and discuss some of the design decisions made and look at alternative approaches and current limitations.</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/dwestheide/kontextfrei/tree/master/src/main/paradox/resources.md">here</a>.
+</div>
+
 <div class="nav-next">
 <p><strong>Next:</strong> <a href="contribute.html">Contributing</a></p>
-</div class="nav-next">
+</div>
 </div>
 <div class="large-3 show-for-large column" data-sticky-container>
 <nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
@@ -121,9 +128,10 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <div class="nav-title">On this page:</div>
 <div class="nav-toc">
 <ul>
-  <li><a href="resources.html#resources">Resources</a>
+  <li><a href="resources.html#resources" class="header">Resources</a>
   <ul>
-    <li><a href="resources.html#conference-talks">Conference talks</a></li>
+    <li><a href="resources.html#blog-posts" class="header">Blog posts</a></li>
+    <li><a href="resources.html#conference-talks" class="header">Conference talks</a></li>
   </ul></li>
 </ul>
 </div>
@@ -148,7 +156,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <div class="nav-links">
 <ul>
 <!-- <li><a href="https://www.example.com/products/">Products</a> -->
-<ul>
+</ul>
 </div>
 </div>
 
@@ -166,7 +174,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 
 <!--
 <div class="copyright">
-<span class="text">&copy; 2018</span>
+<span class="text">&copy; 2019</span>
 <a href="https://www.example.com" class="logo">logo</a>
 </div>
 -->

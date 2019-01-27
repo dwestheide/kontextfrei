@@ -5,10 +5,11 @@
 <title>kontextfrei</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="kontextfrei"/>
+<meta name="description" content='kontextfrei'/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="js/page.js"></script>
+<script type="text/javascript" src="js/groups.js"></script>
 <link rel="stylesheet" type="text/css" href="lib/normalize.css/normalize.css"/>
 <link rel="stylesheet" type="text/css" href="lib/foundation/dist/foundation.min.css"/>
 <link rel="stylesheet" type="text/css" href="css/page.css"/>
@@ -29,16 +30,16 @@
 <span class="home-icon">⌂</span>kontextfrei
 </a>
 <div class="version-number">
-0.7.2*
+0.8.1*
 </div>
 </div>
 <div class="nav-toc">
 <ul>
-  <li><a href="setup.html">Setup</a></li>
-  <li><a href="status.html">Status</a></li>
-  <li><a href="example.html">Example application</a></li>
-  <li><a href="resources.html">Resources</a></li>
-  <li><a href="contribute.html">Contributing</a></li>
+  <li><a href="setup.html" class="page">Setup</a></li>
+  <li><a href="status.html" class="page">Status</a></li>
+  <li><a href="example.html" class="page">Example application</a></li>
+  <li><a href="resources.html" class="page">Resources</a></li>
+  <li><a href="contribute.html" class="page">Contributing</a></li>
 </ul>
 </div>
 
@@ -70,16 +71,16 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <span class="home-icon">⌂</span>kontextfrei
 </a>
 <div class="version-number">
-0.7.2*
+0.8.1*
 </div>
 </div>
 <div class="nav-toc">
 <ul>
-  <li><a href="setup.html">Setup</a></li>
-  <li><a href="status.html">Status</a></li>
-  <li><a href="example.html">Example application</a></li>
-  <li><a href="resources.html">Resources</a></li>
-  <li><a href="contribute.html">Contributing</a></li>
+  <li><a href="setup.html" class="page">Setup</a></li>
+  <li><a href="status.html" class="page">Status</a></li>
+  <li><a href="example.html" class="page">Example application</a></li>
+  <li><a href="resources.html" class="page">Resources</a></li>
+  <li><a href="contribute.html" class="page">Contributing</a></li>
 </ul>
 </div>
 
@@ -101,9 +102,13 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <p>Firing up a <code>SparkContext</code> and running your unit tests in a local Spark cluster is really slow. <em>kontextfrei</em> frees you from this hard dependency on a <code>SparkContext</code>. By programming your business logic against an API that abstracts over Spark&rsquo;s <code>RDD</code>, you can execute your unit tests against Scala collections instead of <code>RDD</code>s, leading to a much faster feedback cycle during development.</p>
 <p>By providing an API that is virtually identical to Spark&rsquo;s <code>RDD</code> API, developers already familiar with Spark do not have to learn a new API to benefit from <em>kontextfrei</em>.</p>
 <p>This website serves as the hub for all things <em>kontextfrei</em> &ndash; how to use it, who is using it, and how to contribute to the development of this project.</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/dwestheide/kontextfrei/tree/master/src/main/paradox/index.md">here</a>.
+</div>
+
 <div class="nav-next">
 <p><strong>Next:</strong> <a href="setup.html">Setup</a></p>
-</div class="nav-next">
+</div>
 </div>
 <div class="large-3 show-for-large column" data-sticky-container>
 </div>
@@ -125,7 +130,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <div class="nav-links">
 <ul>
 <!-- <li><a href="https://www.example.com/products/">Products</a> -->
-<ul>
+</ul>
 </div>
 </div>
 
@@ -143,7 +148,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 
 <!--
 <div class="copyright">
-<span class="text">&copy; 2018</span>
+<span class="text">&copy; 2019</span>
 <a href="https://www.example.com" class="logo">logo</a>
 </div>
 -->
